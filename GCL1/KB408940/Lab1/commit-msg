@@ -1,0 +1,13 @@
+#!/bin/bash
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat $COMMIT_MSG_FILE)
+
+# Moje inicjaly i nr indexu
+INITIALS_AND_INDEX="KB408940"
+
+if [[ ! $COMMIT_MSG =~ ^$INITIALS_AND_INDEX ]]; then
+    echo "ERROR: Twoj commit message musi zaczynac sie od \"$INITIALS_AND_INDEX\""
+    exit 1
+fi
+
