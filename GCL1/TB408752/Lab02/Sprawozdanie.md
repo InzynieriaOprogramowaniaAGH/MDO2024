@@ -11,262 +11,224 @@
 
 ### Wykonanie
 0) Pobierz repozytory
-```
-git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
-```
-1) Sprawdzanie czy aplikacja się odpala poprzez wykonanie 
-```
-cd ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/
-dotnet run 
-```
-Wynik
-```
-info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: https://localhost:5001
-info: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-info: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Production
-info: Microsoft.Hosting.Lifetime[0]
-      Content root path: /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/
-```
-2) Odpalenie testów jednostkowych
-```
-cd ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/
-dotnet test
-```
-Wynik
-```
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  web-api -> /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Debug/net6.0/web-api.dll
-  web-api-tests -> /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll
-Test run for /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (.NETCoreApp,Version=v6.0)
-Microsoft (R) Test Execution Command Line Tool Version 17.0.0+68bd10d3aee862a9fbb0bac8b3d474bc323024f3
-Copyright (c) Microsoft Corporation.  All rights reserved.
-
-Starting test execution, please wait...
-A total of 1 test files matched the specified pattern.
-
-Passed!  - Failed:     0, Passed:    11, Skipped:     0, Total:    11, Duration: 34 ms - /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (net6.0)
-```
-3) Create Dockerfile w głównym folderze aplikacji
-
-```
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /app
-
-# Pobierz projekt
-RUN apt-get update && \
-    apt-get install -y git && \
+    ```bash
     git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
+    ```
+1) Sprawdzanie czy aplikacja się odpala poprzez wykonanie 
+    ```powershell
+    cd ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/
+    dotnet run 
+    
+    info: Microsoft.Hosting.Lifetime[14]
+        Now listening on: http://localhost:5000
+    info: Microsoft.Hosting.Lifetime[14]
+        Now listening on: https://localhost:5001
+    info: Microsoft.Hosting.Lifetime[0]
+        Application started. Press Ctrl+C to shut down.
+    info: Microsoft.Hosting.Lifetime[0]
+        Hosting environment: Production
+    info: Microsoft.Hosting.Lifetime[0]
+        Content root path: /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/
+    ```
+2) Odpalenie testów jednostkowych
+    ```powershell
+    cd ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/
+    dotnet test
+    
+    Determining projects to restore...
+    All projects are up-to-date for restore.
+    web-api -> /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Debug/net6.0/web-api.dll
+    web-api-tests -> /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll
+    Test run for /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (.NETCoreApp,Version=v6.0)
+    Microsoft (R) Test Execution Command Line Tool Version 17.0.0+68bd10d3aee862a9fbb0bac8b3d474bc323024f3
+    Copyright (c) Microsoft Corporation.  All rights reserved.
 
-RUN find .
+    Starting test execution, please wait...
+    A total of 1 test files matched the specified pattern.
 
-# Restore aplikacji
-RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/web-api.csproj
-RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj
+    Passed!  - Failed:     0, Passed:    11, Skipped:     0, Total:    11, Duration: 34 ms - /home/devops/lab02/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (net6.0)
+    ```
+3) Utwórz [Dockerfile.test](Dockerfile.test)
+4) Utwórz [Dockerfile.build](Dockerfile.build)
+5) Uruchomienie Docker deamon
+    ```bash
+    sudo systemctl start docker
+    ```
+6) Build docker test
+    ```powershell
+    sudo docker build -t devops_test_01 -f Dockerfile.test .
 
-# Build aplikacji webowej
-WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
-RUN dotnet build -c Release
+    Sending build context to Docker daemon  10.24kB
+    Step 1/9 : FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+    ---> 6d33d3da7b5e
+    Step 2/9 : WORKDIR /app
+    ---> Running in d4b0f97924ec
+    Removing intermediate container d4b0f97924ec
+    ---> f2b1e79c432e
+    Step 3/9 : RUN apt-get update &&     apt-get install -y git &&     git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
+    ---> Running in ff8f5520586c
+    Get:1 http://deb.debian.org/debian bullseye InRelease [116 kB]
+    Get:2 http://deb.debian.org/debian-security bullseye-security InRelease [48.4 kB]
+    Get:3 http://deb.debian.org/debian bullseye-updates InRelease [44.1 kB]
+    Get:4 http://deb.debian.org/debian bullseye/main amd64 Packages [8062 kB]
+    Get:5 http://deb.debian.org/debian-security bullseye-security/main amd64 Packages [258 kB]
+    Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [17.7 kB]
+    Fetched 8546 kB in 7s (1268 kB/s)
+    Reading package lists...
+    Reading package lists...
+    Building dependency tree...
+    Reading state information...
+    git is already the newest version (1:2.30.2-1+deb11u2).
+    0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+    Cloning into 'unit-testing-aspnetcore-webapi'...
+    Removing intermediate container ff8f5520586c
+    ---> 2d50ba24b6b1
+    Step 4/9 : RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj
+    ---> Running in dde7f8e4e902
+    Determining projects to restore...
+    Restored /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/web-api.csproj (in 69 ms).
+    Restored /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj (in 40.9 sec).
+    Removing intermediate container dde7f8e4e902
+    ---> 366c5e387d57
+    Step 5/9 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
+    ---> Running in 715dad0e28aa
+    Removing intermediate container 715dad0e28aa
+    ---> 379d61dfb01b
+    Step 6/9 : RUN dotnet build -c Release
+    ---> Running in 3b23836248ef
+    MSBuild version 17.3.2+561848881 for .NET
+    Determining projects to restore...
+    All projects are up-to-date for restore.
+    web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Release/net6.0/web-api.dll
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(40,59): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(77,41): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(78,37): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(130,24): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(134,54): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartServiceFake.cs(40,20): warning CS8603: Possible null reference return. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    web-api-tests -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Release/net6.0/web-api-tests.dll
 
-# Build aplikacji testowej
-WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
-RUN dotnet build -c Release
+    Build succeeded.
 
-# Odaplanie testów
-FROM build AS test
-WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
-RUN dotnet test
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(40,59): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(77,41): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(78,37): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(130,24): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(134,54): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartServiceFake.cs(40,20): warning CS8603: Possible null reference return. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+        6 Warning(s)
+        0 Error(s)
 
-# Publikowanie aplikacji webowej
-FROM build AS publish
-WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
-RUN dotnet publish -c Release -o out
+    Time Elapsed 00:00:02.98
+    Removing intermediate container 3b23836248ef
+    ---> 509fc2237e88
+    Step 7/9 : FROM build AS test
+    ---> 509fc2237e88
+    Step 8/9 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
+    ---> Running in ff5f66fc0f78
+    Removing intermediate container ff5f66fc0f78
+    ---> 131c0cca78bf
+    Step 9/9 : RUN dotnet test
+    ---> Running in bae23fd4a17f
+    Determining projects to restore...
+    All projects are up-to-date for restore.
+    web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Debug/net6.0/web-api.dll
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(40,59): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(77,41): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(78,37): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(130,24): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(134,54): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartServiceFake.cs(40,20): warning CS8603: Possible null reference return. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
+    web-api-tests -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll
+    Test run for /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (.NETCoreApp,Version=v6.0)
+    Microsoft (R) Test Execution Command Line Tool Version 17.3.3 (x64)
+    Copyright (c) Microsoft Corporation.  All rights reserved.
 
-# Kopiowanie plików aplikacji po publishu
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
-WORKDIR /app
-COPY --from=publish /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/out ./
+    Starting test execution, please wait...
+    A total of 1 test files matched the specified pattern.
 
-# Określanie portu aplikacji (default 80)
-EXPOSE 80
+    Passed!  - Failed:     0, Passed:    11, Skipped:     0, Total:    11, Duration: 30 ms - /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (net6.0)
+    Removing intermediate container bae23fd4a17f
+    ---> 4c1605aa8aa1
+    Successfully built 4c1605aa8aa1
+    Successfully tagged devops_test_01:latest
+    ```
+7) Build docker build
+    ```powershell
+    sudo docker build -t devops_build_01 -f Dockerfile.build .
 
-# ustawianie entrypointu dla runa aplikacji
-ENTRYPOINT ["dotnet", "web-api.dll"]
+    Sending build context to Docker daemon  10.24kB
+    Step 1/9 : FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+    ---> 6d33d3da7b5e
+    Step 2/9 : WORKDIR /app
+    ---> Running in 50ccae52dfbd
+    Removing intermediate container 50ccae52dfbd
+    ---> e37cb7d64425
+    Step 3/9 : RUN apt-get update &&     apt-get install -y git &&     git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
+    ---> Running in 2b65d1fb61cd
+    Get:1 http://deb.debian.org/debian bullseye InRelease [116 kB]
+    Get:2 http://deb.debian.org/debian-security bullseye-security InRelease [48.4 kB]
+    Get:3 http://deb.debian.org/debian bullseye-updates InRelease [44.1 kB]
+    Get:4 http://deb.debian.org/debian bullseye/main amd64 Packages [8062 kB]
+    Get:5 http://deb.debian.org/debian-security bullseye-security/main amd64 Packages [258 kB]
+    Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [17.7 kB]
+    Fetched 8546 kB in 36s (240 kB/s)
+    Reading package lists...
+    Reading package lists...
+    Building dependency tree...
+    Reading state information...
+    git is already the newest version (1:2.30.2-1+deb11u2).
+    0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+    Cloning into 'unit-testing-aspnetcore-webapi'...
+    Removing intermediate container 2b65d1fb61cd
+    ---> da129b028a42
+    Step 4/9 : RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/web-api.csproj
+    ---> Running in 1befe7650884
+    Determining projects to restore...
+    Restored /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/web-api.csproj (in 48 ms).
+    Removing intermediate container 1befe7650884
+    ---> 2dc7921040ef
+    Step 5/9 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
+    ---> Running in aaaba4cd7c33
+    Removing intermediate container aaaba4cd7c33
+    ---> b7f3298d182b
+    Step 6/9 : RUN dotnet build -c Release
+    ---> Running in 12d8b68729ce
+    MSBuild version 17.3.2+561848881 for .NET
+    Determining projects to restore...
+    All projects are up-to-date for restore.
+    web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Release/net6.0/web-api.dll
 
-```
+    Build succeeded.
+        0 Warning(s)
+        0 Error(s)
 
-4) Uruchomienie Docker deamon
-```
-sudo systemctl start docker
-```
-5) Build docker image
-```
-sudo docker build -t devops_test_01 .
-```
-Wynik
-```
-Sending build context to Docker daemon  16.38kB
-Step 1/21 : FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
- ---> 6d33d3da7b5e
-Step 2/21 : WORKDIR /app
- ---> Using cache
- ---> d0c881af1c90
-Step 3/21 : RUN apt-get update &&     apt-get install -y git &&     git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
- ---> Using cache
- ---> 13a3ed47e30b
-Step 4/21 : RUN find .
- ---> Using cache
- ---> 5e557e79d300
-Step 5/21 : RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/web-api.csproj
- ---> Using cache
- ---> 2f58e50ad99f
-Step 6/21 : RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj
- ---> Using cache
- ---> de438b5f4871
-Step 7/21 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
- ---> Running in 2d8449a71164
-Removing intermediate container 2d8449a71164
- ---> 306cad4a9632
-Step 8/21 : RUN dotnet build -c Release
- ---> Running in 26d2202db70c
-MSBuild version 17.3.2+561848881 for .NET
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Release/net6.0/web-api.dll
-
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:02.92
-Removing intermediate container 26d2202db70c
- ---> 24836978a8b6
-Step 9/21 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
- ---> Running in ee0e331bddb9
-Removing intermediate container ee0e331bddb9
- ---> 0ff626e4e2f7
-Step 10/21 : RUN dotnet build -c Release
- ---> Running in 18af5bfe41a3
-MSBuild version 17.3.2+561848881 for .NET
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Release/net6.0/web-api.dll
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(40,59): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(77,41): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(78,37): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(130,24): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(134,54): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartServiceFake.cs(40,20): warning CS8603: Possible null reference return. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-  web-api-tests -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Release/net6.0/web-api-tests.dll
-
-Build succeeded.
-
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(40,59): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(77,41): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(78,37): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(130,24): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(134,54): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartServiceFake.cs(40,20): warning CS8603: Possible null reference return. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-    6 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:02.66
-Removing intermediate container 18af5bfe41a3
- ---> 35990c60999f
-Step 11/21 : FROM build AS test
- ---> 35990c60999f
-Step 12/21 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
- ---> Running in 1de69784f979
-Removing intermediate container 1de69784f979
- ---> 28525c875941
-Step 13/21 : RUN dotnet test
- ---> Running in 8ed73f107104
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Debug/net6.0/web-api.dll
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(40,59): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(77,41): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(78,37): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(130,24): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartControllerTest.cs(134,54): warning CS8602: Dereference of a possibly null reference. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/ShoppingCartServiceFake.cs(40,20): warning CS8603: Possible null reference return. [/app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj]
-  web-api-tests -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll
-Test run for /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (.NETCoreApp,Version=v6.0)
-Microsoft (R) Test Execution Command Line Tool Version 17.3.3 (x64)
-Copyright (c) Microsoft Corporation.  All rights reserved.
-
-Starting test execution, please wait...
-A total of 1 test files matched the specified pattern.
-
-Passed!  - Failed:     0, Passed:    11, Skipped:     0, Total:    11, Duration: 36 ms - /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/bin/Debug/net6.0/web-api-tests.dll (net6.0)
-Removing intermediate container 8ed73f107104
- ---> f9d4bb7b47f6
-Step 14/21 : FROM build AS publish
- ---> 35990c60999f
-Step 15/21 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
- ---> Running in e09f80f5bbe7
-Removing intermediate container e09f80f5bbe7
- ---> 2930f17067ee
-Step 16/21 : RUN dotnet publish -c Release -o out
- ---> Running in 1274713aca0b
-MSBuild version 17.3.2+561848881 for .NET
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Release/net6.0/web-api.dll
-  web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/out/
-Removing intermediate container 1274713aca0b
- ---> fc6a9e91362c
-Step 17/21 : FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
- ---> a9a05a5742bc
-Step 18/21 : WORKDIR /app
- ---> Using cache
- ---> da0bec8cd733
-Step 19/21 : COPY --from=publish /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/out ./
- ---> 14ade16a4684
-Step 20/21 : EXPOSE 80
- ---> Running in e40f32e3e26f
-Removing intermediate container e40f32e3e26f
- ---> 4a02eec6ad35
-Step 21/21 : ENTRYPOINT ["dotnet", "web-api.dll"]
- ---> Running in 78cb1f37ab8d
-Removing intermediate container 78cb1f37ab8d
- ---> 408c107e1e95
-Successfully built 408c107e1e95
-Successfully tagged devops_test_01:latest
-```
-
-6) Sprawdzenie stworzonego image
-```
-sudo docker images
-```
-```
-REPOSITORY                        TAG       IMAGE ID       CREATED         SIZE
-devops_test_01                    latest    cdba06e8a018   3 minutes ago   206MB
-<none>                            <none>    fb42b10ada43   4 minutes ago   989MB
-<none>                            <none>    412d6404f601   4 minutes ago   998MB
-mcr.microsoft.com/dotnet/sdk      6.0       6d33d3da7b5e   6 hours ago     740MB
-ubuntu                            latest    e4c58958181a   6 weeks ago     77.8MB
-mysql                             latest    2d9aad1b5856   3 months ago    574MB
-hello-world                       latest    9c7a54a9a43c   6 months ago    13.3kB
-mcr.microsoft.com/dotnet/aspnet   6.0       29de1b9e96c0   17 months ago   205MB
-```
-7) Run docker image
-```
-sudo docker run -p 8080:80 devops_test_01
-```
-Wynik
-```
-info: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://[::]:80
-info: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-info: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Production
-info: Microsoft.Hosting.Lifetime[0]
-      Content root path: /app/
-```
+    Time Elapsed 00:00:02.28
+    Removing intermediate container 12d8b68729ce
+    ---> 355b080f1cc6
+    Step 7/9 : FROM build AS publish
+    ---> 355b080f1cc6
+    Step 8/9 : WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
+    ---> Running in d7c9729c6799
+    Removing intermediate container d7c9729c6799
+    ---> 4e5e1d006490
+    Step 9/9 : RUN dotnet publish -c Release -o out
+    ---> Running in 3f55235e21cc
+    MSBuild version 17.3.2+561848881 for .NET
+    Determining projects to restore...
+    All projects are up-to-date for restore.
+    web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/bin/Release/net6.0/web-api.dll
+    web-api -> /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/out/
+    Removing intermediate container 3f55235e21cc
+    ---> 1c13aa813027
+    Successfully built 1c13aa813027
+    Successfully tagged devops_build_01:latest
+    ```
+8) Sprawdzenie stworzonego image
+    ```powershell
+    sudo docker images
+    
+    REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+    devops_build_01                   latest    eeaea385d7bd   9 minutes ago    767MB
+    devops_test_01                    latest    bb1bba8e3c68   14 minutes ago   1.01GB
+    ```
