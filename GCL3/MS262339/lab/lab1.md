@@ -1,1 +1,1 @@
-lab1
+# Laboratorium 1
