@@ -1,0 +1,3 @@
+FROM node-red-bullseye-build
+
+RUN npm test
