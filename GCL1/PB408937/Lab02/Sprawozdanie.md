@@ -54,9 +54,11 @@ okazało się że na kontenerze fedory brakuje bibliteki diffutills na której k
 ![Alt text](<png/Zrzut ekranu 2023-11-18 122423.png>)
 
 Po zainstalowanej bibliotece 
+
 ![Alt text](<png/Zrzut ekranu 2023-11-18 122448.png>)
 
 test przeszedł pomyślnie 
+
 ![Alt text](<png/Zrzut ekranu 2023-11-18 122500.png>)
 
 3. Ostatni krok to stworzenie plików Dockerfile. Jeden który będzie wykonywał make install a drugi który uruchomi test na stworzonym wcześniej kontenerze dockera.
