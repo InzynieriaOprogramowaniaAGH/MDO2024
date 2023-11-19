@@ -1,0 +1,3 @@
+FROM palindrom-bullseye-build
+
+CMD ["npm", "run", "test:unit"]
