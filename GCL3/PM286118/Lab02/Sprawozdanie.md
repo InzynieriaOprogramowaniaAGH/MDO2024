@@ -8,15 +8,19 @@ Piotr Micek
 * Stworzyłem dwa pliki Dockerfile, które zautomatyzowały proces tworzenia obrazów kontenerów.
 
 ## Wykonanie zadania
-1. Wybór oprogramowania na zajęcia
-    * Użyłem repozytorium z kodem oprogramowania ze środowiskiem Makefile oraz gotowymi testami: https://github.com/alt-romes/programmer-calculator
-    * Sklonowałem to repozytorium i pobrałem wymagane programy oraz paczki systemowe. Było to gcc oraz ncurses.
-    * Przeprowadziłem testy, które zakończyły się pomyślnie.
+### Wybór oprogramowania na zajęcia
+* Użyłem repozytorium z kodem oprogramowania ze środowiskiem Makefile oraz gotowymi testami: https://github.com/alt-romes/programmer-calculator
+  ![screen 1](/screen/git_clone.png "screen 1")
+* Sklonowałem to repozytorium i pobrałem wymagane programy oraz paczki systemowe. Było to gcc oraz ncurses.
+* Przeprowadziłem testy, które zakończyły się pomyślnie.
+  
 ### Przeprowadzenie buildu w kontenerze
-    * Uruchomiłem kontener z obrazem Fedory, ponieważ oprogramowanie, które wybrałem jest napisane w języku C++, sam też testowałem je na maszynie z Fedorą.
-    * Pobrałem te same zależności, które były potrzebne do uruchomienia aplikacji na mojej Fedorze.
-    * Sklonowałem repozytorium w kontenerze
-    * Uruchomiłem build
-    * Uruchomiłem testy. Okazało się, że testy nie kończą się sukcesem, występuje błąd z komendą diff. Należy pobrać jeszcze jedną paczkę - diffutils. Teraz testy zakończyły się sukcesem.
-
+1. Przeprowadziłem build i test wewnątrz kontenera
+   * Uruchomiłem kontener z obrazem Fedory, ponieważ oprogramowanie, które wybrałem jest napisane w języku C++, sam też testowałem je na maszynie z Fedorą.
+   * Pobrałem te same zależności, które były potrzebne do uruchomienia aplikacji na mojej Fedorze.
+   * Sklonowałem repozytorium w kontenerze
+   * Uruchomiłem build
+   * Uruchomiłem testy. Okazało się, że testy nie kończą się sukcesem, występuje błąd z komendą diff. Należy pobrać jeszcze jedną paczkę - diffutils. Teraz testy zakończyły się sukcesem.
+2. Stworzyłem dwa pliki Dockerfile automatyzujące kroki
+    * W pierwszym konterze wprowadziłem kroki prowadzące do zbudowania kontenera, na podstawie wcześniejszych 
 
