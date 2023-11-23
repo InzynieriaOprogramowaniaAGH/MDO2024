@@ -8,6 +8,7 @@ If you didn't configure docker yet, or virtual machine go through these [steps](
 > - [How to build docker image](#Build-own-docker-image)
 > - basic command on building docker image in dockerfile
 
+**Table of contents**
 
 <!-- TOC -->
 * [Docker files](#docker-files)
