@@ -1,0 +1,2 @@
+Katalog "Lab01" zawiera skrypt związany z pierwszym laboratorium.
+Skrypt weryfikujący komunikaty commitów to plik `commit-msg`, który sprawdza, czy komunikaty commitów rozpoczynają się od określonego kodu.
