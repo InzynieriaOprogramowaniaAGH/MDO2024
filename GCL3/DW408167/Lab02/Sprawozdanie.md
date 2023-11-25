@@ -22,6 +22,7 @@ If you didn't configure docker yet, or virtual machine go through these [steps](
     * [Dockerfile.build](#dockerfilebuild)
     * [Dockerfile.test](#dockerfiletest)
     * [docker-compose.yml](#docker-composeyml)
+  * [Deployment](#deployment)
 <!-- TOC -->
 
 
@@ -282,3 +283,9 @@ To run docker-compose we need to use command:
 ```sh
 sudo docker-compose up
 ```
+
+## Deployment
+
+If we want to deploy container, it should be as light as possible. In our case we used `node:alpine` which is really light.
+
+Big benefit is that copying files between local computer and cloud will be much faster.
