@@ -8,7 +8,7 @@ Celem zadania jest stworzenie dwóch kontenerów, które automatyzują proces bu
 
 * Następnie wszedłem do utworzonego folderu (cd *nazwa_folderu*) i doinstalowałem zależności, które są zdefiniowane w package.json, są one potrzebne do poprawnego uruchomienia aplikacji. Użyłem do tego npm install.
 
-  ![dependencies](depend.png)
+![dependencies](depend.png)
 
 * Przeprowadziłem build aplikacji, który służy do tworzenia zoptymalizowanej kompilacji produkcyjnej. Wykorzystałem do tego npm run build.
 ![build](build.png)
@@ -42,7 +42,7 @@ Klonowanie aplikacji w kontenerze.
 
 2. Stworzyłem plik Dockerfile-redisbld, odpowiedzialny za automatyczne przeprowadzenie wszystkich kroków od sklonowania repozytorium, do budowy aplikacji. 
 
-      ![builder-file](file-bld.png)
+![builder-file](file-bld.png)
 - FROM node:latest - określa obraz bazowy, w tym przypadku najnowsza wersja node.
 - RUN git clone https://github.com/redis/redis-om-node.git - uruchomienie klonowania repozytorium aplikacji.
 - WORKDIR redis-om-node - ustala katalog, w ktróym będą wykonywane następne instrukcje.
