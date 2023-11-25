@@ -7,8 +7,7 @@ Celem zadania jest stworzenie dwóch kontenerów, które automatyzują proces bu
 ![klonowanie](clone.png)
 
 * Następnie wszedłem do utworzonego folderu (cd *nazwa_folderu*) i doinstalowałem zależności, które są zdefiniowane w package.json, są one potrzebne do poprawnego uruchomienia aplikacji. Użyłem do tego npm install.
-
-![dependencies](depend.png)
+  ![dependencies](depend.png)
 
 * Przeprowadziłem build aplikacji, który służy do tworzenia zoptymalizowanej kompilacji produkcyjnej. Wykorzystałem do tego npm run build.
   ![build](build.png)
