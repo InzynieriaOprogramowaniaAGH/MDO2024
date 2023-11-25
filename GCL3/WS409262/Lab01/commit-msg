@@ -1,7 +1,0 @@
-commit_message_file=$1
-commit_message=$(cat $commit_message_file)
-
-if [[ ! $commit_message =~ ^"WS409262" ]]; then
-  echo "inicjały & nr indeksu"
-  exit 1
-fi
