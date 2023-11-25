@@ -11,7 +11,7 @@ Celem zadania jest stworzenie dwóch kontenerów, które automatyzują proces bu
 ![dependencies](depend.png)
 
 * Przeprowadziłem build aplikacji, który służy do tworzenia zoptymalizowanej kompilacji produkcyjnej. Wykorzystałem do tego npm run build.
-![build](build.png)
+  ![build](build.png)
 
 * W celu uruchomienia testów dołączonych do aplikacji, skorzystałem z npm test.
 ![test](test.png)
@@ -59,6 +59,7 @@ Klonowanie aplikacji w kontenerze.
 ![docker](docker-bld.png)
 ![docker](docker-bld2.png)
 - Wdrażanie konteneru z testowaniem.
+
 ![docker](docker-test.png)
 - Uruchomienie konteneru z budową. W tym kontenerze pracuje aplikacja redis-node.
 ![docker](cont.png)
