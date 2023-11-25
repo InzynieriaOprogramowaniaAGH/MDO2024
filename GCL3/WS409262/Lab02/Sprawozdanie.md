@@ -10,6 +10,7 @@ Celem zadania jest stworzenie dwóch kontenerów, które automatyzują proces bu
   ![dependencies](depend.png)
 
 * Przeprowadziłem build aplikacji, który służy do tworzenia zoptymalizowanej kompilacji produkcyjnej. Wykorzystałem do tego npm run build.
+
   ![build](build.png)
 
 * W celu uruchomienia testów dołączonych do aplikacji, skorzystałem z npm test.
