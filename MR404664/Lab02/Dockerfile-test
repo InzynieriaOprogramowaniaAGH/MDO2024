@@ -1,0 +1,17 @@
+# Dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /app
+
+# Pobierz repozytorium z kodem zrodlowym
+RUN apt-get update && \
+    apt-get install -y git && \
+    git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
+
+# Kompilowanie programu
+WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
+RUN dotnet restore && dotnet build -c Release
+
+# Uruchomienie testow
+FROM build AS test
+WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
+CMD ["dotnet", "test"]
