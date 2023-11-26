@@ -73,7 +73,7 @@ RUN npm test
 ```
 
 Opis:
-Obraz bazowy to najnowszy obraz naszej kontenera budującego.
+Obraz bazowy to najnowszy obraz naszego kontenera budującego.
 Uruchamiamy testy zgodnie z dokumentacją, w tym, przypadku przy użyciu narzędzia npm.
 
 ## Budowa kontenera z pliu Dockerfile.tester:
