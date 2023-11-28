@@ -1,5 +1,6 @@
 FROM ubuntu:22.04
 
+# seasocks dockerfile
 
 # Dependencies
 RUN apt update -y
@@ -14,8 +15,8 @@ RUN apt install python3 -y
 RUN git clone https://github.com/mattgodbolt/seasocks.git
 WORKDIR seasocks
 
-# General build
+# General build, nproc for concurrent compilation
 RUN mkdir build
 WORKDIR build
-RUN cmake .. -DUNITTESTS=1
+RUN cmake .. -DUNITTESTS=ON
 RUN make -j$(nproc)

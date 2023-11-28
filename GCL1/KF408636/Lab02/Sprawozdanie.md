@@ -1,14 +1,16 @@
-# Sprawozdanie 1 - konteneryzacja docker
+# Sprawozdanie 1 - konfiguracja środowiska, zdalnego dostępu  github oraz konteneryzacja w narzędziu docker
 
-## Wstęp, abstrakt sprawozdania
+## Wstęp, ogólny zarys ćwiczeń
 
 Celem ćwiczenia jest konteneryzacja wybranego programu open source w sposób zawierający:
 
 - image (obraz) budujący repozytorium
 - testy jednostkowe na podstawie zbudowanego repozytorium.
 
-Jako przykład wybrano projekt seasocks napisany w zasadniczej części w C++. Autorem tego przedwsięwzięcia jest Matt Godbolt, człowiek odpowiedzialny za inny bardzo znany projekt: [`godbolt`](https://godbolt.org), czyli narzędzie webowe do testowania, wykonywania i analizy kodu generowanego (na poziomie assembly) przez powszechnie dostępne kompilatory np. clang, gcc, icc (wraz z możliwością wyboru wersji, bibliotek, architektur sprzętowych, opcji kompilacji, lub wyboru języka programowania).
-Powracając do tematu, jest to biblioteka implementująca serwer obsługujący komunikację protokołu websocket. Repozytorium zawiera przykładowe użycie biblioteki oraz testy jednostkowe. W rozwiązaniu stosowany jest system generowania skryptów budujących oraz testujących znany jako CMake - bardzo popularny o ile nie najpowszechniejszy w przypadku C++. Testy jednostkowe realizowane są za pomocą modułu [catch2](https://github.com/catchorg/Catch2). Wybór repozytorium poparty jest ustanowioną licencją BSD oraz prostotą budowania.
+Jako przykład wybrano projekt seasocks napisany w zasadniczej części w C++. Autorem tego przedwsięwzięcia jest Matt Godbolt, człowiek odpowiedzialny za inny bardzo znany projekt: [`godbolt`](https://godbolt.org), czyli narzędzie webowe do testowania, wykonywania i analizy kodu generowanego (na poziomie assembly) przez powszechnie dostępne kompilatory np. clang, gcc, icc (wraz z możliwością wyboru wersji, bibliotek, architektur sprzętowych, opcji kompilacji, lub wyboru języka programowania). </br>
+Powracając do tematu, jest to biblioteka implementująca serwer obsługujący komunikację protokołu websocket. Repozytorium zawiera przykładowe użycie biblioteki oraz testy jednostkowe. W rozwiązaniu stosowany jest system generowania skryptów budujących oraz testujących znany jako CMake - bardzo popularny o ile nie najpowszechniejszy w przypadku C++. Testy jednostkowe realizowane są za pomocą modułu [catch2](https://github.com/catchorg/Catch2). Wybór repozytorium poparty jest ustanowioną licencją BSD oraz prostotą budowania. </br>
+
+Pierwsza część tego dokumentu zawiera także informacje o wstępnej konfiguracji systemu, na którym pracuje autor sprawozdania.
 
 ## Przebieg
 
@@ -142,13 +144,122 @@ Po opuszczeniu interaktywnej powłoki, sprawdzono uruchomione instancje kontener
 
 ![images](img/22-runned-containers.png)
 
-Usunięcie WSZYSTKICH wylistowanych kontenerów, wraz ze sprawdzeniem rezultatu polecenia. </br>
+Usunięcie WSZYSTKICH wylistowanych kontenerów (kiedykolwiek uruchamianych), wraz ze sprawdzeniem rezultatu polecenia. </br>
 Jak widać przebiegło ono pomyślnie:
 
 ![images](img/23-remove-all-containers.png)
 
 ***
 
-###
+### Konteneryzacja projektu seasocks
 
-TODO: opis lab02
+Do budowy tego projektu potrzebny jest jakikolwiek kompilator języka C/C++. Postawiono na toolchain `gcc`. </br>
+Jako bazę - obraz, do konteneryzacji wykorzystano [`ubuntu`](https://hub.docker.com/_/ubuntu), w wersji 22.04. Wybór ten podyktowany jest przede wszystkim faktem, że jest to dystrybucja Linuxa, posiadająca dobre wsparcie społeczności oraz wydłużony okres wsparcia (LTS). Nie wyklucza to jednak możliwości użycia innego obrazu np. `fedora`, `alpine`, `rockylinux` etc. Oczywiście, w każdym z nich napotkamy się na różny zestaw zainstalowanych narzędzi czy też utylitariów. Będą różniły się także systemy menadżerów pakietów co trzeba mieć na uwadze. Dlatego image `ubuntu` wybrano jako solidny fundament kontenera.
+Dobrym wyborem mógłby się także okazać obraz po prostu [`gcc`](https://hub.docker.com/_/gcc/). Jest to gotowy toolchain zawierający kompilator C/C++, bazowany na dystrybucji debian (bullseye lub alpine na stan listopad 2023).</br>
+
+Wpierw rozpoczęto interaktywną pracę w kontenerze `ubuntu`:
+
+![images](img/25-interactive-ubuntu.png)
+
+Następnie, zaktualizowano repozytoria:
+
+![images](img/26-rep-update.png)
+
+Po czym doinstalowano potrzebne zależności:
+
+- git
+- make
+- cmake
+- build-essential
+- zlib1g-dev
+- python3
+
+![images](img/27-install-deps.png)
+
+Pomyślny rezultat instalacji:
+
+![images](img/28-install-deps-res.png)
+
+Pobranie repozytorium seasocks:
+
+![images](img/29-clone-rep.png)
+
+Wygenerowanie skryptów budowania, wraz z testami jednostkowymi (opcja `UNITTEST=ON`):
+
+![images](img/30-cmake-script-generation.png)
+
+Kompilacja projektu wraz z testami. Flaga `-j` wykorzystana w celu współbieżnej kompilacji źródeł (przyspieszenie procesu):
+
+![images](img/31-building-seasocks.png)
+
+Pomyślny rezultat kompilacji:
+
+![images](img/32-building-seasocks-res.png)
+
+Przeprowadzenie testów jednostkowych. By raport testów nie był zbyt skromny, wykorzystano flagę `--verbose`, dla bardziej szczegółowej i większej ilości informacji:
+
+![images](img/33-unit-test-res.png)
+
+Plik binarny `AllTests` przeprowadza testy jednostkowe.</br>
+Poniżej próba uruchomienia przykładowego demo:
+
+![images](img/34-test-run.png)
+
+Można przeprowadzić prosty test komunikacji. Sprawdźmy IP docker'owego kontenera (wymaga instalacji pakietu `iproute2`):
+
+![images](img/35-ip-test.png)
+
+Uruchamiamy serwer websocket:
+
+![images](img/36-websocket-run.png)
+
+Następnie, z poziomu fedory, łączymy się z uruchomionym kontenerem. Jako klienta websocket można wykorzystać moduł `python3` o nazwie `websockets`. Oczywiście wymagają one instalacji w instancji fedory np. poprzez `pip3`. Przykładowy skrypt klienta zawarty jest w katalogu `Lab02/websocket-cli.py`. W zależności od IP kontenera, może być wymagana odpowiednia jego zmiana w tymże skrypcie. Skrypt po połączeniu wysyła do endpointa websocket liczby.</br>
+Rezultat połączenia:
+
+![images](img/37-cli-connect.png)
+
+Serwer (na dockerze) websocketów i jego reakcja:
+
+![images](img/38-serv-response.png)
+
+Jak widać komunikacja przebiegła pomyślnie. Serwer przechowuje swój stan liczby, zwiększa ją o 1, gdy jakikolwiek połączony klient spróbuje ją ustawić. Gdy wartość przesłana przez klienta jest większa od obecnego stanu, nowa wartość jest przesyłana do wszystkich połączonych klientów (w tym przypadku jednego).
+
+***
+
+Zbliżając się ku finiszu, utworzono dwa pliki Dockerfile realizujące powyższe zadania:
+
+- `Dockerfile.build`, odpowiedzialny za budowę obrazu wraz z weń zawartą aplikacją.
+- `Dockerfile.test`, której bazą jest powyższy obraz. Służy do wykonania testów jednostkowych aplikacji.
+
+Do budowy obrazu użyto polecenia (zakładając że użytkownik znajduje się w katalogu `Lab02/`):
+
+```bash
+$ docker build -t seasocks -f Dockerfile.build .
+```
+
+![images](img/39-docker-build-app.png)
+
+Utworzony pomyślnie obraz konteneru `seasocks`:
+
+![images](img/40-docker-build-app-res.png)
+
+Następnie należy zbudować obraz testów (na bazie poprzednio zbudowanego `seasocks`):
+
+```bash
+$ docker build -t seasocks-test -f Dockerfile.test .
+```
+
+Zbudowane obrazu testów, wraz z ich wykonaniem:
+
+![images](img/41-docker-build-test.png)
+
+
+Testowe uruchomienie obrazu builda aplikacji:
+![images](img/42-docker-interactive-run.png)
+
+Uruchomienie testów jednostkowych:
+![images](img/43-run-tests.png)
+
+Testy wykonują się pomyślnie, obraz jest gotowy do dalszego wdrożenia. </br>
+
+W pliku `Lab02/cmd.history` zawarta jest historia poleceń VM fedora.

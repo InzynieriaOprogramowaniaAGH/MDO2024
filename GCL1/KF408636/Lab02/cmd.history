@@ -1,0 +1,586 @@
+    1  ls
+    2  ls -al
+    3  ip a
+    4  ls /
+    5  ls /home
+    6  ls 
+    7  logout
+    8  ip a
+    9  shutdown -r now
+   10  ls
+   11  shutdown now
+   12  ls
+   13  ls /
+   14  ls
+   15  ssh-keygen -t ed25519
+   16  ssh-keygen -t ecdsa -b 521
+   17  git --v
+   18  git --version
+   19  ls
+   20  cd devops/
+   21  ls
+   22  cd MDO2024/
+   23  ls
+   24  cat /home/kfilek/.ssh/id_ecdsa.pub
+   25  cat /home/kfilek/.ssh/id_ed25519.pub
+   26  cat /home/kfilek/.ssh/id_ecdsa.pub
+   27  ls
+   28  git status
+   29  git checkout GCL1
+   30  git pull
+   31  git status
+   32  git branch -a
+   33  git checkout GCL1
+   34  git checkout -b KF408636
+   35  git config --list
+   36  git status
+   37  ls
+   38  cd GCL1/
+   39  ls
+   40  mkdir KF408636
+   41  ls
+   42  cd KF408636/
+   43  ls
+   44  mkdir Sprawozdanie1
+   45  cd Sprawozdanie1/
+   46  ls
+   47  touch README.md
+   48  git status
+   49  ls
+   50  cd ..
+   51  ls
+   52  git status
+   53  cd Sprawozdanie1/
+   54  ls
+   55  git status
+   56  ls
+   57  pwd
+   58  git status
+   59  git add README.md 
+   60  git status
+   61  uname
+   62  uname -a
+   63  git add README.md 
+   64  git status
+   65  vim ~/.git/hooks
+   66  vim $GIT_DIR/hooks
+   67  echo $GIT_DIR
+   68  docker images
+   69  sudo yum install docker
+   70  docker
+   71  docker images
+   72  sudo systemctl list
+   73  sudo systemctl 
+   74  sudo systemctl start docker
+   75  sudo systemctl status docker
+   76  docker images
+   77  sudo docker images
+   78  sudo groupadd docker
+   79  sudo usermod -aG docker $USER
+   80  sudo systemctl status docker
+   81  sudo docker pull hello-world
+   82  sudo docker pull ubuntu:22.04
+   83  sudo docker run
+   84  sudo docker run ubuntu
+   85  sudo docker ps
+   86  sudo docker run -it ubuntu
+   87  sudo docker images
+   88  ps auxf
+   89  sudo docker run -it ubuntu
+   90  ls
+   91  docker images
+   92  sudo docker ps
+   93  docker status
+   94  ps auxf
+   95  ps auxf | grep bash
+   96  ps auxf | grep -C5 bash
+   97  ls
+   98  cd devops/
+   99  ls
+  100  cd MDO2024/
+  101  git remote -v
+  102  git push
+  103  git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git
+  104  git push --set-upstream origin KF408636
+  105  git remote -v
+  106  git remote set-origin git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git
+  107  git remote set-url origin git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git
+  108  git remote -v
+  109  git push
+  110  git push --set-upstream origin KF408636
+  111  git push --set-upstream origin/remotes KF408636
+  112  git remote set-url origin/remotes git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git
+  113  git remote -v
+  114  git push
+  115  git push --set-upstream origin KF408636
+  116  git status
+  117  ssh -T git@github.com
+  118  vim ~/.bashrc
+  119  git push --set-upstream origin KF408636
+  120  ssh -T git@github.com
+  121  git push --set-upstream origin KF408636
+  122  git remote set-url origin git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git
+  123  git push --set-upstream origin KF408636
+  124  ssh -T git@github.com
+  125  git push --set-upstream origin KF408636
+  126  checkout origin/remotes/RC408936
+  127  git checkout origin/remotes/RC408936
+  128  git branch -a
+  129  git checkout remotes/origin/RC408936
+  130  git log
+  131  git pull
+  132  git pull origin RC408936
+  133  git log
+  134  git status
+  135  git checkout RC408936
+  136  git status
+  137  git log
+  138  git status
+  139  git log
+  140  git pull
+  141  git push origin KF408636
+  142  ls
+  143  git status
+  144  git checkout KF408636
+  145  git push origin KF408636
+  146  git config user.name
+  147  git config --list
+  148  git config user.name=Falitac
+  149  git config --local --lsit
+  150  git config --local --list
+  151  git config --global --list
+  152  git config --global user.name "Falitac"
+  153  git config --global user.email "fastkonrad@gmail.com"
+  154  git push origin KF408636
+  155  git push
+  156  git push --setupstream origin KF408636
+  157  git push --set-upstream origin KF408636
+  158  git config --list
+  159  git status
+  160  git log
+  161  git logls
+  162  cd ..
+  163  ls
+  164  git clone git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git MDO2024-ssh
+  165  cd MDO2024-ssh/
+  166  ls
+  167  git status
+  168  git remote -v
+  169  git status
+  170  git checkout GCL1 
+  171  git status
+  172  git branch -a KF408636
+  173  git checkout -b KF408636
+  174  git status
+  175  cp ../MDO2024/GCL1/KF408636/Sprawozdanie1/README.md GCL1/KF408636/Sprawozdanie1/README.md
+  176  ls
+  177  cp -r ../MDO2024/GCL1/KF408636/Sprawozdanie1/README.md GCL1/KF408636/Sprawozdanie1/README.md
+  178  mkdir GCL1/KF408636/Sprawozdanie1/README.md
+  179  mkdir GCL1/KF408636/Sprawozdanie1
+  180  ls
+  181  mkdir GCL1/KF408636/
+  182  mkdir GCL1/KF408636/Sprawozdanie1
+  183  cp -r ../MDO2024/GCL1/KF408636/Sprawozdanie1/README.md GCL1/KF408636/Sprawozdanie1/README.md
+  184  ls
+  185  git status
+  186  git add GCL1/KF408636/Sprawozdanie1/README.md
+  187  git status
+  188  git commit -m "First file"
+  189  git push
+  190  git push --set-upstream origin KF408636
+  191  cd ..
+  192  ls
+  193  git clone git@github.com:Falitac/asm-learning.git
+  194  git status
+  195  cd asm-learning/
+  196  ls
+  197  git checkout -b lejek
+  198  touch mleko.txt
+  199  git add mleko.txt 
+  200  git commit -m "asdfsdf"
+  201  git push
+  202  git@github.com:Falitac/asm-learning.git
+  203  git push --set-upstream origin lejek
+  204  git remote -v
+  205  git status
+  206  cd ..
+  207  ls
+  208  cd MDO2024
+  209  ls
+  210  git push
+  211  git push --set-upstream origin KF408636
+  212  git push -u origin KF408636
+  213  cat ~/.ssh/config
+  214  cat .git/config
+  215  git status
+  216  git log
+  217  cat .git/config
+  218  ls
+  219  git status
+  220  git log
+  221  git push
+  222  git push --set-upstream origin KF408636
+  223  git log
+  224  git push --set-upstream origin KF408636
+  225  ls
+  226  cd ..
+  227  ls
+  228  cd MDO2024
+  229  ls
+  230  cd ..
+  231  cd MDO2024-ssh/
+  232  git push origin 
+  233  git push --set-upstream origin KF408636
+  234  git log
+  235  git remote -v
+  236  ssh -T git@github.com
+  237  git push --set-upstream origin KF408636
+  238  git config --list
+  239  git push --set-upstream origin KF408636
+  240  ls
+  241  cd ..
+  242  rm -rf MDO2024-ssh/
+  243  git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git MDO2024-ssh
+  244  git clone git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git MDO2024-ssh
+  245  cd MDO2024
+  246  cd ../MDO2024-ssh/
+  247  ls
+  248  git checkout GCL01
+  249  git branch -a
+  250  git checkout GCL1
+  251  git checkout -b KF408636
+  252  git log
+  253  mkdir -- /home/kfilek/devops/MDO2024-ssh/GCL1/KF408636/Sprawozdanie1/
+  254  mkdir -p /home/kfilek/devops/MDO2024-ssh/GCL1/KF408636/Sprawozdanie1/
+  255  cp /home/kfilek/devops/MDO2024/GCL1/KF408636/Sprawozdanie1/README.md  /home/kfilek/devops/MDO2024/GCL1/KF408636/Sprawozdanie1/README.md
+  256  cp /home/kfilek/devops/MDO2024/GCL1/KF408636/Sprawozdanie1/README.md  /home/kfilek/devops/MDO2024-ssh/GCL1/KF408636/Sprawozdanie1/README.md
+  257  git status
+  258  git add .
+  259  git commit -m "First document"
+  260  git status
+  261  git push --set-upstream origin KF408636
+  262  git log
+  263  git push --set-upstream origin KF408636
+  264  ls
+  265  cd GCL1/
+  266  ls
+  267  cd KF408636/
+  268  ls
+  269  cd Sprawozdanie1/
+  270  ls
+  271  docker pull ubuntu:22.04
+  272  docker run -it ubuntu /bin/bash
+  273  ls
+  274  docker run -it gradle
+  275  docker run -it ubuntu /bin/bash
+  276  ls
+  277  cat devops/
+  278  ls
+  279  cd devops/
+  280  ls
+  281  cd MDO2024-ssh/
+  282  ls
+  283  git remote -v
+  284  uname -a
+  285  git remote -v
+  286  ls
+  287  cd devops/
+  288  ls
+  289  cd MDO2024-ssh/
+  290  git remote -v
+  291  ls
+  292  ls GCL1/
+  293  ls GCL1/KF408636/
+  294  cd  GCL1/KF408636/Sprawozdanie1/
+  295  ls
+  296  docker run -it ubuntu:22.04
+  297  shtdow -s no
+  298  shutdown -s now
+  299  shutdown now
+  300  docker run -it ubuntu:22.04
+  301  ls
+  302  cd devops/
+  303  ls
+  304  cd MDO2024-ssh/
+  305  ls
+  306  cd GCL1/
+  307  ls
+  308  cd KF408636/
+  309  ls
+  310  docker build -t test . -f Dockerfile.build 
+  311  docker images
+  312  docker build -t test . -f Dockerfile.build 
+  313  docker build -t seasocks . -f Dockerfile.build 
+  314  docker build -t seasocks-test . -f Dockerfile.test
+  315  git branch -a
+  316  git log
+  317  ls
+  318  ls .git
+  319  ls
+  320  cd ..
+  321  ls
+  322  cd ..
+  323  ls
+  324  ls .git/hooks/
+  325  ls -al .git/hooks/
+  326  vim .git/hooks/commit-msg.sample
+  327  ls
+  328  cat commit-msg.sample
+  329  vim .git/hooks/commit-msg.sample
+  330  ls .git/hooks/pre-commit.sample 
+  331  ivm .git/hooks/pre-commit.sample 
+  332  vim .git/hooks/pre-commit.sample 
+  333  cp .git/hooks/commit-msg.sample commit-msg
+  334  echo grep "^KF408636"
+  335  echo "KF408636 asdfsdf"| grep "^KF408636"
+  336  echo $?
+  337  echo "KsdfF408636 asdfsdf"| grep "^KF408636"
+  338  ls
+  339  ./commit-msg 
+  340  ./commit-msg asdfsd
+  341  ./commit-msg asdfsdasdf
+  342  vim .git/hooks/commit-msg.sample
+  343  ./commit-msg asdfsdasdf
+  344  ./commit-msg KF408636
+  345  ./commit-msg KF408636asdf
+  346  git commit -m "asdf"
+  347  ls
+  348  cd GCL1/
+  349  ls
+  350  cd KF408636/
+  351  ls
+  352  cp commit-msg ../../.git/hooks/
+  353  ls
+  354  mkdir Lab01
+  355  ls
+  356  git mv commit-msg Lab01/
+  357  mv commit-msg Lab01/
+  358  ls
+  359  git status
+  360  git add Lab01/
+  361  git status
+  362  git commit -m "just a test"
+  363  ls
+  364  ls -al
+  365  cd Lab01/
+  366  ls
+  367  cp commit-msg ../../../.git/hooks/
+  368  git add .
+  369  git status
+  370  git commit -m "Wrong commit name"
+  371  git commit -m "KF408636 Proper hook"
+  372  ls
+  373  ./commit-msg KF408636
+  374  ./commit-msg KF40863
+  375  git commit -m "KF408636 Proper hook"
+  376  ./commit-msg "KF408636 Proper hook"
+  377  cp commit-msg ../../../.git/hooks/
+  378  git commit -m "KF408636 Proper hook"
+  379  cp commit-msg ../../../.git/hooks/
+  380  git commit -m "KF408636 Proper hook"
+  381  git add commit-msg 
+  382  git commit -m --amend "KF408636 Proper hook"
+  383  git commit --amend
+  384  ls
+  385  git push
+  386  cd ..
+  387  mkdir Lab02
+  388  ls
+  389  git remote -v
+  390  cd ..
+  391  ls
+  392  cd MDO2024
+  393  ls
+  394  git remote -v
+  395  cd ..
+  396  ls
+  397  git clone git@github.com:InzynieriaOprogramowaniaAGH/MDO2024.git branch-protection
+  398  cd branch-protection/
+  399  ls
+  400  git checkout KF408636
+  401  git status
+  402  git log
+  403  git checkout GCL1
+  404  git status
+  405  git branch -a
+  406  git checkout remotes/origin/GCL1
+  407  git checkout 
+  408  git status
+  409  git checkout HEAD
+  410  git status
+  411  git pull
+  412  git status
+  413  git checkout GCL1
+  414  git checkout -- GCL1
+  415  git status
+  416  git reset
+  417  git reset --hard
+  418  git status
+  419  git pull
+  420  git merge KF408636
+  421  git status
+  422  git log
+  423  git status
+  424  git checkout GCL1
+  425  git switch GCL1
+  426  git status
+  427  git merge KF408636 
+  428  git status
+  429  git push
+  430  history
+  431  history | grep docker
+  432  docker run -t hello-world
+  433  apt install docker
+  434  dnf search docker
+  435  dpkg -l
+  436  rpm -l
+  437  rpm -qa
+  438  rpm -qa | grep docker
+  439  docker --v
+  440  docker --version
+  441  docker run -t busybox
+  442  ls
+  443  docker run -it --rm busybox
+  444  docker run -it ubuntu /bin/bash
+  445  ls
+  446  cd GCL1/
+  447  ls
+  448  cd KF408636/
+  449  ls
+  450  cd Lab01/
+  451  ls
+  452  pwd
+  453  cd ..
+  454  ls
+  455  rm -rf branch-protection/
+  456  cd MDO2024-ssh/
+  457  ls
+  458  cd GCL1/
+  459  ls
+  460  cd KF408636/
+  461  ls
+  462  cd Lab01/
+  463  ls
+  464  docker build -t my-own-docker .
+  465  docker run -it my-own-docker /bin/bash
+  466  ls
+  467  docker ps
+  468  ls
+  469  docker ps
+  470  docker kill busybox
+  471  docker kill 2944e79b5133
+  472  docker ps
+  473  docker ps -a
+  474  docker ps
+  475  docker ps -a
+  476  docker rm $(docker ps -a)
+  477  docker rm 
+  478  docker rm --all
+  479  docker rm --help
+  480  docker rm 2c5122cc6e62
+  481  docker rm $(docker ps -aq)
+  482  docker ps -a
+  483  ls
+  484  git status
+  485  ls -al
+  486  pwd
+  487  cd devops/
+  488  ls
+  489  cd MDO2024
+  490  cd ..
+  491  cd MDO2024-ssh/
+  492  git status
+  493  ls
+  494  cd GCL1/
+  495  ls
+  496  cd KF408636/
+  497  ls
+  498  ls Lab0
+  499  ls Lab02/
+  500  git status
+  501  git mv Sprawozdanie1/README.md Lab02/Sprawozdanie.md
+  502  git status
+  503  mv -r Sprawozdanie1/img/ Lab02/
+  504  cp -r Sprawozdanie1/img/ Lab02/
+  505  git status
+  506  ls
+  507  ls -al
+  508  git status
+  509  git add Dockerfile.build Dockerfile.test Lab01/Dockerfile Lab02/img/
+  510  git status
+  511  git commit -m "KF408636 Finish Lab01, start lab02 docker build + test, screenshots"
+  512  git status
+  513  git rm Lab02/Sprawozdanie.md
+  514  git rm -f Lab02/Sprawozdanie.md
+  515  git status
+  516  git restore --staged Lab02/Sprawozdanie.md
+  517  git status
+  518  git restore Lab02/Sprawozdanie.md 
+  519  git status
+  520  git add Lab02/Sprawozdanie.md
+  521  git staus
+  522  git status
+  523  git commit --amend
+  524  git status
+  525  git mv Dockerfile.build Dockerfile.test Lab02/
+  526  git status
+  527  git commit --amend
+  528  git status
+  529  git push
+  530  git log
+  531  ls
+  532  shutdown now
+  533  ls
+  534  docker pull gcc
+  535  docker run -it gcc /bin/bash
+  536  ls
+  537  cd devops/
+  538  ls
+  539  cd MDO2024-ssh/
+  540  ls
+  541  cd GCL1/
+  542  ls
+  543  cd KF408636/
+  544  ls
+  545  cd Lab02
+  546  ls
+  547  docker build -t seasocks -f Dockerfile.build .
+  548  docker build -t seasocks-test -f Dockerfile.test .
+  549  docker run -it seasocks /bin/bash
+  550  ls
+  551  docker build -t seasocks -f Dockerfile.build .
+  552  docker images
+  553  docker image rm seasocks
+  554  docker image rm seasocks -f
+  555  docker run -it ubuntu /bin/bash
+  556  ls
+  557  docker images
+  558  docker image rm -f seasocks
+  559  docker image rm -f seasocks-test
+  560  docker image rm -f seasocks
+  561  ls
+  562  docker build -t seasocks -f Dockerfile.build .
+  563  ls
+  564  docker ps
+  565  docker ps -a
+  566  docker rm $(docker ps -aq)
+  567  docker build -t seasocks -f Dockerfile.build .
+  568  docker builder prune
+  569  docker build -t seasocks -f Dockerfile.build .
+  570  docker build -t seasocks -f Dockerfile.build . --no-cache
+  571  docker build -t seasocks -f Dockerfile.test . --no-cache
+  572  docker build -t seasocks -f Dockerfile.build . --no-cache
+  573  docker build -t seasocks -f Dockerfile.build . 
+  574  docker build -t seasocks-test -f Dockerfile.build . 
+  575  docker build -t seasocks -f Dockerfile.build . 
+  576  docker build -t seasocks -f Dockerfile.test . 
+  577  docker run -it seasocks /bin/bash
+  578  ls
+  579  docker run -it seasocks-test /bin/bash
+  580  docker build -t seasocks-test -f Dockerfile.test . 
+  581  docker run -it seasocks-test
+  582  docker build -t seasocks-test -f Dockerfile.test . 
+  583  docker run -it seasocks-test
+  584  hitory
+  585  history
+  586  history > cmd.history
