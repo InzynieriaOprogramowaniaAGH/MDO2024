@@ -1,14 +1,16 @@
-Wymagane narzedzia
+# Wymagane narzedzia
 
 docker
 git
 dotnet 
 
-Uzyte repo
+# Użyte repo
 
 https://github.com/davidfowl/TodoApi.git
 
-1. Pobierz repo
+# Co trzeba zrobić
+
+1.Pobierz repo
 
 git clone https://github.com/davidfowl/TodoApi.git
 
@@ -82,7 +84,7 @@ RUN apt-get update && \
 WORKDIR /app/TodoApi/TodoApi
 RUN dotnet build -c Release
 
-# Wlaczenie testow
+# Uruchomienie testów
 FROM build AS test
 WORKDIR /app/TodoApi/TodoApi.Tests
 RUN dotnet test
