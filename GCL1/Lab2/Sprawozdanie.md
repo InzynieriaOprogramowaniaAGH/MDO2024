@@ -1,28 +1,29 @@
 # Wymagane narzedzia
 
-docker
-git
-dotnet 
+- docker
+- git
+- dotnet 
 
 # Użyte repo
 
-https://github.com/davidfowl/TodoApi.git
+- https://github.com/davidfowl/TodoApi.git
 
 # Co trzeba zrobić
 
-1.Pobierz repo
+## 1. Pobierz repo
 
-git clone https://github.com/davidfowl/TodoApi.git
+> git clone https://github.com/davidfowl/TodoApi.git
 
-2.Pobierz dotnet-sdk-7.0 a nastepnie zainstaluj
+## 2. Pobierz dotnet-sdk-7.0 a nastepnie zainstaluj
 
-sudo rpm -Uvh https://packages.microsoft.com/config/fedora/35/packages-microsoft-prod.rpm
-sudo dnf install dotnet-sdk-7.0
+> sudo rpm -Uvh https://packages.microsoft.com/config/fedora/35/packages-microsoft-prod.rpm
+> sudo dnf install dotnet-sdk-7.0
 
-3.Sprawdzenie czy aplikacja działa
+## 3. Sprawdzenie czy aplikacja działa
 
-[kasia@osboxes TodoApi]$ dotnet run
-Building...
+> [kasia@osboxes TodoApi]$ dotnet run
+
+> Building...
 warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
       No XML encryptor configured. Key {1c1e6aee-cc49-4d25-94d2-c5e07c526c6c} may be persisted to storage in unencrypted form.
 info: Microsoft.Hosting.Lifetime[14]
@@ -34,10 +35,11 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Content root path: /home/kasia/projekty/MDO2024/READMEs/GCL1/KB408940/Lab02/TodoApi/TodoApi
 
-4.Sprawdzenie czy testy jednostkowe działają 
+## 4. Sprawdzenie czy testy jednostkowe działają 
 
-[kasia@osboxes TodoApi.Tests]$ dotnet test
-  Determining projects to restore...
+> [kasia@osboxes TodoApi.Tests]$ dotnet test
+
+>  Determining projects to restore...
   Restored /home/kasia/projekty/MDO2024/READMEs/GCL1/KB408940/Lab02/TodoApi/TodoApi.Tests/TodoApi.Tests.csproj (in 4.33 sec).
   1 of 2 projects are up-to-date for restore.
   TodoApi -> /home/kasia/projekty/MDO2024/READMEs/GCL1/KB408940/Lab02/TodoApi/TodoApi/bin/Debug/net7.0/TodoApi.dll
@@ -45,55 +47,54 @@ info: Microsoft.Hosting.Lifetime[0]
 Test run for /home/kasia/projekty/MDO2024/READMEs/GCL1/KB408940/Lab02/TodoApi/TodoApi.Tests/bin/Debug/net7.0/TodoApi.Tests.dll (.NETCoreApp,Version=v7.0)
 Microsoft (R) Test Execution Command Line Tool Version 17.5.0 (x64)
 Copyright (c) Microsoft Corporation.  All rights reserved.
-
 Starting test execution, please wait...
 A total of 1 test files matched the specified pattern.
-
 Starting test execution, please wait...
 A total of 1 test files matched the specified pattern.
-
-
 Passed!  - Failed:     0, Passed:    16, Skipped:     0, Total:    16, Duration: 2 s - TodoApi.Tests.dll (net7.0)
 
-
-5. Utworzenie Dockerfile.build
-
+## 5. Utworzenie Dockerfile.build
+***
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
-# Pobierz projekt
+#Pobierz projekt
+RUN apt-get update && \
+    apt-get install -y git && \
+    git clone https://github.com/davidfowl/TodoApi.git
+      
+#Build aplikacji
+
+WORKDIR /app/TodoApi/TodoApi
+
+RUN dotnet build -c Release
+***
+## 6. Utworzenie Dockerfile.test
+***
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /app
+
+#Pobierz projekt
 RUN apt-get update && \
     apt-get install -y git && \
     git clone https://github.com/davidfowl/TodoApi.git
 
-# Build aplikacji
+#Build aplikacji testowej
+
 WORKDIR /app/TodoApi/TodoApi
+
 RUN dotnet build -c Release
-
-6. Utworzenie Dockerfile.test
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /app
-
-# Pobierz projekt
-RUN apt-get update && \
-    apt-get install -y git && \
-    git clone https://github.com/davidfowl/TodoApi.git
-
-# Build aplikacji testowej
-WORKDIR /app/TodoApi/TodoApi
-RUN dotnet build -c Release
-
+***
 # Uruchomienie testów
 FROM build AS test
 WORKDIR /app/TodoApi/TodoApi.Tests
 RUN dotnet test
 
-7. Uruchomienie Docker deamon
+## 7. Uruchomienie Docker deamon
 sudo systemctl enable docker
 sudo systemctl start docker
 
-8. Build docker build
+## 8. Build docker build
 
 [kasia@osboxes TodoApi]$ sudo docker build -t "todo-api-build" . -f ./Dockerfile.build
 Sending build context to Docker daemon  104.8MB
@@ -119,7 +120,7 @@ Removing intermediate container 6bc032d59c77
 Successfully built d5a333666550
 Successfully tagged todo-api-build:latest
 
-9. Build docker test
+## 9. Build docker test
 
 [kasia@osboxes TodoApi]$ sudo docker build -t "todo-api-test" . -f ./Dockerfile.test
 Sending build context to Docker daemon  104.8MB
@@ -139,7 +140,7 @@ Removing intermediate container 6823fe2dedec
 Successfully built 847cd1efd3cd
 Successfully tagged todo-api-test:latest
 
-10. Sprawdzenie utworzonych obrazów
+## 10. Sprawdzenie utworzonych obrazów
 
 [kasia@osboxes TodoApi]$ sudo docker image ls
 REPOSITORY                     TAG       IMAGE ID       CREATED              SIZE
