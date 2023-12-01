@@ -1,0 +1,3 @@
+FROM container
+WORKDIR /programmer-calculator
+RUN ./run-tests.sh
