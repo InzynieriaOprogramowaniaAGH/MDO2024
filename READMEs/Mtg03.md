@@ -46,8 +46,9 @@
 * **Zadanie dodatkowe:** uruchom serwer nginx z własną konfiguracją, wykorzystując woluminy
 
 ## Zadanie do wykonania: Kickstart
+| :point_up:    | *Zainstaluj w trybie całkowicie nienadzorowanym maszynę wirtualną z Fedorą, zawierającą dokładnie to oprogramowanie, które jest potrzebne na zajęciach*|
+|---------------|:------------------------|
 
-*Zainstaluj w trybie całkowicie nienadzorowanym maszynę wirtualną z Fedorą, zawierającą dokładnie to oprogramowanie, które jest potrzebne na zajęciach*
 
 ### Plik odpowiedzi
 * Na maszynie z minimalnym zbiorem oprogramowania, z zadania Ansible, wydobądź plik odpowiedzi (`anaconda-ks.cfg`)
