@@ -1,0 +1,21 @@
+docker
+ls
+logout
+ls
+logout
+find . -type f -name znc
+cd znc/
+file 'find . -type f -name znc'
+find . -type f -name znc
+file `find . -type f -name znc`
+docker ps
+docker commit 2c9d6ff7dc74 znc-bldr
+docker images
+docker ps
+docker commit 2c9d6ff7dc74 znc-bldr
+docker images
+docker run -it znc-bldr /bin/sh
+history -w ~/history_1_2.txt
+vi ~/history_1_2/txt
+history
+history -w ~/history_1_2.txt

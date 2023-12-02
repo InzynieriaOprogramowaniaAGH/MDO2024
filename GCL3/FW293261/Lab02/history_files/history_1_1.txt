@@ -1,0 +1,90 @@
+docker
+ls
+logout
+ls
+logout
+ls
+git clone https://github.com/znc/znc.git
+ls
+cd znc/
+ls
+cd ./
+cd ..
+ls
+git clone https://github.com/node-red/node-red.git
+cd ./node-red/
+nmp install
+dnf install -y nmp
+sudo dnf install -y nmp
+ls
+nmp install
+cd ..
+yum install nodejs nmp -v
+
+cd ./node-red/
+npm install
+cd ..
+yum install nodejs npm -v
+sudo yum install nodejs npm -v
+cd node-red/
+npm install
+npm test
+cd ..
+ls
+git clone https://github.com/znc/znc.git
+cd znc
+ls
+mkdir build
+cd build
+cmake ..
+sudo dnf install cmake
+cmake ..
+cmake..
+cd ..
+sudo dnf groupinstall "Development Tools"
+echoo $?
+cd znc
+./configure
+sudo dnf install gcc-c++
+sudo dnf install cmake
+./configure
+git submodule update --init --recursive
+./configure
+make
+ctest
+ls
+cd test/
+ctest
+cd ..
+cmake ..
+cmake .
+make
+test
+ctest
+cat CMakeLists.txt 
+cd test/
+make test
+gtest
+cd .
+cd ..
+cmake .
+make unittest_bin
+ctest -R unittest_bin
+gtest
+ls
+cd ..
+docker images
+docker
+systemctl status docker
+sudo systemctl start docker
+systemctl status docker
+docker images
+docker run -it alpine bash
+docker run -it alpine /bin/sh
+docker images
+docker run -it alpine /bin/sh
+docker images
+docker run -it alpine /bin/sh
+vi Dockerfile-zncbld
+history
+history -w ~/history_1_1.txt

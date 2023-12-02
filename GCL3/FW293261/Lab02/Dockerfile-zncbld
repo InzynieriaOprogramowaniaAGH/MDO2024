@@ -1,0 +1,17 @@
+# Wybieram obraz bazowy z minimalnym systemem operacyjnym do CXX
+FROM alpine:latest
+
+# Instaluję narzędzia potrzebne do działania aplikacji
+RUN apk add build-base cmake git
+
+# Klonuję repozytorium ZNC
+RUN git clone --depth 1 https://github.com/znc/znc.git
+
+# Przechodzę do katalogu ZNC
+WORKDIR /znc
+
+# Inicjuję rekursywne aktualizacje submodułów git, których wymaga ZNC
+RUN git submodule update --init --recursive
+
+# Wykonaj kompilację i instalację
+RUN cmake . && make

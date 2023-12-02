@@ -1,0 +1,12 @@
+docker
+ls
+logout
+ls
+logout
+history
+ls
+vi Dockerfile-zncbld 
+ docker build -t znc-from-dockerfile .
+ docker build -t znc-from-dockerfile -f Dockerfile-zncbld .
+docker images
+history -w ~/history_1_3.txt
