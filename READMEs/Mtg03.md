@@ -15,7 +15,9 @@
 
 ## Zadanie do wykonania: Ansible
 
-*Zainstaluj na innej maszynie wirtualnej środowisko Docker, a następnie uruchom w nim serwer WWW z własną konfiguracją*
+| :point_up:    | *Zainstaluj na innej maszynie wirtualnej środowisko Docker, a następnie uruchom w nim serwer WWW z własną konfiguracją* |
+|---------------|:------------------------|
+
 
 ### Instalacja zarządcy Ansible
 * Utwórz drugą maszynę wirtualną [Fedora](https://mirror.ihost.md/fedora/releases/38/Server/x86_64/iso/) o **jak najmniejszym** zbiorze zainstalowanego oprogramowania
