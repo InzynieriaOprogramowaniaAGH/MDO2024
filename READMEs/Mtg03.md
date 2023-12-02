@@ -55,7 +55,7 @@
 * Na maszynie głównej, używanej do pozostałych zadań, znajdź zainstalowane pakiety (`rpm -qa`)
 * Stwórz nowy plik odpowiedzi:
   * Bazuj na pliku z "małej maszyny"
-  * Dodaj do niego listę pakietów z "dużej maszyny" (użyj tylko nazw, bez architektur i wersji, czyli np. `ansible-9.0.0~a3-1.fc39.noarch` wystarczy `ansible`)
+  * Dodaj do niego listę pakietów z "dużej maszyny" (użyj tylko nazw, bez architektur i wersji, czyli np. `ansible-9.0.0~a3-1.fc39.noarch` wystarczy `ansible`). Przejrzyj listę **manualnie**, identyfikując samodzielnie doinstalowywane pakiety
   * Dodaj repozytoria online:
     * `url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-38&arch=x86_64`
     * `repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=x86_64`
