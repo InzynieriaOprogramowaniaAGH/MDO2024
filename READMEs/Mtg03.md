@@ -55,12 +55,12 @@
 * Na maszynie głównej, używanej do pozostałych zadań, znajdź zainstalowane pakiety (`rpm -qa`)
 * Stwórz nowy plik odpowiedzi:
   * Bazuj na pliku z "małej maszyny"
-  * Dodaj do niego listę pakietów z "dużej maszyny"
+  * Dodaj do niego listę pakietów z "dużej maszyny" (użyj tylko nazw, bez architektur i wersji, czyli np. `ansible-9.0.0~a3-1.fc39.noarch` wystarczy `ansible`)
   * Dodaj repozytoria online:
     * `url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-38&arch=x86_64`
     * `repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=x86_64`
-* Plik odpowiedzi może zakładać pusty dysk. Zapewnij, że zawsze będzie formatować całość, stosując `clearpart --all`
-* Umieść plik odpowiedzi na swojej gałęzi w repozytorium
+* Plik odpowiedzi może zakładać pusty dysk. Zapewnij, że zawsze będzie formatować całość, stosując `clearpart --all` zamiast `clearpart --none`
+* Umieść plik odpowiedzi na swojej gałęzi w repozytorium, pobieraj go do instalatora za pomocą linka spod przycisku "Raw"
 ### Instalacja
 * Przeprowadź instalację ze stworzonego pliku odpowiedzi, wskazując go podczas uruchamiania ISO instalacyjnego
 * Upewnij się, że instalator nie zadaje żadnych pytań
