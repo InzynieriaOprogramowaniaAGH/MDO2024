@@ -1,0 +1,33 @@
+- name: Konfiguracja Fedory 2 przez Fedore 1
+  hosts: Machines
+  become: yes
+
+  tasks:
+    - name: Utwórz katalog ~/uploads, jeśli nie istnieje
+      file:
+        path: ~/uploads
+        state: directory
+        mode: 0755
+
+    - name: Utwórz plik lokalnego środowiska env
+      copy:
+        src: "./env"
+        dest: "~/uploads/env"
+        mode: 0644
+
+    - name: Zainstaluj Docker
+      dnf:
+        name: docker
+        state: present
+
+    - name: Uruchom usługę Docker Daemon
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Uruchom kontener nginx
+      docker_container:
+        name: nginx_container
+        image: nginx
+        state: started
