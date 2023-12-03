@@ -1,0 +1,2 @@
+FROM dummybuilder:latest
+RUN npm test
