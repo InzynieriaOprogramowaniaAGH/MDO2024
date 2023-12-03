@@ -35,7 +35,9 @@ Do zbudowania obrazu należy wykorzystać następującą komendę:
 sudo docker build -t 'dummybuilder' . -f ./Dockerfile.builder
 ```
 Do budowy obrazu Dockera należy wybrać plik dockerfile.builder i przypisać mu tag 'dummybuilder'. To ułatwi wygodne odwoływanie się do niego w poleceniach i skryptach, a także ułatwi wyszukiwanie. W przypadku braku taga, należałoby korzystać z identyfikatora ID do odnalezienia właściwego obrazu.
+
 ![](image1.png)
+
 Żeby się upewnić czy obraz został utworzony należy skorzystać z komendy:
 ```bash
 sudo docker images
@@ -56,7 +58,9 @@ Do zbudowania obrazu należy wykorzystać następującą komendę:
 sudo docker build -t 'dummytester' . -f ./Dockerfile.tester
 ```
 Do budowy obrazu należy wykorzystać plik dockerfile.tester oraz dla ułatwienia nadać mu tag dummytester.
+
 ![](image3.png)
+
 Na zrzucie ekranu widać, że testy przy budowaniu wyszły pomyślnie.
 ## Podsumowanie
 W opisany powyżej sposób utworzyliśmy dwa obrazy kontenerów: jeden do budowy, a drugi do testowania wybranej przez nas aplikacji. Dla każdej aplikacji zawartość plików Dockerfile będzie się różnić, zależnie od wymagań danego środowiska i charakterystyki aplikacji. Niemniej jednak, sam proces tworzenia obrazów pozostaje niezmienny. Dzięki takiemu podejściu, niezależnie od hosta, na którym pracujemy, możemy łatwo tworzyć środowiska dostosowane do konkretnych potrzeb naszych aplikacji.
