@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /app
+
+# Pobierz projekt
+RUN apt-get update && \
+    apt-get install -y git && \
+    git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
+
+# Restore aplikacji
+RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests/web-api-tests.csproj
+
+# Build aplikacji testowej
+WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
+RUN dotnet build -c Release
+
+# Odaplanie testów
+FROM build AS test
+WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
+RUN dotnet test
