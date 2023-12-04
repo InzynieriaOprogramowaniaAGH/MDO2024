@@ -1,0 +1,3 @@
+FROM seasocks:latest
+
+CMD ctest --verbose
