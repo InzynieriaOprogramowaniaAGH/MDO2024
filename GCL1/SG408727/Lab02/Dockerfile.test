@@ -1,0 +1,3 @@
+FROM meson-bld1
+
+RUN ninja -C build test
