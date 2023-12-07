@@ -1,0 +1,8 @@
+FROM mesonbuild/fedora
+
+RUN dnf -y install meson cppcheck
+RUN git clone https://github.com/sandervalstar/meson_test
+
+WORKDIR meson_test
+
+RUN meson build

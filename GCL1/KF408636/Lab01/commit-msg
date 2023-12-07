@@ -1,0 +1,10 @@
+#!/usr/bin/sh
+
+PREFIX="KF408636"
+
+if ! cat "$1" | grep "^$PREFIX"; then
+	echo "WRONG commit message, pls always prefix with \"$PREFIX\""
+	exit 1;
+fi
+
+exit 0;
