@@ -7,7 +7,7 @@ Michał Starzyk
 ## Wykonanie zadania
 ### Wybór oprogramowania
 * Użyłem repozytorium kompilujące się przez „npm” oraz gotowymi testam, a następnie sklonowałem je na mój dysk. https://github.com/actionsdemos/calculator.git
-![clone](Lab02/clone.png)
+!(Lab02/clone.png)
 * Następnie zgodnie z plikiem README zainstalowałem i zbudowałem program poprzez npm.
 
 *  Na koniec przeprowadziłem testy, które zakończyły się pomyślnie.
