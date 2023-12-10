@@ -2,9 +2,7 @@ Michał Starzyk
 # Sprawozdanie 2 <br> Docker files, kontener jako definicja etapu
 
 ## Wstęp
-* Celem projektu, było zbudowanie programu w konterze oraz przeprowadzenie pomyślnych testów. 
-* Znalazłem program, który może być zbudowany w kontenerze, zainstalowałem zależności których wymagał a następnie przeprowadziłem pomyślnie build programu oraz testy. Następnie przetestowałem jakich zależności wymaga do powtórzenia tego w kontenerze.
-* Stworzyłem dwa pliki Dockerfile, które zautomatyzowały proces tworzenia obrazów kontenerów.
+
 
 ## Wykonanie zadania
 ### Wybór oprogramowania
