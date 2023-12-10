@@ -30,11 +30,11 @@ Michał Starzyk
 <br> ![kontener_test2](kontener_test2.png)
 2. Stworzenie dwóch plików Dockerfile automatyzujących kroki
     * Pierwszy plik był builderem dla mojej aplikacji, poprzez pobranie najnowszego noda następnie sklonowanie repozytorium oraz zbudowanie go przez npm install.
-  <br> ![dockerfile1](dockerfile1.png)
+  <br> ![dockerfile1](calculatorbld.png)
     * Natomiast drugi plik służył do testów mojego programu poprzez użycie npm test.
-      <br> ![dockerfile2](test2.png)
-      <br> ![dockerfilevi](test2.png)
-      <br> ![dockerfilels](test2.png)
+      <br> ![dockerfile2](dockerfile2.png)
+      <br> ![dockerfilevi](dockerfilevi.png)
+      <br> ![dockerfilels](dockerfilels.png)
 3. Pokazanie, że kontenery działają prawidłowo
    * Stworzyłem obraz kontenera za pomocą pierwszego pliku Dockerfile calculatorbld
      <br> ![docker1](docker1.png)
