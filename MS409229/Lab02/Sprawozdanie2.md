@@ -1,8 +1,8 @@
 Michał Starzyk
 # Sprawozdanie 2 <br> Docker files, kontener jako definicja etapu
 
-## Wstęp
-
+## Cel projektu
+* Celem projektu, było zbudowanie programu w kontenerach, a następnie sprawdzenie poprawności testów. 
 
 ## Wykonanie zadania
 ### Wybór oprogramowania
