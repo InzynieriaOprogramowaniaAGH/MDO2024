@@ -1,0 +1,4 @@
+FROM calculatorbld
+
+WORKDIR /calculator
+RUN npm test
