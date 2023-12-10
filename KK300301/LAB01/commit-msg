@@ -1,0 +1,4 @@
+if ! grep -q "^KK300301" "$1"; then
+  echo "Blad: Kazdy commit message musi zaczynac sie od KK300301"
+ exit 1
+fi
