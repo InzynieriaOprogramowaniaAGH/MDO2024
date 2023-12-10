@@ -40,7 +40,7 @@ Michał Starzyk
      <br> ![docker1](docker1.png)
    * Nastepnie stworzylem kolejny obraz za pomocą drugiego pliku dockerfile calculatortest, który przeprowadził pomyślnie testy
   <br> ![docker2](docker2.png)
-<br> ![docker3](docker3.png)
+<br> ![docker3](images.png)
    * Po ich zainiconowaniu obraz calculatorbld oraz calculatortest znajdują się na liście 
-<br> ![images](images.png)
+<br> ![images](docker3.png)
 
