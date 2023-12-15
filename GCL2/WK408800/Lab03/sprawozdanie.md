@@ -137,4 +137,128 @@ Nastepnie weryfikujemy czy wszystko poszło zgodnie z planem:
 
 <img width="921" alt="Pasted Graphic 25" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/ff9bf701-b062-4816-8913-20e4091395da">
 
-Jak widzimy powyżej wszystko działa
+Jak widzimy powyżej wszystko działa.
+
+## Część z Kickstart
+
+Kickstart to sposób na przeprowadzenie instalacji dystrybucji linuxowej, z pomocą pliku konfiguracyjnego. Wbrew pozorom proces instalacji nie jest taki straszny jak się wydaje.
+
+1. Wydobycie pliku `anaconda-ks.cfg`
+
+Na naszej maszynie Fedora 1 wchodzimy do `root/anaconda-ks.cfg` i kopiujemy do wybranego edytora plik konfiguracyjny. W moim wypadku wyglądał u mnie jak niżej
+
+<img width="634" alt="root@fedora-1 ~ # cat rootanaconda-ks cfg" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/d21bee98-5247-4a94-b0a0-ef1755342680">
+
+2. Edytujemy nasz plik Kickstart
+
+- Dodajemy do niego repozytoria online
+
+```
+# Dodajemy repozytoria
+
+url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-38&arch=x86_64
+repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=x86_64
+```
+
+- Następnie dodajemy sekcje zawierającą pakiety dodatkowe, ja dodaje tylko `podman`
+
+```
+# Dodajemy wybrane pakiety dodatkowe
+%packages
+@^server-product-environment
+@headless-management
+
+# Tutaj dodaj pakiety, w moim wypadku dodałem tylko podmana
+podman
+
+%end
+```
+
+- Zmieniamy `clearpart --none` na `clearpart --all`
+
+- Finalnie dodajemy skrypt który doda serwis, który uruchomi nasz kontener z `lighttpd`. Obraz ten zawiera lekki serwer HTTP. Konfigurujemy serwis tak aby uruchomił kontener na porcie `80`
+
+```
+%post --nochroot --log=/mnt/sysimage/root/ks-post.log
+#!/bin/bash
+
+# Tworzenie pliku usługi systemd dla kontenera lighttpd w zainstalowanym systemie
+cat <<EOF > /mnt/sysimage/etc/systemd/system/lighttpd-container.service
+[Unit]
+Description=Lighttpd Container
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman run --name my-lighttpd-container -p 80:80 --rm docker.io/jitesoft/lighttpd
+ExecStop=/usr/bin/podman stop my-lighttpd-container
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+chroot /mnt/sysimage/usr/bin/systemctl enable lighttpd-container.service
+
+%end
+```
+
+3. Dodajemy nasz plik kickstart w ogólnodostepne miejsce
+
+W moim wypadku wystawiłem plik kickstart na repozytorium i jest dostepny pod adresem: 
+https://raw.githubusercontent.com/InzynieriaOprogramowaniaAGH/MDO2024/WK408800/GCL2/WK408800/Lab03/fedora-38-server-ks.cfg
+
+4. Tworzymy nową maszynę w Virtual Box
+
+Robimy standardowo jak poprzednio, wybieramy obraz ISO `Fedora-Server-dvd-x86_64-38-1.6.iso` (Fedora 38), ustawiamy tak jak poprzednio ustawienia sieciowe, aby mieć kartę sieciowa w bridge.
+
+5. Uruchamiamy maszynę i podajemy flagę `inst.ks`
+
+Po uruchomieniu maszyny zobaczymy GRUB, wybieramy strzałkami opcję `Install Fedora 38` i klikamy przycisk `e`
+
+Zobaczymy wtedy taki widok jak niżej:
+
+<img width="732" alt="Pasted Graphic 7" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/9b35959f-d5f6-485c-ac46-930076b90147">
+
+Na powyższych zrzucie już widać flage `inst.ks` odpowiada ona za przekazanie naszego pliku kickstart do instalatora. Dodajemy ją analogicznie jak na zrzucie ekranu, zaraz po argumencie `linux <path> inst.ks=<ścieżka-do-pliku-kickstart"`
+
+Po wpisaniu ściezki do pliku kickstart naciskamy `F10` lub `CTRL+X`, instalacja rozpocznie się automatycznie. W trakcie instalacji nie jest wymagana nasza ingerencja, o ile nasz plik Kickstart jest prawidłowy. 
+
+<img width="632" alt="Pasted Graphic 8" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/26186bed-8681-4667-8098-c69c07bbf595">
+
+<img width="632" alt="Pasted Graphic 13" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/5024ed61-3ae8-4d06-ba6b-dbd6df635cf3">
+
+<img width="654" alt="FedoraKickstart  Running" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/c2b005e1-4cfb-4ec7-a678-a15090ba283a">
+
+
+Na samym końcu instalacji pojawi sie prompt z prośbą o kliknięcie ENTER
+
+<img width="651" alt="Pasted Graphic 40" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/05279fe7-875b-431c-b527-d7019454b019">
+
+
+6. Troubleshooting po instalacyjny   
+
+Po instalacji systemu może dojść do sytuacji, że zobaczymy ponownie GRUB z opcjami jak gdyby system się nie zainstalował. W takiej sytuacji nie panikujemy, tylko wysuwamy w ustawieniach virtual box, dysk ISO z wirtualnego napędu
+
+<img width="1125" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/748b3076-6afd-4e72-b222-74d610bb3329">
+
+7. Sprawdzamy, czy nasze pakiety się zainstalowały
+
+Wydając polecenie `rpm -qa` wyszukujemy na liście zainstalowanych pakietów, nazw tych które podaliśmy w pliku kickstart. W moim wypadku instalowałem jedynie `podman`
+
+<img width="477" alt="dhcp-client-4 4 3-7 P1  fc38 x86_64" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/96ab13c2-27d3-4141-a3f7-8c293c58e4d5">
+
+8. Sprawdzamy czy nasz `lighttpd` działa
+
+W moim wypadku niestety nie udało mi się zmusić kickstart do dodania serwisu który stworzyliśmy wcześniej, aby uruchamiał go automatycznie po starcie systemu. Nie mniej serwis stworzył się poprawnie i w celu ustawienia uruchamiania serwisu automatycznie wydajemy polecenie. 
+
+`systemctl enable lighttpd-container.service`
+
+Po wywołaniu polecenia `podman ps` widzimy iż kontener z `lighttpd` działa i jest wystawiony na porcie `80`
+
+<img width="1016" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/672052fa-4662-4b46-ab13-5f3524e560fa">
+
+Po wejściu przez przeglądarkę na adres `http://192.168.68.124` naszym oczom ukarze się piękna czterystaczwórka, a oznacza to, że nasz kontener działa prawidłowo.
+
+<img width="482" alt="A Niezabezpieczona  192 168 68 124" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/b8c42368-3998-4105-8867-d85c6add93ce">
+
