@@ -420,24 +420,58 @@ dodajemy w nim linijkę `inst.ks=https://raw.githubusercontent.com/InzynieriaOpr
 
 Następnie klikamy `ctrl+x` aby uruchomić instalację.
 
-Na końcu pliku anaconda-ks.cfg dodaliśmy również
+Jeśli wystąpiły jakieś problemy, błędy i instalacja się nie powiodła, możemy zobaczyć logi instalacji w folderze `/tmp/anaconda.log` na maszynie docelowej.
+
+Aby otworzyć konsolę, podczas instalacji musimy kliknąć `ctrl+alt+F2`.
+
+Przesłać pliki na inny komputer możemy za pomocą `scp`.
+
+```sh
+scp dawid2@fedora2:/tmp/anaconda.log .
+```
+
+W celu doinstalowania pakietów, musimy dodać je do sekcji `packages` w pliku `anaconda-ks.cfg`.
 
 ```text
-%post --log=/root/ks-post.log
+%packages
+@^server-product-environment
+@container-management
+@domain-client
+@guest-agents
+@server-hardware-support
 
-# Install Ansible and Docker
-dnf install -y ansible docker docker-compose
-
-# Start the Docker service
-systemctl start docker
-
-# Enable Docker to start on boot
-systemctl enable docker
-
-# Run lighttpd
-docker run -d -p 80:80 --name lighttpd-container jitesoft/lighttpd
-# End of the %post section
+# Custom packages
+moby-engine
+docker-compose
+ansible
 %end
 ```
 
-Które pozwolą nam na zainstalowanie pakietów oraz uruchomienie kontenera po zakończeniu instalacji systemu.
+## Klonowanie maszyny wirtualnej
+
+Aby sklonować maszynę wirtualną z całym jej stanem, dyskami itp. musimy użyć opcji `share` w UTM.
+
+Klikamy PPM na maszynę, którą chcemy sklonować i wybieramy `Share...`, następnie `show in finder` i możemy skopiować maszynę na inny komputer.
+
+
+## Tworzenie ISO wraz z plikiem kickstart
+
+> Pobieramy obraz systemu w wersji iso lub jeśli mamy go na dysku, możemy skopiować go używając `scp`.
+
+```sh
+sudo dnf install -y lorax pykickstart
+
+sudo ksflatten -c anaconda-ks.cfg -o flatten.ks
+
+sudo livemedia-creator --make-iso --ks flatten.ks --no-virt --iso-only --iso-name image.iso --releasever 38
+
+```
+
+- `ksflatten` - komenda, która pozwala nam na spłaszczenie pliku kickstart, usuwa komentarze, puste linie itp.
+- `livemedia-creator` - komenda, która pozwala nam na stworzenie obrazu iso z plikiem kickstart
+  - `--make-iso` - flaga, która mówi nam, że chcemy stworzyć obraz iso
+  - `--ks flatten.ks` - flaga, która mówi nam, że chcemy użyć pliku kickstart
+  - `--no-virt` - flaga, która mówi nam, że nie chcemy używać wirtualizacji
+  - `--iso-only` - flaga, która mówi nam, że chcemy tylko obraz iso
+  - `--iso-name image.iso` - flaga, która mówi nam, że chcemy nazwać obraz iso `image.iso`
+  - `--releasever 38` - flaga, która mówi nam, że chcemy użyć wersji 38 systemu
