@@ -22,6 +22,9 @@
   * [Tworzenie playbooków](#tworzenie-playbooków)
     * [Uruchamianie playbooków](#uruchamianie-playbooków)
     * [Własna konfiguracja nginx](#własna-konfiguracja-nginx)
+  * [Kickstart - automatyczna instalacja systemu](#kickstart---automatyczna-instalacja-systemu)
+    * [Pobieranie listy pakietów](#pobieranie-listy-pakietów)
+    * [Odpalenie instalacji z plikiem kickstart](#odpalenie-instalacji-z-plikiem-kickstart)
 <!-- TOC -->
 
 ## Przygotowanie maszyn
@@ -368,3 +371,73 @@ Dodajemy w nim kopiowanie pliku `nginx.conf` na maszynę docelową.
           - /home/dawid2/uploads/nginx.conf:/etc/nginx/nginx.conf
 ```
 
+## Kickstart - automatyczna instalacja systemu
+
+> Kickstart to narzędzie, które pozwala nam na automatyczną instalację systemu operacyjnego.
+
+W tym celu skonfigurowaliśmy maszynę, a następnie skopiowaliśmy jej config z pliku `/root/anaconda-ks.cfg`.
+
+```sh
+ssh dawid2@fedora2
+sudo su
+cat /root/anaconda-ks.cfg
+```
+
+Podmieniamy w configu linijke `clearpart --all --initlabel` na `clearpart --all --initlabel`, pozwoli nam to instalować system na maszynie, która już ma zainstalowany system.
+
+
+Do pliku dodaliśmy również
+
+```text
+url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-38&arch=aarch64
+repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=aarch64
+```
+
+Które definiują, które mirrory zostaną użyte do instalacji systemu.
+
+Zwróć uwagę na wersję oraz architekturę, można prosto je zmienić, my używamy `fedora-38` oraz `aarch64`.
+
+### Pobieranie listy pakietów
+
+Na maszynie głównej, z większą ilością pakietów, odpalamy komendę:
+
+```sh
+rpm -qa > packages.txt
+```
+
+dzięki temu w pliku `packages.txt` mamy listę wszystkich pakietów, które są zainstalowane na maszynie.
+
+Z niej ręcznie przeglądamy pakiety, które doinstalowywaliśmy, czyli takie jak `docker`, `docker-compose`, `ansible` itp.
+
+
+### Odpalenie instalacji z plikiem kickstart
+
+Po odpaleniu maszyny, na widoku grub, wybieramy opcję `e` aby edytować wpis.
+
+dodajemy w nim linijkę `inst.ks=https://raw.githubusercontent.com/InzynieriaOprogramowaniaAGH/MDO2024/DW408167/GCL3/DW408167/Lab03/anaconda-ks.cfg`
+
+![grub](grub.png)
+
+Następnie klikamy `ctrl+x` aby uruchomić instalację.
+
+Na końcu pliku anaconda-ks.cfg dodaliśmy również
+
+```text
+%post --log=/root/ks-post.log
+
+# Install Ansible and Docker
+dnf install -y ansible docker docker-compose
+
+# Start the Docker service
+systemctl start docker
+
+# Enable Docker to start on boot
+systemctl enable docker
+
+# Run lighttpd
+docker run -d -p 80:80 --name lighttpd-container jitesoft/lighttpd
+# End of the %post section
+%end
+```
+
+Które pozwolą nam na zainstalowanie pakietów oraz uruchomienie kontenera po zakończeniu instalacji systemu.
