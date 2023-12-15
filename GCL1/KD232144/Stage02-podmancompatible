@@ -1,0 +1,3 @@
+FROM stage01
+WORKDIR Build
+RUN ninja test
