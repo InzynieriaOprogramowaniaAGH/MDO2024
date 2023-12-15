@@ -19,6 +19,9 @@
   * [Instalacja Ansible](#instalacja-ansible)
     * [Tworzenie pliku inventory](#tworzenie-pliku-inventory)
     * [Sprawdzamy połączenie Ansible](#sprawdzamy-połączenie-ansible)
+  * [Tworzenie playbooków](#tworzenie-playbooków)
+    * [Uruchamianie playbooków](#uruchamianie-playbooków)
+    * [Własna konfiguracja nginx](#własna-konfiguracja-nginx)
 <!-- TOC -->
 
 ## Przygotowanie maszyn
@@ -142,4 +145,226 @@ ansible myhosts -m ping -i inventory.ini --user dawid2
 Taki rezultat powinniśmy otrzymać:
 
 ![ansible-ping](ansible-ping.png)
+
+
+## Tworzenie playbooków
+
+> Playbooki to pliki, w których definiujemy zadania, które chcemy wykonać na zdalnej maszynie.
+
+Tworzymy nowy plik `miniplay.yaml` w folderze `ansible`.
+
+```sh
+touch miniplay.yaml
+nano miniplay.yaml
+```
+
+Wewnątrz pliku definiujemy zadania, które chcemy wykonać.
+
+```yaml
+- name: First play
+  hosts: myhosts
+  tasks:
+    - name: Copy File
+      copy:
+        src: /home/dawid/ansible/env.txt
+        dest: /home/dawid2/uploads/env.txt
+    - name: Create an nginx Docker
+      docker_container:
+        name: my-web-server-1
+        image: nginx
+        state: started
+        ports:
+          - "8080:80"
+```
+
+- `name` - nazwa zadania
+- `hosts` - grupa hostów, na których chcemy wykonać zadanie, zdefiniowana w pliku inventory
+- `tasks` - zadania, które chcemy wykonać
+- `copy` - moduł, który chcemy wykonać, w tym przypadku kopiowanie pliku
+- `src` - ścieżka do pliku, który chcemy skopiować (obecna maszyna)
+- `dest` - ścieżka, gdzie chcemy zapisać plik (docelowa maszyna)
+- `docker_container` - tworzenie kontenera dockerowego
+  - `name` - nazwa kontenera
+  - `image` - obraz, który chcemy uruchomić
+  - `state` - stan kontenera, w tym przypadku `started` czyli uruchomiony
+  - `ports` - porty, które chcemy przekierować, format `HOST_PORT:CONTAINER_PORT`
+
+Tworzymy najpierw folder na docelowej maszynie, w którym będziemy przechowywać pliki.
+
+```sh
+ssh dawid2@fedora2
+mkdir ~/uploads
+```
+
+### Uruchamianie playbooków
+
+> Playbooki możemy uruchamiać w trybie testowym, aby sprawdzić czy wszystko działa poprawnie.
+> W tym celu dodajemy flagę `--check` do komendy.
+
+Tryb testowy nie aplikuje zmian, a jedynie sprawdza czy wszystko działa poprawnie.
+
+```sh
+ansible-playbook --check -i inventory.ini miniplay.yaml --user dawid2
+```
+
+w naszym przypadku rezultat jest następujący:
+
+![ansible-error](ansible_error.png)
+
+Zapomnieliśmy stworzyć pliku `env.txt` na maszynie lokalnej, dlatego ansible wykrył, że plik nie istnieje.
+
+Tworzymy go więc:
+
+```sh
+env > env.txt
+```
+
+I uruchamiamy playbooka ponownie.
+
+```text
+TASK [Create an nginx Docker] ************************************************************************************
+fatal: [fedora2]: FAILED! => {"changed": false, "msg": "Error connecting: Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))"}
+```
+
+Teraz widzimy, że nie mamy zainstalowanego dockera na maszynie docelowej, dlatego ansible nie może uruchomić kontenera.
+
+Dodajemy więc odpowiednią dyrektywę do playbooka przed odpaleniem kontenera.
+
+```yaml
+- name: First play
+  hosts: myhosts
+  tasks:
+    - name: Copy File
+      copy:
+        src: /home/dawid/ansible/env.txt
+        dest: /home/dawid2/uploads/env.txt
+    - name: Install Docker
+      become: true
+      dnf:
+        name: docker
+        state: latest
+    - name: Start Docker service
+      become: true
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Create an nginx Docker
+      become: true
+      docker_container:
+        name: my-web-server-1
+        image: nginx
+        state: started
+        ports:
+          - "8080:80"
+```
+
+- `become: true` - flaga, która pozwala nam na uruchomienie komendy jako root, ponieważ domyślnie ansible korzysta z użytkownika, którym się zalogowaliśmy na zdalną maszynę.
+- `dnf` - moduł, który pozwala nam na instalację pakietów
+  - `name` - nazwa pakietu
+  - `state` - stan pakietu, w tym przypadku `latest` czyli najnowsza wersja
+- `systemd` - moduł, który pozwala nam na uruchamianie usług
+  - `name` - nazwa usługi
+  - `state` - stan usługi, w tym przypadku `started` czyli uruchomiona
+  - `enabled` - czy usługa ma być uruchamiana przy starcie systemu
+
+
+Po dodaniu tej dyrektywy, uruchamiamy playbooka ponownie.
+
+Tym razem, będzie problem, że nie podaliśmy hasła root, w tym celu musimy dodać flagę `--ask-become-pass` do komendy playbook.
+
+```sh
+ansible-playbook -i inventory.ini miniplay.yaml --user dawid2 --ask-become-pass
+```
+
+Komenda zadziałała pomyślnie, a my na maszynie obok możemy zobaczyć uruchomiony kontener.
+
+![ansible-docker](ansible-docker.png)
+
+
+### Własna konfiguracja nginx
+
+Zacznijmy od zabicia poprzedniej instancji kontenera aby się nie kłóciły.
+
+```sh
+sudo docker kill my-web-server-1
+```
+
+
+Następnie tworzymy nowy plik `nginx.conf` w folderze `ansible`.
+
+```conf
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+            echo "Devops is the best!";
+        }
+    }
+}
+```
+
+- `events` - blok zdarzeń
+  - `worker_connections` - maksymalna liczba połączeń
+- `http` - blok http
+  - `include` - plik z typami MIME
+  - `default_type` - domyślny typ MIME
+  - `sendfile` - czy serwer ma używać sendfile
+  - `keepalive_timeout` - czas po jakim połączenie zostanie zamknięte
+  - `server` - blok serwera
+    - `listen` - port nasłuchiwania
+    - `server_name` - nazwa serwera
+    - `location` - blok lokalizacji
+      - `echo` - moduł, który pozwala na wyświetlenie tekstu
+
+Następnie tworzymy nowy plik `miniplay2.yaml` w folderze `ansible`.
+
+Dodajemy w nim kopiowanie pliku `nginx.conf` na maszynę docelową.
+
+```yaml
+- name: First play
+  hosts: myhosts
+  tasks:
+    - name: Copy File
+      copy:
+        src: /home/dawid/ansible/env.txt
+        dest: /home/dawid2/uploads/env.txt
+    - name: Copy Nginx Config
+      copy:
+        src: /home/dawid/ansible/nginx.conf
+        dest: /home/dawid2/uploads/nginx.conf
+    - name: Install Docker
+      become: true
+      dnf:
+        name: docker
+        state: latest
+    - name: Start Docker service
+      become: true
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Create an nginx Docker
+      become: true
+      docker_container:
+        name: nginx_custom
+        image: nginx
+        state: started
+        ports:
+          - "8080:80"
+        volumes:
+          - /home/dawid2/uploads/nginx.conf:/etc/nginx/nginx.conf
+```
 

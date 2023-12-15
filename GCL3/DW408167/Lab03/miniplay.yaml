@@ -1,0 +1,32 @@
+- name: First play
+  hosts: myhosts
+  tasks:
+    - name: Copy File
+      copy:
+        src: /home/dawid/ansible/env.txt
+        dest: /home/dawid2/uploads/env.txt
+    - name: Copy Nginx Config
+      copy:
+        src: /home/dawid/ansible/nginx.conf
+        dest: /home/dawid2/uploads/nginx.conf
+    - name: Install Docker
+      become: true
+      dnf:
+        name: docker
+        state: latest
+    - name: Start Docker service
+      become: true
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Create an nginx Docker
+      become: true
+      docker_container:
+        name: nginx_custom
+        image: nginx
+        state: started
+        ports:
+          - "80:80"
+        volumes:
+            - /home/dawid2/uploads/nginx.conf:/etc/nginx/nginx.conf
