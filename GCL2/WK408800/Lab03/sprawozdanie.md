@@ -39,5 +39,64 @@ https://docs.ansible.com/ansible/2.9/installation_guide/intro_installation.html#
 
 w celu ustalenia nazwy hostów korzystamy z polecenia `hostnamectl set-hostname <"fedora-1" | "fedora-2">
 
+5. Zapewnienie łączności SSH
 
-6. 
+Jest to istotny krok, który zapewni nam bezproblemowe działanie Ansible. 
+
+Na maszynie będącej serwerem w moim wypadku Fedora 1, tworzymy klucz SSH 
+
+`ssh-keygen -t rsa -b 2048`
+
+<img width="585" alt="root@localhost ansible_quickstart # ssh-keygen -t rsa -b 2048" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/66bcd203-f1fe-4ade-9139-91e947b616cc">
+
+
+następnie wymieniamy się tym kluczem z maszyną Fedora 2 (client)
+
+`ssh-copy-id root@192.168.68.121`
+
+<img width="813" alt="INFO attespting to" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/2b9ce964-6ab8-4a0a-956d-7344000b66c2">
+
+weryfikujemy czy jesteśmy w stanie połączyć się z Fedora 1 na Fedora 2 poprzez SSH bez hasła
+
+`ssh root@192.168.68.121` 
+
+w przypadku jeśli tak jak ja korzystasz z konta root, koniecznym jest dodanie do pliku 
+`/etc/ssh/sshd_config` na Fedora 2 (client) flagi
+
+```
+PermitRootLogin: yes
+```
+
+W przypadku dalszych problemów może koniecznym być ustawienie na Fedora 1 i Fedora 2 dodatkowo flag
+
+```
+RSAAuthentication yes
+PubkeyAuthentication yes
+```
+
+Ważne, pamiętaj, aby po zapisaniu `sshd_config` zresetować usługę `systemctl restart sshd`
+
+Jeśli to nie pomoże i nie korzystamy domyślnie z konta root, prawdopodbnie w wyniku braku uprawnień na Fedora 2 podczas wymiany kluczy przy pomocy `ssh-copy-id` z Fedora 1 na Fedora 2, użytkownik na Fedora 2 nie może utworzyć pliku `authorized_keys` w celu naprawy wystarczy wydać polecenie: `chmod 600 ~/.ssh/authorized_keys` na maszynie klienckiej
+
+6. utworzenie pliku `inventory.ini`
+
+Plik `inventory.ini` zawiera informacje o maszynach jakimi będziemy zarządzać z poziomu komputera "Fedora 1" (server, zarządca Ansible)
+
+<img width="622" alt="GNU nano 7 2" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/6509cf07-dc26-4d24-89ae-8909f21262ec">
+
+Jak widzimy na powyższym zrzucie ekranu, zdefiniowałem grupę "Machines" poprzez zapis `[Machines]`, a następnie przypisałem do niej adres IP 
+komputera "Fedora 2" (klient) - `192.168.68.121`
+
+Następnie sprawdzamy czy Ansible "czyta" nasz plik `inventory.ini` poleceniem `ansible-inventory -i inventory.ini --list`
+
+<img width="762" alt="Pasted Graphic 9" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/7dc116dc-e9bc-44f4-bc62-e28c11c2a480">
+
+
+7. Weryfikacja łączności za pomocą Ansible Ping
+
+Wydając polecenie `ansible Machines -m ping -i ./inventory.ini` prosimy Ansible o wykonanie "ping" wszystkich klientów z grupy `Machines` zdefiniowanych
+wewnątrz pliku `inventory.ini`, jeśli w poprzednich krokach poprawnie dokonaliśmy wymiany kluczy SSH pomiędzy maszynami, powinniśmy zobaczyć poniższy 
+komunikat. W razie niepowodzenia należy ponowić próbę wymiany kluczy.
+
+<img width="724" alt="192 168 68 121" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/f7b308e4-4fdc-44b7-ad8d-12cdee336d33">
+
