@@ -1,0 +1,7 @@
+FROM flameshot-bld
+
+WORKDIR /flameshot/tests
+
+RUN sh action_options.sh
+RUN sh path_option.sh
+

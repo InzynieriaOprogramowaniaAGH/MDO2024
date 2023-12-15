@@ -1,0 +1,3 @@
+FROM fedora
+
+RUN dnf -y install gcc-c++ cmake qt5-qtbase-devel qt5-linguist git openssl qt5-qtbase qt5-qtsvg-devel ca-certificates

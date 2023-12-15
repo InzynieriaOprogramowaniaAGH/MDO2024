@@ -1,0 +1,2 @@
+FROM redbld-01
+RUN npm test
