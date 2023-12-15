@@ -258,6 +258,8 @@ Po wywołaniu polecenia `podman ps` widzimy iż kontener z `lighttpd` działa i 
 
 <img width="1016" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/672052fa-4662-4b46-ab13-5f3524e560fa">
 
+Teraz sprawdzamy poleceniem `ifconfig` adres IP jaki otrzymała maszyna w moim wypadku to `192.168.68.124`
+
 Po wejściu przez przeglądarkę na adres `http://192.168.68.124` naszym oczom ukarze się piękna czterystaczwórka, a oznacza to, że nasz kontener działa prawidłowo.
 
 <img width="482" alt="A Niezabezpieczona  192 168 68 124" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/b8c42368-3998-4105-8867-d85c6add93ce">
