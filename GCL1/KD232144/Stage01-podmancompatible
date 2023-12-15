@@ -1,0 +1,6 @@
+FROM fedora
+RUN dnf -y update && dnf -y install cmake git gcc glib2 glib2-devel libotr-devel meson make ncurses-devel openssl-devel openssl perl-ExtUtils-Embed utf8proc-devel
+RUN git clone https://github.com/irssi/irssi
+WORKDIR irssi
+RUN meson Build
+RUN ninja -C Build && sudo ninja -C Build install
