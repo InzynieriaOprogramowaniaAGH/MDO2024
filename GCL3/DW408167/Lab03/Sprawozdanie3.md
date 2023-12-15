@@ -25,6 +25,8 @@
   * [Kickstart - automatyczna instalacja systemu](#kickstart---automatyczna-instalacja-systemu)
     * [Pobieranie listy pakietów](#pobieranie-listy-pakietów)
     * [Odpalenie instalacji z plikiem kickstart](#odpalenie-instalacji-z-plikiem-kickstart)
+  * [Klonowanie maszyny wirtualnej](#klonowanie-maszyny-wirtualnej)
+  * [Tworzenie ISO wraz z plikiem kickstart](#tworzenie-iso-wraz-z-plikiem-kickstart)
 <!-- TOC -->
 
 ## Przygotowanie maszyn
