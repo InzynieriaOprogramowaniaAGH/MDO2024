@@ -100,3 +100,41 @@ komunikat. W razie niepowodzenia należy ponowić próbę wymiany kluczy.
 
 <img width="724" alt="192 168 68 121" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/f7b308e4-4fdc-44b7-ad8d-12cdee336d33">
 
+8. Utworzenie i uruchomienie Ansible Playbook
+
+Ansible Playbook zawiera kroki jakie Ansible ma zrealizować na maszynach zdefiniowanych wewnątrz `inventory.ini`.
+W moim wypadku Playbook:
+- utworzy folder `~/uploads` jeśli nie istnieje
+- skopiuje do niego plik `env`
+- zainstaluje oprogramowanie docker
+- nastepnie uruchomi docker deamon
+- na końcu uruchomi kontener nginx
+
+Tworzymy plik `playbook.yml`
+
+<img width="646" alt="hosts Machines" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/bad587d8-da22-489f-aa2d-ff51b380baf7">
+
+W lokalizacji gdzie stworzyliśmy plik tworzymy plik `env`
+
+<img width="564" alt="GNU nano 7 2" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/62edbcf1-6587-4198-b074-5ae0c9f9e5f3">
+
+Uruchamiamy nasz Playbook poleceniem `ansible-playbook -i ./inventory.ini playbook.yml`
+
+<img width="741" alt="changed" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/9f6cc8cd-ce83-405c-b703-64497aac265e">
+
+
+Nastepnie weryfikujemy czy wszystko poszło zgodnie z planem:
+1. Logujemy się po SSH na Fedora 2 (client)
+2. Sprawdzamy czy pod ścieżką `~/uploads/env` mamy nasz plik z zawartością
+
+<img width="523" alt="root@fedora-2 uploads # cat ~uploadsenv" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/4fa64bd9-a95c-4f69-afb3-d32d85bcd093">
+
+3. Sprawdzamy czy zainstalował się Docker
+
+<img width="514" alt="root@fedora-2 ~ # docker" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/707de019-1d91-4088-96d3-b12c0068879b">
+
+4. Na końcu sprawdzamy czy nasz kontener z nginx działa
+
+<img width="921" alt="Pasted Graphic 25" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/ff9bf701-b062-4816-8913-20e4091395da">
+
+Jak widzimy powyżej wszystko działa
