@@ -1,0 +1,27 @@
+- name: Egzekucje na niewinnej maszynie fedora2
+  hosts: myhosts
+  
+  tasks:
+    - name: Ciach ~/uploads
+      file:
+        path: ~/uploads
+        state: directory
+        mode: 0755
+    - name: Bach env
+      copy:
+        src: local-env
+        dest: ~/uploads/env
+        mode: 0755
+    - name: Trach docker
+      dnf:
+        name: docker
+        state: present
+      become: true
+    - name: Pora na Proxy
+      docker_container:
+        name: nginx-instance
+        image: nginx
+        state: started
+        ports:
+          - "80:80"
+        restart_policy: always

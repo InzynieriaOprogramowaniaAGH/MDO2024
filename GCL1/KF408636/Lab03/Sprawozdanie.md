@@ -119,4 +119,54 @@ Teraz pora na ansible playbook. Plik [ksiega-zabaw.yml](ksiega-zabaw.yml), zawie
 Playbook zawiera klucz-wartość `become: true`, co oznacza że wykonamy eskalacje przywilejów do poziomu użytkownika `root`.
 Uruchamiamy playbook:
 
+![images](img/19-ansible-run-playbook.png)
 
+I sprawdzamy efekty, plik env na `fedora2`:
+
+![images](img/20-fedora2-env.png)
+
+Fakt zainstalowanego dockera:
+
+![images](img/21-fedora2-docker-version.png)
+
+Działający kontener `nginx` (oznaczony jako `nginx-instance`)
+
+![images](img/22-fedora2-nginx-works.png)
+
+A teraz z maszyny gospodarza w przeglądarce możemy sprawdzić:
+
+![images](img/23-fedora2-nginx-works-browser.png)
+
+### Kickstart
+
+Teraz instalujemy maszynę automatycznie, z pomocą pliku odpowiedzi wygenerowanego podczas instalacji maszyny `fedora2`. Znajdujemy go w:
+
+![images](img/11-fedora2-anaconda.cfg-copy.png)
+
+Skopiowany, został zapisany w repozytorium jako [anaconda-ks.cfg](anaconda-ks.cfg)
+Niestety, pomimo usilnych prób nie udało się uwzględnić w dodatkowych paczkach `dockera` pod nazwą `moby-engine`(instalator nie może znaleźć potrzebnych zależności). Dołączono paczki `python3`, `nmap`.
+
+Po rozruchu edytowano (przycisk `E`) pierwszą opcję instalacji. Oczom ukazał się następujący edytor:
+
+![images](img/12-installation-based-answer-file.png)
+
+Wklejono zamiast poprzedniogo `quiet` wartość `inst.ks=https://raw.githubusercontent.com/InzynieriaOprogramowaniaAGH/MDO2024/KF408636/GCL1/KF408636/Lab03/anaconda-ks.cfg`
+
+Dzięki temu podczas instalacji zostanie użyty powyższy plik odpowiedzi.
+
+![images](img/24-fedora-installation.png)
+
+Instalator nie pyta nas o nic, i samoczynnie rozpoczyna pracę. Instalacja przebiegła pomyślnie
+
+![images](img/25-fedora-installation-result.png)
+
+Instalacja śmiga, python zainstalowany:
+
+![images](img/26-python-installed.png)
+
+Jako usprawnienie zmodyfikowano plik ISO z fedora-server38 za pomocą programu powerISO:
+
+![images](img/27-iso-edit.png)
+
+Wyedytowano plik konfiguracyjny grub'a. Zmiana analogiczna jak wcześniej
+Dzięki temu nasz plik kickstart będzie `scalony` z obrazem, i nie będziemy musieli za każdym razem wklejać jego źródła podczas instalacji na innych maszynach.
