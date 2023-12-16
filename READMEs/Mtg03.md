@@ -61,6 +61,7 @@
     * `repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=x86_64`
 * Plik odpowiedzi może zakładać pusty dysk. Zapewnij, że zawsze będzie formatować całość, stosując `clearpart --all` zamiast `clearpart --none`
 * Umieść plik odpowiedzi na swojej gałęzi w repozytorium, pobieraj go do instalatora za pomocą linka spod przycisku "Raw"
+* Pamiętaj, że klucz odpowiedzi przechowuje (zaszyfrowane, acz wciąż) hasło. Użyj unikatowego, tylko na tę okazję.
 ### Instalacja
 * Przeprowadź instalację ze stworzonego pliku odpowiedzi, wskazując go podczas uruchamiania ISO instalacyjnego
 * Upewnij się, że instalator nie zadaje żadnych pytań
