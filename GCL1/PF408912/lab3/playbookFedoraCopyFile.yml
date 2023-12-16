@@ -1,0 +1,12 @@
+---
+- name: install docker on fedora
+  hosts: devops-fedora
+  become: true
+  tasks:
+  - name: Copy file with owner and permissions
+    copy:
+      src: env.txt
+      dest: /etc/env.txt
+      owner: root
+      group: root
+      mode: '0644'
