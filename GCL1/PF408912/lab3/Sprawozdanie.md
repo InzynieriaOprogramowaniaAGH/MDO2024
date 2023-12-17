@@ -1,4 +1,4 @@
-# Sprawozadnie Lab2
+# Sprawozadnie Lab3
 
 ## Cel ćwiczenia:
 Celem ćwiczenia było zapoznanie się z narzędziami do automatyzacji instalacji maszyn oraz zarządzania nimi zdalnie.
