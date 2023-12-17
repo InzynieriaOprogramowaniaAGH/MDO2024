@@ -221,10 +221,14 @@ Używając własnego buildera buduję nowy kontener:
 
 ![clone ZNC](./screenshots/nowy%20obraz%20zbudowany%20moim%20dockerfile'em.JPG)
 
-Analogicznie powinien wyglądać Dockerfile-znctest, jednak w dokumentacji ZNC nie znalazłem informacji jak przeprowadzić testy (być może z użyciem Google Tests, które w Makefile'u się przewijają)
+Analogicznie powinien wyglądać Dockerfile-znctest:
 
 ```bash
-FROM Dockerfile-zncbld
+FROM znc-bldr #korzystam ze stworzonego wcześniej obrazu
 
-RUN test
+CMD ["make", "unittest"]
 ```
+
+W tym przypadku użyłem polecenia CMD, aby ustawić "make unittest" jako domyślną komendę wykonywaną po uruchomieniu kontenera, ponieważ jest to bardziej związane z konfiguracją kontenera niż z samym procesem budowania obrazu.
+
+![znc-test](./screenshots/znc-test%20image.JPG)
