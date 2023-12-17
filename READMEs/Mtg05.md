@@ -43,7 +43,7 @@
  * Przedstaw komunikację z eskponowaną funkcjonalnością
  
 ### Konwersja wdrożenia ręcznego na wdrożenie deklaratywne YAML
- * Upewnij się, że posiadasz wdrożenie z poprzednich zajęć zapisane jako plik
+ * Upewnij się, że posiadasz wdrożenie z poprzedniego punktu zapisane jako plik: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
  * Wzbogać swój obraz o 4 repliki
  * Rozpocznij wdrożenie za pomocą ```kubectl apply```
  * Zbadaj stan za pomocą ```kubectl rollout status```
