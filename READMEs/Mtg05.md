@@ -29,8 +29,8 @@
    * Przygotuj obraz Docker ze swoją aplikacją - sprawdź, że Twój kontener Deploy na pewno **pracuje**, a nie natychmiast kończy pracę! 😎
    * Jeżeli wybrana aplikacja nie nadaje się do pracy w kontenerze i nie wyprowadza interfejsu funkcjonalnego przez sieć, wymień projekt na potrzeby tego zadania:
      * Minimum: obraz-gotowiec
-	   * Optimum: samodzielnie wybrany program, obraz zbudowany na jego bazie
-	   * Plan max: obraz wygenerowany wskutek pracy pipeline'u
+     * Optimum: samodzielnie wybrany program, obraz zbudowany na jego bazie
+     * Plan max: obraz wygenerowany wskutek pracy pipeline'u
    * Wykaż, że wybrana aplikacja pracuje jako kontener
    
 ### Uruchamianie oprogramowania
