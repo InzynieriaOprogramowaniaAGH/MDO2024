@@ -26,7 +26,7 @@
     - Create playbook (./playbook_zadanie01.yml)
     - Run playbook
     ```bash
-        sudo ansible-playbook -i inventory.ini my_playbook.yml -k
+        sudo ansible-playbook -i inventory.ini playbook_zadanie01.yml -k
     ```
         ![](images/ansible_playbook_first_fail.png)
 
