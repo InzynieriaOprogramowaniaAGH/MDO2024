@@ -15,8 +15,11 @@ Na głównej maszynie zainstalowałem Ansible, za pomocą polecenia `sudo dnf in
 W celu dokonania inwetaryzacji systemów, na początku ustaliłem przewidywalne nazwy komputerów stosując polecenie `hostnamectl set-hostanme --nazwa_hosta`.
 
 Maszyna główna z ansible
+
 ![](ss/n-main.png)
+
 Maszyna klienta
+
 ![](ss/n-sub.png)
 
 W obydwu maszynach dodałem adresy ip i nazwy hostów maszyn w pliku `/etc/hosts`, aby mogły się rozpoznawać po nazwach. 
@@ -63,6 +66,7 @@ W tym zadaniu, playbook na wybranych maszynach ma wykonać:
 
 
 ![](ss/playbook.png)
+
 `name` - nazwa playbooku/zadania
 `hosts` - grupa hostów
 `become: true` - praca z uprawnineiami administratora
@@ -73,6 +77,7 @@ Przed uruchomieniem playbooka, w subMachine utworzyłem folder `uploads`.
 Aby uruchomić playbook należy użyć komendy: `ansible-playbook -i --sciezka_inventory --sciezka_playbook` 
 
 ![](ss/playbook-start.png)
+
 Jak można zauważyć, wszystkie zadania się wykonały, nginx na subMachine działa poprawnie.
 
 ![](ss/nginx.png)
