@@ -1,0 +1,22 @@
+- name: First playbook
+  hosts: Machines
+  become: true
+  tasks:
+    - name: file copy
+      copy:
+        src: "./env"
+        dest: "/home/devops/uploads/env"
+    - name: install docker
+      dnf:
+        name: docker
+        state: present
+    - name: start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    - name: start nginx
+      docker_container:
+        name: nginx
+        image: nginx
+        state: started
