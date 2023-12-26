@@ -1,0 +1,3 @@
+FROM znc-bldr #korzystam ze stworzonego wcześniej obrazu
+
+CMD ["make", "unittest"]
