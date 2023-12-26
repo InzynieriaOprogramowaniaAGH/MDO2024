@@ -1,4 +1,0 @@
-FROM build2023
-#testy
-WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api-tests
-RUN dotnet test
