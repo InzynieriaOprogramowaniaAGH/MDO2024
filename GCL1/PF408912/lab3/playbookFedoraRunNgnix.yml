@@ -1,0 +1,10 @@
+---
+- name: install docker on fedora
+  hosts: devops-fedora
+  become: true
+  tasks:
+    - name: run docker service
+      command: systemctl start docker
+
+    - name: run ngnix in docker
+      command: docker run --name mynginx -p 80:80 -d nginx
