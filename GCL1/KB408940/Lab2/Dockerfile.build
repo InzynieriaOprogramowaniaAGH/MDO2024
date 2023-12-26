@@ -1,0 +1,11 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /app
+
+# Pobierz projekt
+RUN apt-get update && \
+    apt-get install -y git && \
+    git clone https://github.com/davidfowl/TodoApi.git
+
+# Build aplikacji
+WORKDIR /app/TodoApi/TodoApi
+RUN dotnet build -c Release

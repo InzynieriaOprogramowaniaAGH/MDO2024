@@ -1,0 +1,33 @@
+---
+- name: First playbook
+  hosts: Hosts
+  become: true
+  tasks:
+    - name: File Copy
+      copy:
+        src: /home/kasia/ansible/env.txt
+        dest: /home/kasia/uploads/env.txt
+    - name: Install required packages
+      package:
+        name:
+          - docker
+          - docker-compose
+        state: present
+    - name: Start Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Create a Fedora Docker
+      docker_container:
+        name: fedora01
+        image: fedora
+        state: started
+    - name: Create an nginx
+      docker_container:
+        name: webserver01
+        image: nginx
+        state: started
+        ports:
+          - "8080:80"
+
