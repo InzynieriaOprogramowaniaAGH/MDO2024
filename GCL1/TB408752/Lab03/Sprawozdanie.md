@@ -30,4 +30,4 @@
     ```
         ![](images/ansible_playbook_first_fail.png)
 
-    As we can see first time pipeline failed
+2) Instalacja i przebieg kickstartu
