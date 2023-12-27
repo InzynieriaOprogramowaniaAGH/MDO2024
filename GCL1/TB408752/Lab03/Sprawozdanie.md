@@ -31,3 +31,19 @@
         ![](images/ansible_playbook_first_fail.png)
 
 2) Instalacja i przebieg kickstartu
+
+    - Kickstart pozwala na tworzenie maszyn autmatycznie z użycie plików odpowiedzi wygenerowanych przy instalacji maszyny fedora.
+
+    Możemy go znaleźć
+    ``` bash
+        cat /root/anaconda-ks.cfg 
+    ```
+
+    - Następnie przeprowadzamy instalacje z użyciem wygenerowanego pliku anaconda pobranego z repozytorium zamieniając quiet na 
+    inst.ks=https://raw.githubusercontent.com/InzynieriaOprogramowaniaAGH/MDO2024/TB408752/GCL1/TB408752/Lab03/anaconda-ks.cfg
+
+        ![](images/anaconda_config.png)
+
+    - po przejściu instalacji możemy zauważyć że instalacja przeszła pomyślnie i python3 jak i docker są zainstalowane
+
+        ![](images/anaconda_worked.png)
