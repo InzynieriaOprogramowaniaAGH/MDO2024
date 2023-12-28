@@ -5,8 +5,9 @@ pipeline {
         stage('Clear') {
             steps {
                 echo 'Cleaning up'
-                sh '[ -d MDO2024 ] && rm -rf MDO2024'
+                sh 'if [ -d MDO2024 ]; then rm -rf MDO2024; fi'
                 sh 'docker system prune --all --force --volumes'
+                sh 'docker rm -f $(docker ps -aq)'
 
             }
         }
@@ -25,6 +26,37 @@ pipeline {
                 echo 'Running the build container'
                 dir('MDO2024/GCL3/DW408167/Lab04') {
                     sh 'docker build -t nest-build . -f Dockerfile-build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running the test container'
+                dir('MDO2024/GCL3/DW408167/Lab04') {
+                    sh 'docker build -t nest-test . -f Dockerfile-test'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Running the depoloy container'
+                dir('MDO2024/GCL3/DW408167/Lab04') {
+                    sh 'docker build -t nest-deploy . -f Dockerfile-deploy'
+
+                    // Run the deploy container
+                    sh 'docker run -d --name nest-deploy-container nest-deploy'
+
+                    // Wait a bit for the container to start up
+                    sh 'sleep 5'
+
+                    // Execute the existing validation script
+                    sh './validation_script.sh'
+
+                    // Clean up: stop and remove the container
+                    sh 'docker stop nest-deploy-container'
+                    sh 'docker rm nest-deploy-container'
                 }
             }
         }
