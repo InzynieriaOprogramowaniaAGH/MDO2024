@@ -20,6 +20,12 @@
     * [Instalacja](#instalacja)
     * [Konfiguracja](#konfiguracja)
   * [Pipeline](#pipeline)
+    * [Jenkinsfile](#jenkinsfile)
+      * [Clear](#clear)
+      * [Clone](#clone)
+      * [Build](#build-1)
+      * [Test](#test-1)
+      * [Deploy](#deploy-1)
 <!-- TOC -->
 
 ## Wprowadzenie
