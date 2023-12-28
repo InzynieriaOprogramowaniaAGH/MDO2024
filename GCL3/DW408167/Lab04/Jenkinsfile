@@ -7,7 +7,7 @@ pipeline {
                 echo 'Cleaning up'
                 sh 'if [ -d MDO2024 ]; then rm -rf MDO2024; fi'
                 sh 'docker system prune --all --force --volumes'
-                sh 'docker rm -f $(docker ps -aq)'
+                sh 'if [ "$(docker ps -aq)" ]; then docker rm -f $(docker ps -aq); fi'
 
             }
         }
@@ -57,6 +57,15 @@ pipeline {
                     // Clean up: stop and remove the container
                     sh 'docker stop nest-deploy-container'
                     sh 'docker rm nest-deploy-container'
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                echo 'Publishing the image'
+                dir('MDO2024/GCL3/DW408167/Lab04') {
+                    sh 'docker push nest-deploy'
                 }
             }
         }
