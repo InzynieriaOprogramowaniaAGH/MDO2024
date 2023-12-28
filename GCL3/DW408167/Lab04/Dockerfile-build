@@ -6,4 +6,4 @@ WORKDIR nest-simple
 
 RUN npm install
 
-RYN npm run build
+RUN npm run build

@@ -2,9 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Clear') {
             steps {
-                echo 'Hello World'
+                echo 'Cleaning up'
+                sh '[ -d MDO2024 ] && rm -rf MDO2024'
+                sh 'docker system prune --all --force --volumes'
+
+            }
+        }
+
+        stage('Clone CI repo') {
+            steps {
+                sh 'git clone https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git'
+                dir('MDO2024') {
+                    sh 'git checkout DW408167'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Running the build container'
+                dir('MDO2024/GCL3/DW408167/Lab04') {
+                    sh 'docker build -t nest-build . -f Dockerfile-build'
+                }
             }
         }
     }
