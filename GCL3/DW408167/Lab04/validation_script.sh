@@ -3,6 +3,8 @@
 # Make a request to the specified URL
 response=$(curl -s localhost:3000/fib/1)
 
+echo "Response: $response"
+
 # Define the expected response
 expected_response='[0,1]'
 
