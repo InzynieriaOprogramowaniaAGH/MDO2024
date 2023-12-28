@@ -19,6 +19,7 @@
   * [Jenkins](#jenkins)
     * [Instalacja](#instalacja)
     * [Konfiguracja](#konfiguracja)
+  * [Pipeline](#pipeline)
 <!-- TOC -->
 
 ## Wprowadzenie
@@ -127,7 +128,7 @@ curl localhost:3000/fib/1
 
 > W tym celu wystarczy zastosować domyślną konfigurację Jenkinsa, dostępną pod tym [adresem](https://www.jenkins.io/doc/book/installing/docker/#on-macos-and-linux).
 
-![docker-inst-1](docker-inst-1.png)
+![docker-inst-1](img/docker-inst-1.png)
 
 Tworzymy obraz jenkinsa z punktu 4 i odpalamy go.
 
@@ -139,7 +140,7 @@ docker ps
 
 możemy sprawdzić czy nasz obraz działa.
 
-![docker-inst-2](docker-inst-2.png)
+![docker-inst-2](img/docker-inst-2.png)
 
 Teraz gdy wejdziemy na stronę `localhost:8080` powinniśmy zobaczyć ekran logowania.
 
@@ -152,11 +153,11 @@ Aby dostać inicjacyjne hasło do jenkinsa, musimy przejrzeć logi kontenera. W 
 docker logs jenkins-blueocean
 ```
 
-![docker-conf-1](docker-conf-1.png)
+![docker-conf-1](img/docker-conf-1.png)
 
 Na dole logów odnajdziemy nasze hasło
 
-![docker-conf-2](docker-conf-2.png)
+![docker-conf-2](img/docker-conf-2.png)
 
 kopiujemy je i używamy do zalogowania się do jenkinsa.
 
@@ -165,16 +166,16 @@ kopiujemy je i używamy do zalogowania się do jenkinsa.
 
 - Następnie wybieramy "Zainstaluj sugerowane wtyczki".
 - Tworzymy konto administratora
-![docker-conf-3](docker-conf-3.png)
+![docker-conf-3](img/docker-conf-3.png)
 
 
 Po zalogowaniu, tworzymy nowy projekt "Ogólny".
 
-![docker-conf-4](docker-conf-4.png)
+![docker-conf-4](img/docker-conf-4.png)
 
 
 Wchodzimy tutaj
-![img.png](img.png)
+![img.png](img/img.png)
 
 i wpisujemy kilka komend, aby dowiedzieć się kim jesteśmy i dokąd zmierzamy.
 
@@ -189,13 +190,13 @@ uname -a
 Zapisujemy i uruchamiamy.
 Następnie wchodzimy w Logi konsoli i sprawdzamy co dostaliśmy.
 
-![img_1.png](img_1.png)
+![img_1.png](img/img_1.png)
 
 ## Pipeline
 
 Tworzymy nowy pipeline, i zaczniemy od odpalenia na nim hello world.
 
-![img_2.png](img_2.png)
+![img_2.png](img/img_2.png)
 
 W logach zobaczyć możemy że wszystko się powiodło, domyślnie nasz plik będzie trzymany w repozytorium, więc zdefiniujemy ścieżkę pliku `Jenkinsfile`.
 
