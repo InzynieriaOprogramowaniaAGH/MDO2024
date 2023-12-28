@@ -217,3 +217,35 @@
 
     ![](images/jenkins_docker.png)
     ![](images/jenkins_running.png)
+
+
+
+
+
+
+2) Create pipeline in jenkins
+
+    ![](images/create_pipeline_step_1.png)
+    ![](images/create_pipeline_step_2.png)
+    ![](images/create_pipeline_step_3.png)
+
+3) Create test pipeline for hours checkng
+
+    [HourJenkinsfile](HourJenkinsfile)
+
+    ![](images/jenkins_fail_odd_hour.png)
+
+4) Create pipeline for deployment
+
+    In pipeline we have 6 steps
+    - Step 1 is for cleaning old repo files as well for pruning docker 
+    - Step 2 is for cloning repository on correct branch
+    - Step 3 we use our build Docker file to test building
+    - Step 4 we run unit tests on our app
+    - Step 5 we are creating final docker image as well checking if application can run
+    - Step 6 we are pushing final docker image from previous step to docker hub
+
+    [Jenkinsfile](Jenkinsfile)
+
+    ![](images/deploy_pipeline_done.png)
+    ![](images/deploy_pipeline_result.png)

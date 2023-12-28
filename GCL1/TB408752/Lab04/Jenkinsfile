@@ -48,6 +48,13 @@ pipeline {
                     dir('GCL1/TB408752/Lab02') {
                         def dockerImage = "deploy_${env.JOB_NAME}_${env.BUILD_NUMBER}"
                         sh "docker build -t ${dockerImage} -f Dockerfile.deploy . --no-cache"
+
+                        sh "docker run --name myapp -d -p 3000:80 ${dockerImage}"
+                        sh 'docker ps'
+                        sh 'sleep 10'
+                        sh 'docker logs myapp'
+                        sh 'docker stop myapp'
+                        sh 'docker rm myapp'
                     }
                 }
             }
@@ -56,10 +63,14 @@ pipeline {
         stage('Publish') {
             steps {
                 script {
-                    dir('GCL1/TB408752/Lab02') {
+                        def dockerHubUser = "toat"
+                        def dockerHubToken = "TOKEN_GO_HERE"
+                        def dockerHubRepo = "devops"
                         def dockerImage = "deploy_${env.JOB_NAME}_${env.BUILD_NUMBER}"
-                        sh "docker build -t ${dockerImage} -f Dockerfile.deploy . --no-cache"
-                    }
+                        
+                        sh "docker login -u ${dockerHubUser} -p ${dockerHubToken}"
+                        sh "docker tag ${dockerImage}:latest ${dockerHubUser}/${dockerHubRepo}:${env.BUILD_NUMBER}"
+                        sh "docker push ${dockerHubUser}/${dockerHubRepo}:${env.BUILD_NUMBER}"
                 }
             }
         }
