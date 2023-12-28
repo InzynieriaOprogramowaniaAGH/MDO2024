@@ -1,3 +1,3 @@
-FROM node-bldr
+FROM nest-build
 
 RUN npm run test

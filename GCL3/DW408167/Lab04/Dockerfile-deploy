@@ -1,8 +1,8 @@
 FROM node:20.10.0-alpine
 
-COPY --from=docker-bldr /nest-simple/dist /app/dist
-COPY --from=docker-bldr /nest-simple/node_modules /app/node_modules
-COPY --from=docker-bldr /nest-simple/package.json /app/package.json
+COPY --from=nest-build /nest-simple/dist /app/dist
+COPY --from=nest-build /nest-simple/node_modules /app/node_modules
+COPY --from=nest-build /nest-simple/package.json /app/package.json
 
 WORKDIR /app
 
