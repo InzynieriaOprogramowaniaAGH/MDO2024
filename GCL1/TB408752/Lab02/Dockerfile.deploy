@@ -1,19 +1,29 @@
+# Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
-# Pobierz projekt
-#RUN apt-get update
+# Install Git
 RUN apt-get install -y git
+
+# Clone the project
 RUN git clone https://github.com/CodeMazeBlog/unit-testing-aspnetcore-webapi.git
 
-# Restore aplikacji
+# Restore application
 RUN dotnet restore ./unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/web-api.csproj
 
-# Build aplikacji webowej
+# Build the web application
 WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
 RUN dotnet build -c Release
 
-# Publikowanie aplikacji webowej
+# Publish the web application
 FROM build AS publish
 WORKDIR /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api
 RUN dotnet publish -c Release -o out
+
+# Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+WORKDIR /app
+COPY --from=publish /app/unit-testing-aspnetcore-webapi/netcore-unit-testing/web-api/web-api/out ./
+
+# Set the entry point
+ENTRYPOINT ["dotnet", "web-api.dll"]

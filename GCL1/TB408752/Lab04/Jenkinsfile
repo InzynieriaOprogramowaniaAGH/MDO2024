@@ -1,15 +1,21 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_HOST = 'tcp://docker:2375' // Update with your Docker host address
-    }
-
     stages {
+        stage('Clean') {
+            steps {
+                script {
+                    deleteDir()
+
+                    sh 'docker builder prune -a -f'
+                }
+            }
+        }
+        
         stage('Clone Repository') {
             steps {
                 script {
-                    git url: 'https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git', branch: 'TB408752'
+                    git url: 'https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git', branch: 'TB408752_Lab04'
                 }
             }
         }
@@ -17,9 +23,42 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dir('GCL1/TB408752/Lab2') {
+                    dir('GCL1/TB408752/Lab02') {
                         def dockerImage = "build_${env.JOB_NAME}_${env.BUILD_NUMBER}"
-                        docker.build(dockerImage, '-f Dockerfile.build .')
+                        sh "docker build -t ${dockerImage} -f Dockerfile.build . --no-cache"
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    dir('GCL1/TB408752/Lab02') {
+                        def dockerImage = "test_${env.JOB_NAME}_${env.BUILD_NUMBER}"
+                        sh "docker build -t ${dockerImage} -f Dockerfile.test . --no-cache"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    dir('GCL1/TB408752/Lab02') {
+                        def dockerImage = "deploy_${env.JOB_NAME}_${env.BUILD_NUMBER}"
+                        sh "docker build -t ${dockerImage} -f Dockerfile.deploy . --no-cache"
+                    }
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                script {
+                    dir('GCL1/TB408752/Lab02') {
+                        def dockerImage = "deploy_${env.JOB_NAME}_${env.BUILD_NUMBER}"
+                        sh "docker build -t ${dockerImage} -f Dockerfile.deploy . --no-cache"
                     }
                 }
             }
