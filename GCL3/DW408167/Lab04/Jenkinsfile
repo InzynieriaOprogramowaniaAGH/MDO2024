@@ -46,7 +46,7 @@ pipeline {
                     sh 'docker build -t nest-deploy . -f Dockerfile-deploy'
 
                     // Run the deploy container
-                    sh 'docker run -d --name nest-deploy-container nest-deploy'
+                    sh 'docker run -p 3000:3000 -d --name nest-deploy-container nest-deploy'
 
                     // Wait a bit for the container to start up
                     sh 'sleep 5'
