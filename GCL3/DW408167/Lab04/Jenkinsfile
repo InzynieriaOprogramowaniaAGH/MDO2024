@@ -41,7 +41,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Running the depoloy container'
+                echo 'Running the deploy container'
                 dir('MDO2024/GCL3/DW408167/Lab04') {
                     sh 'docker build -t nest-deploy . -f Dockerfile-deploy'
 

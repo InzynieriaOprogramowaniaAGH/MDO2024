@@ -200,3 +200,106 @@ Tworzymy nowy pipeline, i zaczniemy od odpalenia na nim hello world.
 
 W logach zobaczyć możemy że wszystko się powiodło, domyślnie nasz plik będzie trzymany w repozytorium, więc zdefiniujemy ścieżkę pliku `Jenkinsfile`.
 
+### Jenkinsfile
+
+Zaczynamy teraz przygodę z pisaniem naszego pliku `Jenkinsfile`.
+
+#### Clear
+
+```groovy
+stages {
+    stage('Clear') {
+        steps {
+            echo 'Cleaning up'
+            sh 'if [ -d MDO2024 ]; then rm -rf MDO2024; fi'
+            sh 'docker system prune --all --force --volumes'
+            sh 'docker rm -f $(docker ps -aq)'
+        }
+    }
+```
+
+W kolejnym kroku będziemy klonować katalog z repozytorium, w tym celu musimy usunąć go, jeśli już istnieje, aby nie mieć duplikatu.
+
+Analogiczna sytuacja z obrazami oraz kontenerami docker, jeśli istnieją to chcemy się ich pozbyć.
+
+#### Clone
+
+```groovy
+stage('Clone CI repo') {
+    steps {
+        sh 'git clone https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git'
+        dir('MDO2024') {
+            sh 'git checkout DW408167'
+        }
+    }
+}
+```
+
+Teraz klonujemy repozytorium, wchodzimy do niego i przechodzimy na branch `DW408167`. Który jest naszym branchem.
+
+#### Build
+
+```groovy
+stage('Build') {
+    steps {
+        echo 'Running the build container'
+        dir('MDO2024/GCL3/DW408167/Lab04') {
+            sh 'docker build -t nest-build . -f Dockerfile-build'
+        }
+    }
+}
+```
+
+Odpalamy build naszą standardową komendą, omówioną w pierwszym rozdziale.
+
+#### Test
+
+```groovy
+stage('Test') {
+    steps {
+        echo 'Running the test container'
+        dir('MDO2024/GCL3/DW408167/Lab04') {
+            sh 'docker build -t nest-test . -f Dockerfile-test'
+        }
+    }
+}
+```
+
+Analogicznie jak w poprzednim kroku, odpalamy testy.
+
+
+
+#### Deploy
+
+```groovy
+stage('Deploy') {
+    steps {
+        echo 'Running the deploy container'
+        dir('MDO2024/GCL3/DW408167/Lab04') {
+            sh 'docker build -t nest-deploy . -f Dockerfile-deploy'
+
+            // Run the deploy container
+            sh 'docker run -p 3000:3000 -d --name nest-deploy-container nest-deploy'
+
+            // Wait a bit for the container to start up
+            sh 'sleep 5'
+
+            // Execute the existing validation script
+            sh './validation_script.sh'
+
+            // Clean up: stop and remove the container
+            sh 'docker stop nest-deploy-container'
+            sh 'docker rm nest-deploy-container'
+        }
+    }
+}
+```
+
+Tutaj zaczyna robić się ciekawie, ponieważ chcemy aby w pliku deploy znalazły się pliki bez żadnych "śmieci".
+W tym celu obraz jest budowany na `node` w wersji `alpine`, który jest bardzo lekką wersją node, która nie zawiera niepotrzebnych plików.
+
+Do niego kopiujemy jedynie zbudowane pliki z obrazu `nest-build`.
+
+Następnie uruchamiamy aplikację w kontenerze, aby przetestować czy działa.
+W tym celu stworzyliśmy skrypt `validation_script.sh`, który robi zapytanie do aplikacji i weryfikuje czy odpowiedź jest zgodna z oczekiwaną.
+
