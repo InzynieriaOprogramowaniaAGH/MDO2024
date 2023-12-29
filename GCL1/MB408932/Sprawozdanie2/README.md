@@ -86,3 +86,10 @@ na
 ```bash
 clearpart --all --initlabel
 ```
+Ostatnim krokiem było przesłanie pliku anaconda-ks.cfg na repozytorium i instalacja Fedory za pomocą formatu raw
+
+![Alt text](anaconda2.png)
+
+Instalujemy maszynę i sprawdzamy czy zostały zainstalowane wszystkie pakiety które umieściliśmy w pliku
+
+![Alt text](koniec.png)
