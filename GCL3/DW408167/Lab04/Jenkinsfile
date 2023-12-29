@@ -8,7 +8,6 @@ pipeline {
                 sh 'if [ -d MDO2024 ]; then rm -rf MDO2024; fi'
                 sh 'docker system prune --all --force --volumes'
                 sh 'if [ "$(docker ps -aq)" ]; then docker rm -f $(docker ps -aq); fi'
-
             }
         }
 
@@ -45,29 +44,29 @@ pipeline {
                 dir('MDO2024/GCL3/DW408167/Lab04') {
                     sh 'docker build -t nest-deploy . -f Dockerfile-deploy'
 
-                    // Run the deploy container
-                    sh 'docker run -p 3000:3000 -d --name nest-deploy-container nest-deploy'
+                    //// Run the deploy container
+                    //sh 'docker run -p 3000:3000 -d --name nest-deploy-container nest-deploy'
 
-                    // Wait a bit for the container to start up
-                    sh 'sleep 5'
+                    //// Wait a bit for the container to start up
+                    //sh 'sleep 5'
 
-                    // Execute the existing validation script
-                    sh './validation_script.sh'
+                    //// Execute the existing validation script
+                    //sh './validation_script.sh'
 
-                    // Clean up: stop and remove the container
-                    sh 'docker stop nest-deploy-container'
-                    sh 'docker rm nest-deploy-container'
+                    //// Clean up: stop and remove the container
+                    //sh 'docker stop nest-deploy-container'
+                    //sh 'docker rm nest-deploy-container'
                 }
             }
         }
-
-        stage('Publish') {
-            steps {
-                echo 'Publishing the image'
-                dir('MDO2024/GCL3/DW408167/Lab04') {
-                    sh 'docker push nest-deploy'
-                }
-            }
-        }
+        //stage('Publish') {
+        //    steps {
+        //        echo 'Publishing the image to the registry'
+        //        dir('MDO2024/GCL3/DW408167/Lab04') {
+        //            sh 'docker tag nest-deploy localhost:5000/nest-deploy:0.0.1'
+        //            sh 'docker push localhost:5000/nest-deploy:0.0.1'
+        //        }
+        //    }
+        //}
     }
 }

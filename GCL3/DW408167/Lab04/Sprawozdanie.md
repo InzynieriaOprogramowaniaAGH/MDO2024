@@ -309,3 +309,51 @@ Do niego kopiujemy jedynie zbudowane pliki z obrazu `nest-build`.
 Następnie uruchamiamy aplikację w kontenerze, aby przetestować czy działa.
 W tym celu stworzyliśmy skrypt `validation_script.sh`, który robi zapytanie do aplikacji i weryfikuje czy odpowiedź jest zgodna z oczekiwaną.
 
+
+### Publish 
+
+#### Registry
+
+Aby móc publikować nasze obrazy, musimy mieć gdzie je przechowywać.
+
+W tym celu tworzymy własny registry, który będzie przechowywał nasze obrazy.
+
+Bardziej rozbudowany opis możemy znaleźć pod tym [linkiem](https://www.docker.com/blog/how-to-use-your-own-registry-2/).
+
+W celu stworzenia docker registry, wystarczy odpalić komendę:
+
+```bash
+docker run -d -p 5000:5000 --name registry registry:2.7
+```
+
+Następnie jeśli chcemy dodać obraz do naszego registry, musimy go najpierw zatagować, aby wskazywał na nasz registry, a następnie pushować obraz.
+
+```bash
+docker tag nest-deploy localhost:5000/nest-deploy:0.0.1
+docker push localhost:5000/nest-deploy:0.0.1
+```
+
+Aby sprawdzić czy obraz został dodany do naszego registry, wystarczy odpalić komendę:
+
+```bash
+curl localhost:5000/v2/_catalog
+```
+
+![registry](img/registry.png)
+
+
+#### Publish Jenkins
+
+```groovy
+stage('Publish') {
+    steps {
+        echo 'Publishing the image to the registry'
+        dir('MDO2024/GCL3/DW408167/Lab04') {
+            sh 'docker tag nest-deploy localhost:5000/nest-deploy:0.0.1'
+            sh 'docker push localhost:5000/nest-deploy:0.0.1'
+        }
+    }
+}
+```
+
+W tym kroku, tagujemy nasz obraz, aby wskazywał na nasz registry, a następnie pushujemy go.
