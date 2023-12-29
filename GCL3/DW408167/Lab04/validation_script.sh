@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the IP address of the container
-ip=$(docker inspect -f {{ .NetworkSettings.IPAddress }} nest-deploy-container)
+ip=$(docker inspect -f '{{ .NetworkSettings.IPAddress }}' nest-deploy-container)
 
 echo "IP: $ip"
 
