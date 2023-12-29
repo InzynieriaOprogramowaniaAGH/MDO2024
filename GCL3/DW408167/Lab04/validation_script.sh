@@ -4,7 +4,7 @@
 ip=$(docker inspect -f {{ .NetworkSettings.IPAddress }} nest-deploy-container)
 
 # Make a request to the specified URL
-response=$(curl -s $ip:3000/fib/1)
+response=$(curl -s "$ip:3000/fib/1")
 
 echo "Response: $response"
 
