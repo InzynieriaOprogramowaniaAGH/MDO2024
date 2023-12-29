@@ -357,3 +357,9 @@ stage('Publish') {
 ```
 
 W tym kroku, tagujemy nasz obraz, aby wskazywał na nasz registry, a następnie pushujemy go.
+
+### Konfiguracja Jenkinsfile
+
+Aby nasza konfiguracja była pobierana automatycznie z napisanego przez nas Jenkinsfile, musimy wejść w konfigurację pipeline i wybrać następujące opcje:
+
+![jenkinsfile-config](img/jenkinsfile-config.png)
