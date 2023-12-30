@@ -8,9 +8,9 @@ Michał Starzyk
 ### Ansible
 1. Instalacja zarządcy Ansible
    * Zainstalowałem Fedorę Server na drugiej maszynie 
-<br> ![fedora](fedora.png) <br> 
+<br> ![Fedora](Fedora.png) <br> 
    - Następnie zainstalowałem Ansible na pierwszej maszynie
- <br> ![ansible](ansible.png)
+ <br> ![Ansible](Ansible.png)
 2. Zapewnienie łączność SSH
    * Kolejnym krokiem było utworzenie klucza SSH na nowej maszynie 
 <br> ![sshkey](sshkey.png)
@@ -35,8 +35,8 @@ i zweryfikowałem go
 
   ### Kickstart (narzędzie pozwalające na automatyczną instalacje systemu operacyjnego)
 1.	Na drugiej maszynie znalazłem plik anaconda-ks.cfg, za pomocą komendy, sudo cat /root/anaconda-ks.cfg, zawiera on opcje, które wybierałem podczas instalacji. Posłuży jako baza do pliku kickstar
- <br> ![anaconda](anaconda.png)
-<br> ![anaconda1](anaconda1.png)
+ <br> ![Anaconda](Anaconda.png)
+<br> ![Anaconda1](Anaconda1.png)
    * Przez komendę rpm -qa wyświetliłem pakiety zainstalowane na głownej maszynie i dodałem do pliku kickstart ansible oraz docker.
 <br> ![rpm](rpm.png)
    *Następnie dodałem do pliku repozytoria online 
