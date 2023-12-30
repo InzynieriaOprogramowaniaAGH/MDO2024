@@ -1,0 +1,33 @@
+- name: Using ansible
+  hosts: myhosts
+
+  tasks:
+    - name: Utworzenie ~/uploads
+      file:
+        path: ~/uploads
+        state: directory
+        mode: 0755
+    - name: Skopiowanie env_local do ~/uploads
+      copy:
+        src: env_local
+        dest: ~/uploads/env
+        mode: 0755
+    - name: Instalacja docker
+      dnf:
+        name: docker
+        state: present
+      become: true
+    - name: Uruchomienie docker
+      systemd:
+          name: docker
+          state: started
+          enabled: yes
+      become: true
+    - name: Uruchomienie nginx w docker
+      docker_container:
+        name: nginx1
+        image: nginx
+        state: started
+        ports:
+          - "80:80"
+      become: true
