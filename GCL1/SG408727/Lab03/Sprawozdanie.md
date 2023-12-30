@@ -14,7 +14,7 @@ Na początku zadania zgodnie z treścią utworzyłem drugą maszynę wirtualną 
 
 Po zainstalowaniu drugiej maszyny zalogowałem się na nią w celu sprawdzenia czy poprawnie się zainstalowała:
 
-![zdj1](screeny/1.jpg)
+![zdj1](screeny/1.JPG)
 
 Obie maszyny zostały połączone w mostkiem sieciowym z następującymi adresami IP:
 
@@ -25,12 +25,13 @@ Następnie przystąpiłem do instalacji pakietu ansible na maszynie głównej (f
 
 `sudo dnf -y install ansible`
 
-![instalacjaansible](screeny/2.jpg)
+![instalacjaansible](screeny/2.JPG)
 
 Kolejną rzeczą do ustawienia były nazwy hostów obu maszyn z pomocą polecenia `hostnamectl`, zgodnie z opisem wyżej ustaliłem że maszyny będą miały nazwy fedora1 i fedora2.
 
-![fedora1](screeny/3.jpg)<br>
-![fedora2](screeny/4.jpg)
+![fedora1](screeny/3.JPG)
+
+![fedora2](screeny/4.JPG)
 
 Po ustaleniu obu nazw hostów przystąpiłem do modyfikacji pliku `/etc/hosts` w celu umożliwienia maszynom wzajemnego rozpoznawania się po ich nazwach zamiast adresach IP, tą czynność wykonałem na obu maszynach:
 
@@ -168,6 +169,7 @@ sudo scp /root/anaconda-ks.cfg sglodzinski@fedora1:~/ansible_quickstart
 Następnie skorzystałem z polecenia `rpm -qa > pakiety.txt` w celu wypisania wszystkich zainstalowanych pakietów na maszynie "głównej", w powstałym pliku wyszukałem nazwy pakietów do zawarcia w nowym obrazie, będą to pakiety `docker, git, nano, python3, ansible`.
 
 Przykład zawartości pliku `pakiety.txt`:
+
 ![nginxstrona](screeny/21.jpg)
 
 Wrzuciłem wszystkie pliki na swojego brancha i następnie przystąpiłem do modyfikacji pliku odpowiedzi zgodnie z treścią sprawozdania, poszczególne fragmenty wyglądały następująco:
