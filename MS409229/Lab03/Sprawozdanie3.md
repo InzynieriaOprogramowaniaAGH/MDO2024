@@ -1,9 +1,10 @@
 Michał Starzyk
-# Sprawozdanie 2 <br> Automatyzacja instalacji i scenariuszy poleceń
+# Sprawozdanie 3 <br> Automatyzacja instalacji i scenariuszy poleceń
 ## Wstęp
-* Celem projektu, było zainstalowanie Ansible i połączenie się z drugą maszyną oraz stworzenie pliku kickstart.
-* Zainstalowałem Ansible, pobrałem klucz ssh z drugiej maszyny i mogłem logować się bez potrzeby wpisywania hasła. Za pomocą pliku konfiguracyjnego *.yaml automatycznie uruchomiłem dockera na drugiej maszynie i wystartowałem kontener z nginx.
-* Na podstawie pliku anaconda-ks.cfg z zainstalowanej maszyny stworzyłem plik kickstart, którego użyłem do zautomatyzowanego zainstalowania się Fedory na nowej maszynie.
+   * Celem projektu było skonfigurowanie środowiska przy użyciu Ansible, nawiązanie połączenia z drugą maszyną i utworzenie pliku Kickstart. Po instalacji Ansible oraz skonfigurowaniu bezproblemowego logowania się na drugą maszynę za pomocą klucza SSH, skonfigurowałem plik YAML, który automatycznie uruchamia Docker na drugiej maszynie, a następnie startuje kontener z serwerem Nginx.
+   *  Dodatkowo, w oparciu o plik konfiguracyjny anaconda-ks.cfg z już zainstalowanej maszyny, utworzyłem plik Kickstart. Ten plik Kickstart został użyty do zautomatyzowanego procesu instalacji systemu Fedora na nowej maszynie.
+   *  W skrócie, w tym projekcie zajmowałem się automatyzacją konfiguracji i zarządzaniem środowiskiem przy użyciu Ansible, umożliwiając szybkie uruchamianie kontenerów Docker na drugiej maszynie oraz zautomatyzowane instalowanie systemu Fedora na nowych maszynach poprzez plik Kickstart.
+
 ## Wykonanie zadania
 ### Ansible
 1. Instalacja zarządcy Ansible
