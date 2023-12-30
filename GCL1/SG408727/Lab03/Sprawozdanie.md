@@ -34,7 +34,7 @@ Kolejną rzeczą do ustawienia były nazwy hostów obu maszyn z pomocą poleceni
 
 Po ustaleniu obu nazw hostów przystąpiłem do modyfikacji pliku `/etc/hosts` w celu umożliwienia maszynom wzajemnego rozpoznawania się po ich nazwach zamiast adresach IP, tą czynność wykonałem na obu maszynach:
 
-![hosts](screeny/5.png)
+![hosts](screeny/5.jpg)
 
 Zweryfikowano połączenie i wykrywanie hostów za pomocą polecenia `ping`:
 
@@ -212,6 +212,20 @@ W oknie które się pojawiło w miejscu polecenia `quiet` wpisujemy
 ```
 inst.ks=https://raw.githubusercontent.com/InzynieriaOprogramowaniaAGH/MDO2024/SG408727/GCL1/SG408727/Lab03/anaconda-ks.cfg
 ```
-i klikamy F10 lub Ctrl+X. Po chwili czekania w oknie konfiguracyjnym po bootowaniu, instalacja rozpoczęła się sama nie pytając nas o skonfigurowanie czegokolwiek
+i klikamy F10 lub Ctrl+X. Flaga `inst-ks` jest odpowiedzialna za przekazanie pliku kickstart instalatorowi. Po chwili czekania w oknie konfiguracyjnym po bootowaniu, instalacja rozpoczęła się sama nie pytając nas o skonfigurowanie czegokolwiek
 
 ![install](screeny/24.jpg)
+
+![install1](screeny/24_1.jpg)
+
+Instalacja przebiegła pomyślnie, wita nas ekran logowania
+
+![install2](screeny/25.jpg)
+
+Po sprawdzeniu czy wszystko zainstalowało się pomyślnie i czy działa co potrzeba okazało się, że wszystkie pakiety są zainstalowane jednakże kontener `lighttpd` się nie uruchomił
+
+![install3](screeny/26.jpg)
+
+![install4](screeny/27.jpg)
+
+Pomimo kilku prób modyfikacji pliku odpowiedzi i ponownych instalacji z obrazu nie udało się doprowadzić do uruchomienia kontenera.
