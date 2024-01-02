@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest-app
+  labels:
+    app: nest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nest
+  template:
+    metadata:
+      labels:
+  app: nest
+    spec:
+      containers:
+        - name: nest-demo-app
+          image: wajdastudent/nest-demo-app:0.0.1
+          ports:
+            - containerPort: 3000
