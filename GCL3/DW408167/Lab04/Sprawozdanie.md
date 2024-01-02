@@ -26,6 +26,10 @@
       * [Build](#build-1)
       * [Test](#test-1)
       * [Deploy](#deploy-1)
+    * [Publish](#publish-)
+      * [Registry](#registry)
+      * [Publish Jenkins](#publish-jenkins)
+    * [Konfiguracja Jenkinsfile](#konfiguracja-jenkinsfile)
 <!-- TOC -->
 
 ## Wprowadzenie
@@ -341,6 +345,10 @@ curl localhost:5000/v2/_catalog
 
 ![registry](img/registry.png)
 
+Natomiast jeśli chcemy użyć publicznego registry, ponieważ z jakiegoś powodu nie mamy dostępu
+do lokalnego, to musimy stworzyć konto na docker hubie, a następnie podążać za [instrukcją](https://docs.docker.com/get-started/04_sharing_app/).
+
+Szczegółową konfigurację jenkinsa w tym celu znajdziemy [tutaj](https://sweetcode.io/how-to-build-and-push-docker-images-to-docker-hub-using-jenkins-pipeline/)
 
 #### Publish Jenkins
 

@@ -14,6 +14,16 @@
 * [Kubernetes](#kubernetes)
   * [Instalacja Kubernetes](#instalacja-kubernetes)
     * [Wymagania](#wymagania)
+  * [Testowanie prostego kontenera](#testowanie-prostego-kontenera)
+  * [Deploy aplikacji](#deploy-aplikacji)
+    * [Konfiguracja pliku deploymentu](#konfiguracja-pliku-deploymentu)
+    * [Modyfikacje](#modyfikacje)
+    * [Rollout](#rollout)
+      * [Weryfikacja rollout:](#weryfikacja-rollout)
+      * [Aktualizacja aplikacji](#aktualizacja-aplikacji)
+      * [Undo rollout](#undo-rollout)
+      * [Różnice pomiędzy strategiami wdrażania](#różnice-pomiędzy-strategiami-wdrażania)
+    * [Skrypt sprawdzający czas wdrożenia](#skrypt-sprawdzający-czas-wdrożenia)
 <!-- TOC -->
 
 ## Instalacja Kubernetes
@@ -149,4 +159,126 @@ kubectl apply -f deployment-01.yaml
 W dashboard możemy sprawdzić czy wszystko zadziałało poprawnie:
 
 ![nest-app-dashboard-3](img/nest-app-dashboard-3.png)
+
+Lub za pomocą zapytania konsolowego
+
+![kubectl-get-deployments](img/kubectl-get-deployments.png)
+
+
+Następnie aby zweryfikować poprawność działania aplikacji, musimy zrobić port-forward na deploymencie:
+
+```bash
+kubectl port-forward deployment/nest-app 3000:3000
+```
+
+![app-demo](img/app-demo.png)
+
+Po odpaleniu aplikacji, możemy zobaczyć że wszystko działa poprawnie.
+
+
+### Modyfikacje
+
+Jeśli zdecydujemy że chcemy wprowadzić jakieś zmiany, np zmienić liczbę replik, to wystarczy zmienić liczbę z `3` na `1` 
+i ponownie użyć apply, on wtedy przeskaluje nasz deployment i usunie nadmiarowe instancje, natomiast musimy pamiętać,
+że nie wykona on nowego wdrożenia, ponieważ **skalowanie nie jest zmianą wersji**.
+
+Jeśli ustawimy 0 deploymentów, to deployment nadal będzie istniał, ale beż żadnej repliki, warto to używać, kiedy chcemy na przyszłość przygotować deployment
+i jedynie czekamy na sygnał, by to zrobić.
+
+Jeśli zmienimy wersję obrazu, to deployment automatycznie zrobi rollout, czyli zastąpi stare instancje nowymi.
+
+Może powodować to szereg problemów (np brak zgodności interfejsu bazy danych), dlatego nasza aplikacja powinna być dobrze przygotowana do migracji pomiędzy wersjami.
+
+### Rollout
+
+#### Weryfikacja rollout:
+
+```bash
+kubectl rollout status deployment nest-app
+```
+dostaniemy odpowiedź _'deployment "nest-app" successfully rolled out'_.
+
+Na ten moment posiadamy tylko jedną rewizję, możemy ją sprawdzić komendą:
+
+![rollout-history](img/roullout-history-1.png)
+
+#### Aktualizacja aplikacji
+
+Jak wspomnieliśmy wyżej, zmiana ilości replik nie spowoduje nowego rollouta, 
+więc musimy zmienić wersję obrazu, aby to zrobić, wrzuacmy na dockerhub nową wersję obrazu, 
+a następnie podmieniamy ją w pliku deploymentu:
+
+```txt
+wajdastudent/nest-demo-app:0.0.1 -> image: wajdastudent/nest-demo-app:0.0.2
+```
+
+ponownie robimy apply i sprawdzamy rollout:
+
+![rollout-history-2.png](img/rollout-history-2.png)
+
+Dostrzec możemy, że po wprowadzeniu zmian, zrobiła się nowa rewizja, a wersja obrazu została zmieniona.
+
+![dashboard-deployments-2](img/dashboard-deployments-2.png)
+
+#### Undo rollout
+
+Jeśli z jakiegoś powodu, chcemy cofnąć zmiany, to możemy użyć komendy:
+
+```bash
+kubectl rollout undo deployment nest-app
+```
+
+I powrócimy do poprzedniej wersji aplikacji.
+
+
+![img.png](img/img.png)
+
+![img_1.png](img/img_1.png)
+
+Zauważyć tutaj można ciekawą rzecz, ponieważ sukcesywnie usuwał stare instancje i tworzył nowe, dzięki czemu downtime
+naszej aplikacji był minimalny.
+
+#### Różnice pomiędzy strategiami wdrażania
+
+- Recreate - usuwa wszystkie instancje i tworzy nowe, downtime jest maksymalny, ale nie ma problemów z migracją danych.
+- Rolling Update - sukcesywnie usuwa stare instancje i tworzy nowe, downtime jest minimalny, ale może powodować problemy z migracją danych.
+- Canary Deployment workload - tworzy nowe instancje, ale nie usuwa starych, pozwala na testowanie nowej wersji aplikacji, ale może powodować problemy z migracją danych.
+
+
+### Skrypt sprawdzający czas wdrożenia
+
+![script-result](img/script-result.png)
+
+```bash
+# Deploy application
+minikube kubectl -- apply -f deployment-01.yaml
+
+# Start timer
+start_time=$(date +%s)
+
+# Set a timeout for 60 seconds
+timeout=60
+end_time=$(($start_time + $timeout))
+
+# Loop to check the rollout status
+while true; do
+    # Check if current time is greater than end time
+    if [ $(date +%s) -gt $end_time ]; then
+        echo "Rollout did not complete within 60 seconds."
+        exit 1
+    fi
+
+    # Check the rollout status
+    if minikube kubectl -- rollout status deployment/nest-app --timeout=1s; then
+        echo "Rollout completed successfully within 60 seconds."
+        exit 0
+    fi
+
+    # Wait for a short period before checking again
+    sleep 1
+done
+```
+
+Jeśli chcemy użyć innej aplikacji, możemy zmodyfikować skrypt aby brał parametr, który jest nazwą deploymentu,
+lub po prostu podmienić wartość w skrypcie.
 
