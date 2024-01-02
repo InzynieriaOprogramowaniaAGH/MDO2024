@@ -1,0 +1,3 @@
+FROM nodejsdummybuilder:latest
+
+CMD ["npm", "start","3000:3000"]
