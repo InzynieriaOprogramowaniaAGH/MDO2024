@@ -119,3 +119,21 @@ następnie przechodzimy w szczegóły zadania i widzimy wyniki poleceń `whoami`
 <img width="1374" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/e8e5d5c7-d7ad-4a4c-8e73-37185df135d2">
 
 ## Pipeline 
+
+1. Tworzymy nowy projekt zamiast "Ogólny" wybieramy "Pipeline"
+
+<img width="947" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/83bff182-519a-4b77-b0bc-453521971277">
+
+2. Ustawiamy jako nasz pierwszy job w pipeline "hello world"
+
+<img width="947" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/18679c4e-b0c0-4463-ac2c-a3a27bbefdfa">
+
+3. Przystępujemy do pisania naszego pipeline
+
+Chcemy aby nasz pipeline
+- sklonował repozytorium
+- dokonał checkout na branch
+- dokonał zbudowania projektu z `dockerfile.build`
+- następnie wykonał `dockerfile.test` które ma zależność z kontenerem powstałym z `dockerfile.build`
+- dokonał deploymentu naszej aplikacji
+  
