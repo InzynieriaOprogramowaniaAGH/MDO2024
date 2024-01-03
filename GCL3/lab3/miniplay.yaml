@@ -1,0 +1,30 @@
+- name: First play
+  hosts: myhosts
+  become: yes
+  gather_facts: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Copy File
+      copy:
+        src: /home/gp1/ansible/env.txt
+        dest: /home/gp/uploads/env.txt
+    - name: Install Docker
+      become: true
+      dnf:
+        name: docker
+        state: latest
+    - name: Start Docker service
+      become: true
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Create an nginx Docker
+      become: true
+      docker_container:
+        name: my-web-server-1
+        image: nginx
+        state: started
+        ports:
+          - "8080:80"
