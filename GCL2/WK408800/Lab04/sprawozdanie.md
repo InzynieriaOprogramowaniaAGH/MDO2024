@@ -47,31 +47,32 @@ docker run \
 
 3. Uruchamiamy kontener z jenkinsem z wtyczką blueocean
 
-Obraz Jenkins BlueOcean różni się od standardowego obrazu Jenkinsa tym, że ma wstępnie zainstalowaną wtyczkę Blue Ocean, która oferuje nowoczesny interfejs użytkownika do zarządzania Jenkinsem
+---Obraz Jenkins BlueOcean różni się od standardowego obrazu Jenkinsa tym, że ma wstępnie zainstalowaną wtyczkę Blue Ocean, która oferuje nowoczesny interfejs użytkownika do zarządzania Jenkinsem---
 
-`docker pull jenkinsci/blueocean`
+Okazuje się że obraz jenkinsci/blueocean jest nie rozwijany od ponad roku, a sam Jenkins mówi w dokumentacji. Problem zauważyłem w trakcie tworzenia pipeline (masa niewspieranych pluginów), nie mniej poza tą komendą, reszta kroków pozostaje taka sama.
 
-<img width="690" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/c1bceaf5-5985-4e22-8f8a-b539e789d2ad">
+<img width="853" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/fc7e3a0e-dd47-4bdf-8d03-616e27d8fa91">
+
 
 Następnie uruchamiamy ten obraz
 
 ```
 docker run \
-  --name jenkins-blueocean \
+  --name jenkins \
   --rm \
   --detach \
   --network jenkins \
   --volume jenkins-data:/var/jenkins_home \
   --publish 8080:8080 \
   --publish 50000:50000 \
-  jenkinsci/blueocean
+  jenkins/jenkins:lts
 ```
 
-<img width="569" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/8a47d03a-7993-4bf1-979b-cf6a1fb4ea89">
+<img width="756" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/28f984f4-8079-473e-9651-6a99e96d1159">
 
 3. Za pomocą `docker ps` sprawdzamy czy nasz kontener działa
 
-<img width="1815" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/26179c20-be09-4048-9dea-4f32a0511c67">
+<img width="1724" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/29e9b963-a477-487a-aada-86a347376558">
 
 5. Wchodzimy przez przeglądarkę na adres `http://<ip-maszyny>:8080`
 
