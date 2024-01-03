@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    
+    environment {
+        BUILD_TAG = "build_${BUILD_NUMBER}"
+        DEPLOY_TAG = "deploy_${BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                echo 'Clone start'
+                sh 'git clone https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git'
+                
+                dir('MDO2024') {
+                    sh 'git checkout WK408800'
+                    echo 'Checkout to WK408800 DONE'
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                dir('MD02024/GCL2/WK408800/Lab04') {
+                    sh "docker build -t ${BUILD_TAG} . -f dockerfile.build"
+                }
+            }
+        }
+        
+        stage('Deployment') {
+            steps {
+                dir('MD02024/GCL2/WK408800/Lab04') {
+                   sh "docker build -t ${DEPLOY_TAG} --build-arg BUILD_TAG=${BUILD_TAG} . -f Dockerfile.deployment"
+                   sh 'docker stop vue-app || true'  // Stop the previous container if it exists
+                   sh 'docker rm vue-app || true'    // Remove the previous container if it exists
+                   sh "docker run -d -p 3030:80 --name vue-app ${DEPLOY_TAG}"
+                }
+            }
+        }
+    }
+    
+}
