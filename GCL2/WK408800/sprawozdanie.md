@@ -85,4 +85,7 @@ Zanim przejdziemy dalej, warto użyć komendy `docker logs jenkins-blueocean` kt
 
 W moim wypadku moje jednorazowe hasło to: `a1ec359498a34f89905b910d04a5604f`
 
+6. Po podaniu hasła w moim wypadku pojawiły się błędy związane z niepowodzeniem isntalacji kilku wtyczek
+
+<img width="990" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/6f81798b-7526-4eba-9d0f-77dfe32219f5">
 
