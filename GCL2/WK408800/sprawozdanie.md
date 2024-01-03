@@ -89,3 +89,33 @@ W moim wypadku moje jednorazowe hasło to: `a1ec359498a34f89905b910d04a5604f`
 
 <img width="990" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/6f81798b-7526-4eba-9d0f-77dfe32219f5">
 
+Po kliknięciu "Ponów" przeszło dalej
+
+7. Kreacja administratora
+
+<img width="990" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/81832a2e-b565-420f-92e8-6b7e8d9b9d3e">
+
+## Jenkins - tworzenie projektu
+
+1. Wybieramy opcję "Nowy projekt"
+
+Wybieramy Ogólny projekt i nadajemy mu nazwę
+
+<img width="954" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/640c0ea2-cf84-4479-b011-344a75db5ae8">
+
+
+2. Przechodzimy do zakładki "Budowanie" i podajemy komendy `whoami` oraz `ls`
+
+<img width="1374" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/e11e1b22-d0eb-4a1a-a35f-1d69074e1f82">
+
+Zapisujemy
+
+4. Uruchamiamy pipeline i sprawdzamy logi (klikamy Uruchom)
+
+<img width="1374" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/9548ae43-b18e-40a5-b0e0-b0a5b4702391">
+
+następnie przechodzimy w szczegóły zadania i widzimy wyniki poleceń `whoami` oraz `ls`
+
+<img width="1374" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/e8e5d5c7-d7ad-4a4c-8e73-37185df135d2">
+
+## Pipeline 
