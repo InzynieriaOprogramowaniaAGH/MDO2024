@@ -126,13 +126,14 @@ Dużą zalęta systemu jest to, że posiadamy pełnie infomracji o każdym przej
 1. Wprowadzenie teorytyczne:
 Pojęcie pipeline powiązane jest z praktyką CI/CD (continuous integration/continuous delivery), która ma na celu ułatwienia i automatyzacji procesu integracji/wdrażania/aktualziacji/dostarczania oprogramowania do użytkownika końcowego poprzez odpowiednie praktyki i narzędzia. Najczęściej graficznie prezentowany jest poprzez pętlę zdarzeń.
 Jednym z narzędzi stosowanych w CI/CD może być Jenkins wraz z jego pipeline dostarczania, czyli seria zautomatyzowanych etapów, kórych efektem końcowym może być dostarczenie działqającego i przetestowanego oprogramowania.
-Pipeline powinien w sposób przewidywalny i określony dostarczyć produkt końcowy.
+Pipeline powinien w sposób przewidywalny i określony dostarczyć produkt końcowy. Dzięki temu mamy eliminować błędy ludzkie oraz przyszpieszać cały proces.
+
 W nasyzm przypadku stworzymy jedynie prosty pipeline mający na celu końcowo stworzyć nam docker image zawierający naszą aplikację wybraną z repozytorium github.
-W tym celu stworzymy pipeline podzioelony na 4 etapy:
-- Build: otworzenie etapu z Dockerfile.builder, czyli instalcja zależności, sklonowanie repozytorium, budowa apliakcji,
-- Test: otworzenie etapu z Dockerfile.tester, cZyli uruchomienie testów wybudowanej apliakcji,
-- Deploy: otworzenie etapu z Dockerfile.deployer, czyli uruchomienie naszej apliakcji, ale dodatkowo oczyszczenie środowiska
-- Publish: stworzenie dokcer image naszej aplikacji
+W tym celu stworzymy pipeline podzielony na 4 etapy:
+- Build: uruchomienie Dockerfile.builder,
+- Test: uruchomienie Dockerfile.tester,
+- Deploy: uruchomienie Dockerfile.deployer, ale dodatkowo oczyszczenie środowiska
+- Publish: stworzenie docker image naszej aplikacji
 
 2. Prezentacja graficzna pipeline:
 ```mermaid
@@ -143,3 +144,53 @@ stateDiagram-v2
     Deploy --> Publish
     Publish --> [*]
 ```
+
+3. Budowa pipeline w Jennkins:
+Tworzymy nowy projekt typu pipeline:
+![Alt text](screenshot19.png)
+
+W Pipeline mamy pipeline script, w kórym będziemy zapisywać nasze etapy.
+W celu przetestowania naszego projektu możemy wybrać jeden z podstawowych dostępnych.
+Ja wybrałem Hello World, co oprócz testów daje mi również szkielet potrzebnego skryptu, który następnie będę rozbudowywać o kolejne etapy:
+![Alt text](screenshot20.png)
+
+Uruchamiamy teraz nasze zadanie i sprawdzamy logi (cały proces był opisany wyżej w Test działania Jenkins).
+Na ekranie pojawi się nam graficzny reprezentacja naszego zadania, który będzie pokazywał, które etapy przeszły.
+Znacząco ułątwia to proces wykrycia na którym etapie popełniliśmy błąd. Nazwa etapu jest oczywiście zależna od tego jak
+sami go nazwaliśmy.
+![Alt text](screenshot21.png)
+![Alt text](screenshot22.png)
+
+Możemy również odpalić bezpośrednio logi tylko z jednego etapu klikając logs na tym etapie:
+![Alt text](screenshot23.png)
+
+Teraz będziemy dodawać nasze etapy do skryptu.
+
+Pierwsza wersja skryptu zawierać etap build.
+W tym celu sprawdzamy czy jesteśmy na odpowiedniej gałęzi na naszym repo.
+Potem robimy pull, żeby na pewno korzystać z najnowszych dokcerfile.
+Czyścimy cache i nieużywane obrazy lokalnie na maszynie, żeby miec pewność, że tworzymy całkowicie nowe docker image.
+Następnie uruchamiamy dockerfile.build
+```bash
+stage('Build') {
+            steps {
+                cd /root/repo/MDO2024/
+                git checkout PF408912
+                git pull
+                cd GCL1/PF408912/lab4/app/
+                docker system prune -a --force
+                docker build -t 'nodejsdummybuilder' . -f ./Dockerfile.builder
+            }
+        }
+```
+Pipeline nie przeszedł prawidłowo, ponieważ nie użyliśmy odpowiedniej składni w naszym srypcie, o czy system nasz informuje po klinięciu zastosuj, dlatego warto to zrobić przed kliknięciem zapisz, które zamyka nam okno.
+Dodatkowo możemy również w każdym momencie zobaczyć logi poprzedniego uzycia pipeline i porównać różnice.
+![Alt text](screenshot24.png)
+
+Zmieniamy naszą składnię na oraz tym razem kolnujemy nasze repozytorium tak, by jenkins miał dostęp do wybranje ścieżki,
+nie ma dostępu do folderu root. Tym samym klonując za każdym razem repo musimy wpierw upewnić się, że już nie istnieje,
+w wypadku gdy hjuż jest usuwamy je.
+Musimy również wykorzytsać DIND czyli docker in docker co m,ożemy zrobić mapując mu usługe dokcer z hosta.
+
+
+
