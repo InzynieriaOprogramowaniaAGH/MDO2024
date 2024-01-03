@@ -1,0 +1,15 @@
+FROM nginx:alpine
+
+ARG BUILD_TAG
+
+# Set the working directory for copying the static files
+WORKDIR /usr/share/nginx/html
+
+# Copy the static files from the build image specified by BUILD_TAG
+COPY --from=${BUILD_TAG} /coderpeak-palindrom/dist .
+
+# Expose port 80 for Nginx
+EXPOSE 80
+
+# Start Nginx when the container starts
+CMD ["nginx", "-g", "daemon off;"]

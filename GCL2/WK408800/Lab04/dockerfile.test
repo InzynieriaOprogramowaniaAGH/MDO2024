@@ -1,0 +1,5 @@
+FROM palindrom-bullseye-build
+
+# CMD ["npm", "run", "test:unit"]
+
+RUN npm run test:unit
