@@ -95,3 +95,51 @@ Hasło będzie również dostępne w logach kontenera:
 Po stworzeniu stałego hasła dla admina otrzymujemy dostęp do aplikacji, gdzie możemy stworzyć nasz pierwszy pipeline:
 ![Alt text](screenshot10.png)
 
+## Test działania Jenkins, wykonanie poleceń uname i whoami
+Tworzymy pierwszy projekt ogólny nazwny u mnie devops.
+W projekcie w zakładce wyzwalacze budowania dodajemy kroki budowania.
+Wybieramy uruchom powłokę, w której następnie możemy wpisać interesujące nasz komendy.
+![Alt text](screenshot13.png)
+
+Zapisujemy zmiany i uruchamiamy nasz projekt.
+Projekt uruchamiamy przycysikiem uruchom w lewym panelu, gdzie wczęśniej wchodziliśmy w konfigurację projektu.
+![Alt text](screenshot14.png)
+
+Po uruchomieniu projektu po pewnym czasie zadania projektu się wykonają i pojawi nam się informacja o prawidłowym
+przejściu zadania, jeśli Jenkins nie napotkał żadnych błędów. Sprawdzamy logi naszego zadania, w tym celu klikamy osattnie zadanie na głównym ekranie lub wybieramy nasze wywołanie z histori zadań, w ywpadku tego drugiego od razu możemy przejść na logi konsoli.
+Opcja 1:
+![Alt text](screenshot15.png)
+![Alt text](screenshot17.png)
+
+Opcja 2:
+![Alt text](screenshot16.png)
+
+W logach możemy zobaczyć jak Jenkins byuduje nasze środowisko i wywołuje wskazane komendy.
+![Alt text](screenshot18.png)
+
+Dużą zalęta systemu jest to, że posiadamy pełnie infomracji o każdym przejściu naszego zadania/pipeline, czyli m.in.:
+- date
+- status
+- osobę, która uruchomiła zadanie.
+
+## Tworzymy pipeline w Jenkins
+1. Wprowadzenie teorytyczne:
+Pojęcie pipeline powiązane jest z praktyką CI/CD (continuous integration/continuous delivery), która ma na celu ułatwienia i automatyzacji procesu integracji/wdrażania/aktualziacji/dostarczania oprogramowania do użytkownika końcowego poprzez odpowiednie praktyki i narzędzia. Najczęściej graficznie prezentowany jest poprzez pętlę zdarzeń.
+Jednym z narzędzi stosowanych w CI/CD może być Jenkins wraz z jego pipeline dostarczania, czyli seria zautomatyzowanych etapów, kórych efektem końcowym może być dostarczenie działqającego i przetestowanego oprogramowania.
+Pipeline powinien w sposób przewidywalny i określony dostarczyć produkt końcowy.
+W nasyzm przypadku stworzymy jedynie prosty pipeline mający na celu końcowo stworzyć nam docker image zawierający naszą aplikację wybraną z repozytorium github.
+W tym celu stworzymy pipeline podzioelony na 4 etapy:
+- Build: otworzenie etapu z Dockerfile.builder, czyli instalcja zależności, sklonowanie repozytorium, budowa apliakcji,
+- Test: otworzenie etapu z Dockerfile.tester, cZyli uruchomienie testów wybudowanej apliakcji,
+- Deploy: otworzenie etapu z Dockerfile.deployer, czyli uruchomienie naszej apliakcji, ale dodatkowo oczyszczenie środowiska
+- Publish: stworzenie dokcer image naszej aplikacji
+
+2. Prezentacja graficzna pipeline:
+```mermaid
+stateDiagram-v2
+    [*] --> Build
+    Build --> Test
+    Test --> Deploy
+    Deploy --> Publish
+    Publish --> [*]
+```
