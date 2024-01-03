@@ -47,12 +47,11 @@ docker run \
 
 3. Uruchamiamy kontener z jenkinsem z wtyczką blueocean
 
----Obraz Jenkins BlueOcean różni się od standardowego obrazu Jenkinsa tym, że ma wstępnie zainstalowaną wtyczkę Blue Ocean, która oferuje nowoczesny interfejs użytkownika do zarządzania Jenkinsem---
+~~Obraz Jenkins BlueOcean różni się od standardowego obrazu Jenkinsa tym, że ma wstępnie zainstalowaną wtyczkę Blue Ocean, która oferuje nowoczesny interfejs użytkownika do zarządzania Jenkinsem~~
 
 Okazuje się że obraz jenkinsci/blueocean jest nie rozwijany od ponad roku, a sam Jenkins mówi w dokumentacji. Problem zauważyłem w trakcie tworzenia pipeline (masa niewspieranych pluginów), nie mniej poza tą komendą, reszta kroków pozostaje taka sama.
 
 <img width="853" alt="image" src="https://github.com/InzynieriaOprogramowaniaAGH/MDO2024/assets/39913427/fc7e3a0e-dd47-4bdf-8d03-616e27d8fa91">
-
 
 Następnie uruchamiamy ten obraz
 
