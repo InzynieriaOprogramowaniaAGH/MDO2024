@@ -57,3 +57,14 @@ services:
       - $HOME:/home
     environment:
       - DOCKER_TLS_CERTDIR=/certs
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    networks:
+      - docker
+    ports:
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/certs:ro
