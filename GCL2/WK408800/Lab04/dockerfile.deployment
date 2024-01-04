@@ -6,7 +6,7 @@ ARG buildtag
 WORKDIR /usr/share/nginx/html
 
 # Copy the static files from the build image specified by BUILD_TAG
-COPY --from=${buildtag} /coderpeak-palindrom/dist .
+COPY --from=build-29 /coderpeak-palindrom/dist .
 
 # Expose port 80 for Nginx
 EXPOSE 80
