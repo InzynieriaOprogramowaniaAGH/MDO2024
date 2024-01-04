@@ -2,8 +2,10 @@ pipeline {
     agent any
     
     environment {
-        BUILD_TAG = "build_${BUILD_NUMBER}"
-        DEPLOY_TAG = "deploy_${BUILD_NUMBER}"
+        // BUILD_TAG = "build_${BUILD_NUMBER}"
+        // DEPLOY_TAG = "deploy_${BUILD_NUMBER}"
+        BUILD_TAG = "build_29"
+        DEPLOY_TAG = "deploy_29"
     }
 
     stages {
@@ -21,7 +23,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                dir('MD02024/GCL2/WK408800/Lab04') {
+                dir('MDO2024/GCL2/WK408800/Lab04') {
                     sh "docker build -t ${BUILD_TAG} . -f dockerfile.build"
                 }
             }
@@ -29,14 +31,22 @@ pipeline {
         
         stage('Deployment') {
             steps {
-                dir('MD02024/GCL2/WK408800/Lab04') {
-                   sh "docker build -t ${DEPLOY_TAG} --build-arg BUILD_TAG=${BUILD_TAG} . -f Dockerfile.deployment"
-                   sh 'docker stop vue-app || true'  // Stop the previous container if it exists
-                   sh 'docker rm vue-app || true'    // Remove the previous container if it exists
-                   sh "docker run -d -p 3030:80 --name vue-app ${DEPLOY_TAG}"
+                dir('MDO2024/GCL2/WK408800/Lab04') {
+                  sh "docker build -t ${DEPLOY_TAG} --build-arg buildtag=build-29 . -f dockerfile.deployment"
+                  sh 'docker stop vue-app || true'  // Stop the previous container if it exists
+                  sh 'docker rm vue-app || true'    // Remove the previous container if it exists
+                  sh "docker run -d -p 3030:80 --name vue-app ${DEPLOY_TAG}"
                 }
             }
         }
     }
     
+     post {
+        always {
+            echo 'Cleaning up...'
+            // Tutaj umieść swoje polecenia czyszczące, np.:
+            cleanWs() // Standardowe polecenie Jenkins do czyszczenia workspace
+            // Możesz także dodać inne polecenia, np. do usuwania starych obrazów Docker, kontenerów itp.
+        }
+    }
 }
