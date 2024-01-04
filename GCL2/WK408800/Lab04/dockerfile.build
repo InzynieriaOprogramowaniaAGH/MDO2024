@@ -1,4 +1,6 @@
-FROM node:14-bullseye
+FROM node:14-alpine3.17
+
+RUN apk update && apk add git
 
 RUN git clone https://github.com/Kozioleczek/coderpeak-palindrom.git
 
