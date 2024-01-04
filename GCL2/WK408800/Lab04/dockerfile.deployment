@@ -2,13 +2,16 @@
 FROM nginx:alpine
 
 # Argument BUILD_TAG, który zostanie przekazany podczas budowania
-ARG buildtag
+ARG BUILD_TAG_NAME
+
+# Lifehack
+FROM $BUILD_TAG_NAME as buildtag
 
 # Informacje o używanym tagu (opcjonalnie, dla celów informacyjnych)
 RUN echo "Using build tag: $buildtag"
 
 # Kopiuj statyczne pliki z innego obrazu (zakładając, że ten obraz istnieje i ma odpowiednie pliki)
-COPY --from=$buildtag /coderpeak-palindrom/dist /usr/share/nginx/html
+COPY --from=buildtag /coderpeak-palindrom/dist /usr/share/nginx/html
 
 # Opcjonalnie: eksponuj port 80
 EXPOSE 80
