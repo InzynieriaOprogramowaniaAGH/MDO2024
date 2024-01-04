@@ -1,10 +1,12 @@
 FROM nginx:alpine AS nginx
 
+ARG buildtag
+
 # Set the working directory for copying the static files
 WORKDIR /usr/share/nginx/html
 
 # Copy the static files from the build image specified by BUILD_TAG
-COPY --from=build_29 /coderpeak-palindrom/dist .
+COPY --from=${buildtag} /coderpeak-palindrom/dist .
 
 # Expose port 80 for Nginx
 EXPOSE 80
