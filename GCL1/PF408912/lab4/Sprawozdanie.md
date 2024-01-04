@@ -49,6 +49,7 @@ który uruchomi naszą apliakcję z obrazu stowrzonego przez Dockerfile.builder:
 ```bash
 FROM nodejsdummybuilder:latest
 
+EXPOSE 3000
 CMD ["npm", "start"]
 ```
 W tym celu użyłem dokumentacji zawartej na stronie github wybranej aplikacji.
@@ -223,25 +224,12 @@ stage('Test') {
         }
 ```
 
-Następny etap deploy jest bardziej rozbudowany, oprócz stworzenia obrazu na bazie dockerfile.deploy, uruchomimy naszą apliakcję, sprawdzimy jej działanie z użyciem drugiej metody pokazanej w sprawozdaniu(Testowanie budowania skonteneryzowanej apliakcji z naszego obrazu), czyli komendy curl localhost:3000.
-Na tem moment deploy wygląda tak:
-```bash
-stage('Deploy') {
-            steps{
-                dir('MDO2024/GCL1/PF408912/lab4/app/'){
-                    sh 'docker build -t nodejsdummydeployer . -f ./Dockerfile.deployer'
-                }
-                sh 'docker run -d -p 3000:3000 nodejsdummydeployer'
-                sh 'curl localhost:3000'
-            }
-        }
-```
-Gdy uruchomimy nasz pipeline na tym etapie wyrzuci błąd:
-![Alt text](screenshot26.png)
-
-Przypuściłem, że skoro uruchomienie kontenera z obrazu się powiodło to być może muszę odczekać parę sekund na uruchomienie się apliakcji w kontenerze, dodatkowo dodałem komendę docker ps, by móc zobaczyć uruchomiony kontener.
+Następny etap deploy jest bardziej rozbudowany, oprócz stworzenia obrazu na bazie dockerfile.deploy, uruchomimy naszą apliakcję, sprawdzimy jej działanie wykorzystując logi aplikacji (serwer ma się uruchomić na porcie 3000).
+dodatkowo dodałem komendę docker ps, by móc zobaczyć uruchomiony kontener.
 Dodatkowo musze ręcznie wyłączyć kontener, który zajmuje teraz port, więc dodam do deploy również zatrzymanie kontenera.
 W tym celu przy uruchamianiu kontenera dodam mu nazwę, której będę mógł użyć później do jego zatrzymania i usuniecia.
+Musimy też dodać postój, żeby serwer apliakcji zdążył się załączyć.
+Na tem moment deploy wygląda tak:
 ```bash
 stage('Deploy') {
             steps{
@@ -251,11 +239,14 @@ stage('Deploy') {
                 sh 'docker run --name myapp -d -p 3000:3000 nodejsdummydeployer'
                 sh 'docker ps'
                 sh 'sleep 10'
-                sh 'curl localhost:3000'
+                sh 'docker logs myapp'
                 sh 'docker stop myapp'
+                sh 'docker rm myapp'
             }
         }
 ```
+Widzimy w logach, że faktycznie serwer naszej aplikacji pracuje:
+![Alt text](screenshot26.png)
 
 
 
