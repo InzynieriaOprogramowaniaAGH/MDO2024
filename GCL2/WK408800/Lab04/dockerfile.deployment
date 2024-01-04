@@ -1,17 +1,17 @@
-FROM nginx:alpine AS nginx
+# Wykorzystaj obraz nginx:alpine jako bazowy
+FROM nginx:alpine
 
-ARG buildtag
+# Argument BUILD_TAG, który zostanie przekazany podczas budowania
+ARG BUILDTAG
 
-# Set the working directory for copying the static files
-WORKDIR /usr/share/nginx/html
+# Informacje o używanym tagu (opcjonalnie, dla celów informacyjnych)
+RUN echo "Using build tag: $BUILDTAG"
 
-RUN echo "buildtag = $buildtag"
+# Kopiuj statyczne pliki z innego obrazu (zakładając, że ten obraz istnieje i ma odpowiednie pliki)
+COPY --from=$BUILDTAG /coderpeak-palindrom/dist /usr/share/nginx/html
 
-# Copy the static files from the build image specified by BUILD_TAG
-COPY --from="$buildtag" /coderpeak-palindrom/dist .
-
-# Expose port 80 for Nginx
+# Opcjonalnie: eksponuj port 80
 EXPOSE 80
 
-# Start Nginx when the container starts
+# Uruchomienie Nginx w trybie pierwszoplanowym
 CMD ["nginx", "-g", "daemon off;"]
