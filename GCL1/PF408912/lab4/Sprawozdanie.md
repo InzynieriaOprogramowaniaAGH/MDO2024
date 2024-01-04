@@ -79,6 +79,9 @@ Która wyświetli nam zawartość pliku index dla naszej aplikacji:
 ## Instalacja Jenkins
 Instalację jenkins z użyciem docker jest dokładnie opisane na stronie producenta:
 https://www.jenkins.io/doc/book/installing/docker/
+Na początku tworzymy docker network o nazwie jenkins.
+Później uruchamiamy kontener DIND, który jest konieczny do korzystania z docker w naszym Jenkins.
+DIND czyli docker in docker to metoda korzystania w kontenerze z usługi docker z hosta Jenkinsa, bez tego wywoływanie docker w Jenkins będzie się kończyć błędami.
 Na stronie znajduje się punkcie 4a znajduje się dockerfile użyty przeze mnie do budowy obrazu i umiesczony na repo pod nazwą dockerfile.
 ![Alt text](screenshot8.png)
 Na stronie jest również opis uruchomeinia Jenkinsa z własnego obrazu.
