@@ -135,8 +135,8 @@ W nasyzm przypadku stworzymy jedynie prosty pipeline mający na celu końcowo st
 W tym celu stworzymy pipeline podzielony na 4 etapy:
 - Build: uruchomienie Dockerfile.builder,
 - Test: uruchomienie Dockerfile.tester,
-- Deploy: uruchomienie Dockerfile.deployer, ale dodatkowo oczyszczenie środowiska
-- Publish: stworzenie docker image naszej aplikacji
+- Deploy: uruchomienie Dockerfile.deployer, sprawdzenie działania aplikacji oraz przygotowanie "czystego obrazu apliakcji",
+- Publish: wrzucenie naszego obrazu docker z apliakcją na dockerHub.
 
 2. Prezentacja graficzna pipeline:
 ```mermaid
@@ -190,10 +190,77 @@ Pipeline nie przeszedł prawidłowo, ponieważ nie użyliśmy odpowiedniej skła
 Dodatkowo możemy również w każdym momencie zobaczyć logi poprzedniego uzycia pipeline i porównać różnice.
 ![Alt text](screenshot24.png)
 
-Zmieniamy naszą składnię na oraz tym razem kolnujemy nasze repozytorium tak, by jenkins miał dostęp do wybranje ścieżki,
-nie ma dostępu do folderu root. Tym samym klonując za każdym razem repo musimy wpierw upewnić się, że już nie istnieje,
-w wypadku gdy hjuż jest usuwamy je.
-Musimy również wykorzytsać DIND czyli docker in docker co m,ożemy zrobić mapując mu usługe dokcer z hosta.
+Zmieniamy naszą składnię na odpowiednią do skryptów Jenkins oraz tym razem klonujemy nasze repozytorium tak, by jenkins miał do niego dostęp (nie ma dostępu do repo w folderze root).
+Tym samym klonując za każdym razem repo musimy wpierw upewnić się, że już nie istnieje, w wypadku gdy już jest usuwamy je.
+Zawsze usytawiamy się na naszym branch w repozytorium.
+Również, żeby mieć pewność, że zawsze korzystamy z odpowiednich komponentów "czyścimy naszego dockera" z nieużywanch zasobów, czyli m.in z obrazów, które mogliśmy wygenerować w wcześniejszych przebiegach pipeline.
+Finalnie nasz pierwszy etap wygląda tak:
+```bash
+stage('Build') {
+            steps {
+                sh 'if [ -d MDO2024 ]; then rm -rf MDO2024; fi'
+                sh 'git clone https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git'
+                dir('MDO2024'){
+                    sh 'git checkout PF408912'
+                }
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker system prune -a --force'
+                    sh 'docker build -t nodejsdummybuilder . -f ./Dockerfile.builder'
+                }
+            }
+        }
+```
+![Alt text](screenshot25.png)
+
+W kolejnym etapie użyjemy dockerfile.tester, by sprawdzić, czy nasz obraz z poprzedniego etapu przejdzie testy:
+```bash
+stage('Test') {
+            steps{
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker build -t nodejsdummytester . -f ./Dockerfile.tester'
+                }
+            }
+        }
+```
+
+Następny etap deploy jest bardziej rozbudowany, oprócz stworzenia obrazu na bazie dockerfile.deploy, uruchomimy naszą apliakcję, sprawdzimy jej działanie z użyciem drugiej metody pokazanej w sprawozdaniu(Testowanie budowania skonteneryzowanej apliakcji z naszego obrazu), czyli komendy curl localhost:3000.
+Na tem moment deploy wygląda tak:
+```bash
+stage('Deploy') {
+            steps{
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker build -t nodejsdummydeployer . -f ./Dockerfile.deployer'
+                }
+                sh 'docker run -d -p 3000:3000 nodejsdummydeployer'
+                sh 'curl localhost:3000'
+            }
+        }
+```
+Gdy uruchomimy nasz pipeline na tym etapie wyrzuci błąd:
+![Alt text](screenshot26.png)
+
+Przypuściłem, że skoro uruchomienie kontenera z obrazu się powiodło to być może muszę odczekać parę sekund na uruchomienie się apliakcji w kontenerze, dodatkowo dodałem komendę docker ps, by móc zobaczyć uruchomiony kontener.
+Dodatkowo musze ręcznie wyłączyć kontener, który zajmuje teraz port, więc dodam do deploy również zatrzymanie kontenera.
+W tym celu przy uruchamianiu kontenera dodam mu nazwę, której będę mógł użyć później do jego zatrzymania i usuniecia.
+```bash
+stage('Deploy') {
+            steps{
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker build -t nodejsdummydeployer . -f ./Dockerfile.deployer'
+                }
+                sh 'docker run --name myapp -d -p 3000:3000 nodejsdummydeployer'
+                sh 'docker ps'
+                sh 'sleep 10'
+                sh 'curl localhost:3000'
+                sh 'docker stop myapp'
+            }
+        }
+```
+
+
+
+
+
 
 
 
