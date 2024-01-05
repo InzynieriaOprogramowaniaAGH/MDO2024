@@ -14,7 +14,8 @@ Następnie wykonano polecenie przesłania na zdalną maszynę klucza przy pomocy
 Instalacja Ansible wykonano przy pomocy komendy sudo dnf install ansible.
 ![photo2.png](photo2.png)
 Następnie stworzono folder o nazwie 'ansible' w katalogu domowym oraz plik inventory.ini, w którym definiujemy grupy hostów. 
-W celu sprawdzenia połączenia Ansible skorzystano z narzędzia ping wbudowanego w Ansible, który sprawdza wszystkie hosty zdefiniowane w pliku inventory.ini. Polecenia te przestawiono poniżej na zdjęciu.
+W celu sprawdzenia połączenia Ansible skorzystano z narzędzia ping wbudowanego w Ansible, który sprawdza wszystkie hosty zdefiniowane w pliku inventory.ini. Polecenia te przestawiono poniżej na zdjęciu. 
+
 ![photo3.png](photo3.png)
 
 ## Tworzenie playbooków
