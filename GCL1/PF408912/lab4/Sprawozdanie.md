@@ -286,6 +286,15 @@ W naszym repozytorium tworzymy Jenkinsfile, w którym umieszczamy cały utowrzon
 Teraz zmieniamy konfigurację naszego projektu pipeline, umieszczamy link do naszego repozytorium, wybieramy nasz branch oraz wskazujemy ścieżke do pliku:
 ![Alt text](screenshot33.png)
 
+Jak widzimy przejście między pipeline script, a Jenkinsfile z naszego repozytorium różni się.
+Ten drugi posiada na początku dodatkowy krok w postaci Checkout SCM, który ma na celu uzyskać nasz plik z repozytorium.
+
+Przejście na pipeline script:
+![Alt text](screenshot35.png)
+
+Przejście na podstawie pobranego z repozytorium Jenkinsfile:
+![Alt text](screenshot34.png)
+
 5. Test gotowej skonteneryzowanej aplkiacji na Docker Hub
 Całość testu wykonam na drugiej maszynie wirtualnie - devops-fedora.
 
