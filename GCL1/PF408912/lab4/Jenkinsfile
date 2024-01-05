@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'if [ -d MDO2024 ]; then rm -rf MDO2024; fi'
+                sh 'git clone https://github.com/InzynieriaOprogramowaniaAGH/MDO2024.git'
+                dir('MDO2024'){
+                    sh 'git checkout PF408912'
+                }
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker system prune -a --force'
+                    sh 'docker build -t nodejsdummybuilder . -f ./Dockerfile.builder'
+                }
+            }
+        }
+        stage('Test') {
+            steps{
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker build -t nodejsdummytester . -f ./Dockerfile.tester'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps{
+                dir('MDO2024/GCL1/PF408912/lab4/app/'){
+                    sh 'docker build -t nodejsdummydeployer . -f ./Dockerfile.deployer'
+                }
+                sh 'docker run --name myapp -d -p 3000:3000 nodejsdummydeployer'
+                sh 'docker ps'
+                sh 'sleep 10'
+                sh 'docker logs myapp'
+                sh 'docker stop myapp'
+                sh 'docker rm myapp'
+            }
+        }
+        stage('Publish') {
+            steps{
+                sh 'docker tag nodejsdummydeployer patrykfialkowski/getting-started'
+                sh 'docker push patrykfialkowski/getting-started'
+            }
+        }
+    }
+}

@@ -45,7 +45,7 @@ docker build -t 'nodejsdummytester' . -f ./Dockerfile.tester
 ![Alt text](screenshot3.png)
 
 Mając gotowy i przetestowany obraz apliakcji tworzymy teraz kolejny plik dockerfile -> Dockerfile.deployer,
-który uruchomi naszą apliakcję z obrazu stowrzonego przez Dockerfile.builder:
+który stworzy obraz z uruchomioną naszą apliakcję z obrazu stowrzonego przez Dockerfile.builder:
 ```bash
 FROM nodejsdummybuilder:latest
 
@@ -65,7 +65,7 @@ Mając obraz wybudowany z naszego pliku odpalamy nasz kontener:
 docker run -d -p 3000:3000 nodejsdummydeployer
 ```
 Flaga d odpala naszą komendę jako demon - odpowiednik serwisu z systemu Windows, dzięki czemu nie blokujemy sobie pracy w terminalu.
-Flaga p służy wskazaniu portów: wewnętrznego w samym kontenerze i zewnętrnzego, który będzie nam potrzeby, by sprawdzić aplikację na hoście maszyny wirtualnej.
+Flaga p służy wskazaniu przekierowania portów: wewnętrznego w samym kontenerze na zewnętrzny, który będzie nam potrzeby, by sprawdzić aplikację w przeglądarce i w konsoli na hoście kontenera.
 ![Alt text](screenshot5.png)
 
 Możemy teraz w przeglądarce sprawdzić działanie naszej wdrożonej aplikacji:
@@ -83,9 +83,9 @@ https://www.jenkins.io/doc/book/installing/docker/
 Na początku tworzymy docker network o nazwie jenkins.
 Później uruchamiamy kontener DIND, który jest konieczny do korzystania z docker w naszym Jenkins.
 DIND czyli docker in docker to metoda korzystania w kontenerze z usługi docker z hosta Jenkinsa, bez tego wywoływanie docker w Jenkins będzie się kończyć błędami.
-Na stronie znajduje się punkcie 4a znajduje się dockerfile użyty przeze mnie do budowy obrazu i umiesczony na repo pod nazwą dockerfile.
+Na stronie znajduje się w punkcie 4a dockerfile użyty przeze mnie do budowy obrazu i umiesczony na repo pod nazwą dockerfile.
 ![Alt text](screenshot8.png)
-Na stronie jest również opis uruchomeinia Jenkinsa z własnego obrazu.
+Uruchamiamy Jenkinsa z własnego utworzonego obrazu.
 W moim wypadku Jenikns udostepniony jest na porcie 8080.
 ![Alt text](screenshot9.png)
 
@@ -127,6 +127,8 @@ Dużą zalęta systemu jest to, że posiadamy pełnie infomracji o każdym przej
 - osobę, która uruchomiła zadanie.
 
 ## Tworzymy pipeline w Jenkins
+!Dalsza część sprawozdania tworzona była w oparciu o nowe kontenery Jenkins i dind, w związku z tym, że na wcześniejszych kontenerach Jenkins nie nie miał dostępu do usługi docker z swojego hosta. W związku z tym ponownie wykonałem całość operacji instalacji jenkinsa na dockerze z strony producenta.
+
 1. Wprowadzenie teorytyczne:
 Pojęcie pipeline powiązane jest z praktyką CI/CD (continuous integration/continuous delivery), która ma na celu ułatwienia i automatyzacji procesu integracji/wdrażania/aktualziacji/dostarczania oprogramowania do użytkownika końcowego poprzez odpowiednie praktyki i narzędzia. Najczęściej graficznie prezentowany jest poprzez pętlę zdarzeń.
 Jednym z narzędzi stosowanych w CI/CD może być Jenkins wraz z jego pipeline dostarczania, czyli seria zautomatyzowanych etapów, kórych efektem końcowym może być dostarczenie działqającego i przetestowanego oprogramowania.
@@ -136,8 +138,8 @@ W nasyzm przypadku stworzymy jedynie prosty pipeline mający na celu końcowo st
 W tym celu stworzymy pipeline podzielony na 4 etapy:
 - Build: uruchomienie Dockerfile.builder,
 - Test: uruchomienie Dockerfile.tester,
-- Deploy: uruchomienie Dockerfile.deployer, sprawdzenie działania aplikacji oraz przygotowanie "czystego obrazu apliakcji",
-- Publish: wrzucenie naszego obrazu docker z apliakcją na dockerHub.
+- Deploy: uruchomienie Dockerfile.deployer oraz sprawdzenie działania aplikacji,
+- Publish: wrzucenie naszego obrazu na docker hub albo pakietu do npm registry.
 
 2. Prezentacja graficzna pipeline:
 ```mermaid
@@ -247,6 +249,65 @@ stage('Deploy') {
 ```
 Widzimy w logach, że faktycznie serwer naszej aplikacji pracuje:
 ![Alt text](screenshot26.png)
+
+W ramach etapu Publish również możemy wykonać różne działania.
+Pierwszą opcją, którą wykorzystam jest wrzucenie mojego docker image powstałego w poprzednim etapie na Docker Hub.
+Całość procesu jest opisania tutaj:
+https://docs.docker.com/get-started/04_sharing_app/
+
+Pierwszę co musimy zrobić to stworzyć nasze repozytorium na Docker Hub:
+![Alt text](screenshot27.png)
+
+Na stronie mamy gotową komendę do wrzucania nowych tagów na nasze repozytorium, w ten sposób będziemy mogli dodać obraz naszej apliakcji.
+Logujemy się na naszym Jenkins na konto Docker Hub:
+![Alt text](screenshot28.png)
+
+Teraz możemy tworzyć na etap public:
+```bash
+stage('Publish') {
+            steps{
+                sh 'docker tag nodejsdummydeployer patrykfialkowski/getting-started'
+                sh 'docker push patrykfialkowski/getting-started'
+            }
+        }
+```
+Nie dodajemy tutaj tagu po dwukropoku, ponieważ chcmemy korzystać z latest naszego obrazu i nie dodając tagu dla naszego tepozytorium na Docker Hub nasz obraz do wrzucenia wyświetlany będzie jako latest, gdybyśmy chcieli wskazać
+konkretną wersję to dalibyśmy np:
+```bash
+docker tag nodejsdummydeployer patrykfialkowski/getting-started:1.0
+docker push patrykfialkowski/getting-started:1.0
+```
+
+Teraz przechodząc na stronę Docker Hub odświeżamy nasze repozytorium i widzimy nasz docker image:
+![Alt text](screenshot29.png)
+
+4. Tworzenie Jenkinsfile
+W naszym repozytorium tworzymy Jenkinsfile, w którym umieszczamy cały utowrzony pipeline script.
+Teraz zmieniamy konfigurację naszego projektu pipeline, umieszczamy link do naszego repozytorium, wybieramy nasz branch oraz wskazujemy ścieżke do pliku:
+![Alt text](screenshot33.png)
+
+5. Test gotowej skonteneryzowanej aplkiacji na Docker Hub
+Całość testu wykonam na drugiej maszynie wirtualnie - devops-fedora.
+
+W Docker Hub w zakładce Tags naszego repozytorium znajdziemy komendę na ściągniecie naszego obrazu na serwer:
+![Alt text](screenshot30.png)
+
+Komenda:
+```bash
+docker pull patrykfialkowski/getting-started:latest
+```
+
+![Alt text](screenshot31.png)
+
+Odpalamy nasz kontener i sprawdzamy w przeglądarce, czy nasza apliakcja działa.
+Odpalanie kontenera z obrazu z apliakcją było pokazane w sprawozadaniu w Testowanie budowania skonteneryzowanej apliakcji z naszego obrazu.
+```bash
+docker run -d -p 3000:3000 patrykfialkowski/getting-started
+```
+![Alt text](screenshot32.png)
+
+Jak widzimy aplikacja działa.
+
 
 
 
