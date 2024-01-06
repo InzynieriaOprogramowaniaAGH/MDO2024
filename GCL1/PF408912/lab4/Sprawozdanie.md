@@ -143,12 +143,11 @@ W tym celu stworzymy pipeline podzielony na 4 etapy:
 
 2. Prezentacja graficzna pipeline:
 ```mermaid
-pipeLineDiagram;
-    [*] --> Build
-    Build --> Test
-    Test --> Deploy
-    Deploy --> Publish
-    Publish --> [*]
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
 ```
 
 3. Budowa pipeline w Jennkins:
