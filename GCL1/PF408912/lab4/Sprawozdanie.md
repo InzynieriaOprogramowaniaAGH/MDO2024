@@ -318,7 +318,7 @@ Jak widzimy aplikacja działa.
 ## Graficzne podsumowanie procesu
 ```mermaid
 graph TD;
-    Checkout SCM-->Build;
+    CheckoutSCM-->Build;
     Build-->Test;
     Build-->Deploy;
     Test-->Deploy;
