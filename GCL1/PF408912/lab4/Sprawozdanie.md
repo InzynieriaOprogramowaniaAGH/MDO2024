@@ -319,7 +319,9 @@ Jak widzimy aplikacja działa.
 
 ## Graficzne podsumowanie procesu
 ```mermaid
-    [*] --> Build
+stateDiagram-v2
+    [*] --> Checkout SCM (proces uzyskania pliku Jenkins z repo)
+    Checkout SCM -> Build (Ściągniecie repozytium apliakcji, "instalacja" apliakcji)
     Build --> Test
     Test --> Deploy
     Deploy --> Publish
