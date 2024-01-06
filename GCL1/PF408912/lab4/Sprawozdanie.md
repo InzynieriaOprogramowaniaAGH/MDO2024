@@ -339,22 +339,22 @@ sequenceDiagram
     Build ->> Build: clean Docker image, conatiner etc
     Build ->> Dockerfile.builder: use Dockerfile.builder
     Dockerfile.builder ->> Dockerfile.builder: start from node:16-alpine
-    DockerfileBuilder ->> Dockerfile.builder: install git
-    DockerfileBuilder ->> Dockerfile.builder: clone Repo to get app
-    DockerfileBuilder ->> Dockerfile.builder: build app
-    DockerfileBuilder ->> Build: docker image nodejsdummybuilder
+    Dockerfile.builder ->> Dockerfile.builder: install git
+    Dockerfile.builder ->> Dockerfile.builder: clone Repo to get app
+    Dockerfile.builder ->> Dockerfile.builder: build app
+    Dockerfile.builder ->> Build: docker image nodejsdummybuilder
     Build ->> Test: docker image nodejsdummybuilder
     Build ->> Deploy: docker image nodejsdummybuilder
     Build ->> Test: next 
     Test ->> Dockerfile.test: use Dockerfile.tester
-    DockerfileTester ->> Dockerfile.tester: start from nodejsdummybuilder
-    DockerfileTester ->> Dockerfile.tester: run test
-    DockerfileTester ->> Test: docker image nodejsdummytester
+    Dockerfile.tester ->> Dockerfile.tester: start from nodejsdummybuilder
+    Dockerfile.tester ->> Dockerfile.tester: run test
+    Dockerfile.tester ->> Test: docker image nodejsdummytester
     Test ->> Deploy: next
     Deploy ->> Dockerfile.deployer: use Dockerfile.deployer
-    DockerfileDeployer ->> Dockerfile.deployer: start from nodejsdummybuilder
-    DockerfileDeployer ->> Dockerfile.deployer: run app
-    DockerfileDeployer ->> Deploy: docker image nodejsdummydeployer
+    Dockerfile.deployer ->> Dockerfile.deployer: start from nodejsdummybuilder
+    Dockerfile.deployer ->> Dockerfile.deployer: run app
+    Dockerfile.deployer ->> Deploy: docker image nodejsdummydeployer
     Deploy ->> Deploy: check app is running
     Deploy ->> Publish: next
     Publish ->> Publish: tag nodejsdummydeployer to Docker Hub repo
