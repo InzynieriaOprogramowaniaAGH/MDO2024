@@ -1,0 +1,3 @@
+FROM nodejsdummybuilder:latest
+
+RUN npm test
