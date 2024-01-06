@@ -326,13 +326,21 @@ graph TD;
 ```
 ```mermaid
 sequenceDiagram
+    CheckoutSCM CheckoutSCM
+    participant Build
+    participant Dockerfile.builder
+    participant Test
+    participant Dockerfile.tester
+    participant Deploy
+    participant Dockerfile.deployer
+    participant Publish
     CheckoutSCM ->> CheckoutSCM: clone Repo to get Jenkinsfile
     CheckoutSCM ->> Build: next step
     Build ->> Build: clone Repo to get Dockerfiles
     Build ->> Build: set branch PF408912 in repo
     Build ->> Build: clean Docker image, conatiner etc
     Build ->> Dockerfile.builder: use Dockerfile.builder
-    DockerfileBuilder: ->> Dockerfile.builder: start from node:16-alpine
+    Dockerfile.builder: ->> Dockerfile.builder: start from node:16-alpine
     DockerfileBuilder: ->> Dockerfile.builder: install git
     DockerfileBuilder: ->> Dockerfile.builder: clone Repo to get app
     DockerfileBuilder: ->> Dockerfile.builder: build app
