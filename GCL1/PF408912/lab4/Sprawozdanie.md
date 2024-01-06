@@ -143,7 +143,7 @@ W tym celu stworzymy pipeline podzielony na 4 etapy:
 
 2. Prezentacja graficzna pipeline:
 ```mermaid
-graph pipeline;
+graph TD;
     Build-->Test;
     Test-->Deploy;
     Deploy-->Publish;
@@ -317,14 +317,12 @@ Jak widzimy aplikacja działa.
 
 ## Graficzne podsumowanie procesu
 ```mermaid
-finalDiagram;
-    [*] --> Checkout SCM
-    Checkout SCM -> Build
-    Build --> Test
-    Build --> Deploy
-    Test --> Deploy
-    Deploy --> Publish
-    Publish --> [*]
+graph TD;
+    Checkout SCM-->Build;
+    Build-->Test;
+    Build-->Deploy;
+    Test-->Deploy;
+    Deploy-->Publish;
 ```
 
 
