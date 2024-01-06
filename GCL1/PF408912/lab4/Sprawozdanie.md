@@ -325,7 +325,7 @@ graph TD;
     Deploy-->Publish;
 ```
 ```mermaid
-sequenceDiagram;
+sequenceDiagram
     CheckoutSCM ->> CheckoutSCM: clone Repo to get Jenkinsfile
     CheckoutSCM ->> Build: next step
     Build ->> Build: clone Repo to get Dockerfiles
