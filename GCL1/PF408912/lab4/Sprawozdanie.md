@@ -317,7 +317,14 @@ docker run -d -p 3000:3000 patrykfialkowski/getting-started
 
 Jak widzimy aplikacja działa.
 
-
+## Graficzne podsumowanie procesu
+```mermaid
+    [*] --> Build
+    Build --> Test
+    Test --> Deploy
+    Deploy --> Publish
+    Publish --> [*]
+```
 
 
 
