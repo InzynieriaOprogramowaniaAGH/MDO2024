@@ -138,14 +138,6 @@ Plik przed edycją
 url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-38&arch=x86_64
 repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=x86_64
 ```
-- sekcję odpowiedzialną za instalację odpowiednich pakietów:
-```bash
-#packages
-%packages
-python3
-docker
-%end
-```
 - sekcje post install, która ma uruchomić usługę docker oraz uruchomić wybrany kontener:
 ```bash
 #post
