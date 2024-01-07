@@ -15,7 +15,7 @@ Celem ćwiczenia było zapoznanie się z narzędziami do automatyzacji instalacj
 ## Komunikajca między maszynami:
 Na maszynach ustawiamy hostname: podajemy tu ip maszyny vm1 i jej nazwę.
 ```
-[kasia@vm2 .ssh]$ sudo yum install ansible
+[kasia@vm2 ~]$ sudo yum install ansible
 
 ```
 ![Alt text](screenshot1.png)
