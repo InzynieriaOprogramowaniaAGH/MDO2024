@@ -48,16 +48,19 @@ Wymiana kluczy jest możliwa przy użyciu komendy:
 ![Alt text](screenshot5.png)
 
 Następnie utworzony klucz publiczny z vm1 kopiujemy na zdalny serwer o nazwie vm2 dla użytkownika kasia, to pozwoli nam na logowanie się na ten serwer bez konieczności wpisywania hasła
+
 ```
 [kasia@vm1 .ssh]$ ssh-copy-id kasia@vm2
 ```
 ![Alt text](screenshot6.png)
 
 To samo dla vm1 
+
 ```
 [kasia@vm2 .ssh]$ ssh-copy-id kasia@vm1
 ```
 Sprawdzamy połączenie 
+
 ![Alt text](screenshot7.png)
 
 
@@ -65,6 +68,7 @@ Sprawdzamy połączenie
 Ansible to narzędzie do automatyzacji pracy, które umożliwia zarządzanie konfiguracją, wdrożenia aplikacji, i wykonywanie różnorodnych zadań związanych z zarządzaniem infrastrukturą informatyczną.
 
 Tworzymy plik inventory i wykonujemy pinga
+
 ```
 [kasia@vm1 ansible]$  vi inventory.ini
 [myhosts]
@@ -72,17 +76,21 @@ Tworzymy plik inventory i wykonujemy pinga
 [kasia@vm1 ansible]$ ansible myhosts -m ping -i inventory.ini
 
 ```
+
 ![Alt text](screenshot8.png)
 
 
 ## Plik playbookFedoraCopyFile.yml:
 Celem playbooka jest skopiowanie wcześniej utworzonego pliku env.txt na vm2.
 Plik towrzymy komendą:
+
 ```bash
 [kasia@vm1 ansible]$ env > env_file
 ```
 ![Alt text](screenshot9.png)
+
 Plik kopiujemy na klienta wykorzystując moduł copy w ansible:
+
 ```bash
 tasks:
   - name: File Copy
@@ -90,18 +98,27 @@ tasks:
       src: /home/kasia/ansible/env.txt
       dest: /home/kasia/uploads/env.txt
 ```
+
 Po wykonaniu playbooka nasz plik będzie się znajdywał na kliecnie w wskazanej ścieżce
 Od razu też przygotowałam reszte playbooka na pozostałe zadania: czyli oprócz kopiowania, wykonamy instalacje dockera, uruchomienie usługi, utworzenie kontenera z Fedora oraz kontenera z nginx
+
 ![Alt text](screenshot10.png)
+
 Uruchomienie playbooka:
+
 ```bash
 [kasia@vm1 ansible]$ ansible-playbook -i inventory.ini -u kasia --ask-become-pass playbook.yml
 ```
+
 Wynik playbooka:
+
 ![Alt text](screenshot11.png)
+
 Jak widzimy całość instrukcji została wykonana bez błędów.
 Sprawdzamy maszynę vm2 i widzimy skopiowany plik:
+
 ![Alt text](screenshot12.png)
+
 ![Alt text](screenshot13.png)
 
 
@@ -112,7 +129,9 @@ W wypadku Fedory po instalacji na maszynie znajduje się plik:
 anaconda-ks.cfg
 
 Plik przed edycją
+
 ![Alt text](screenshot14.png)
+
 - wskazane repozytorium:
 ```bash
 #repo
@@ -137,6 +156,7 @@ docker run -d -p 80:80 --name lighttpd-container jitesoft/lighttpd
 %end
 ```
 Plik po edycji
+
 ![Alt text](screenshot15.png)
 
 Przygotowany plik wrzuciłam na repozytorium, skąd będę go później linkowała w instalacji z użyciem raw linka.
@@ -148,9 +168,14 @@ Wklejamy zamiast poprzedniego quiet wartość: https://raw.githubusercontent.com
 ![Alt text](screenshot16.png)
 
 Dzięki temu podczas instalacji zostanie użyty powyższy plik odpowiedzi. Instalator nie pyta nas o nic i samoczynnie rozpoczyna pracę.
+
 ![Alt text](screenshot17.png)
+
 Weryfikujemy zainstalowane narzędzia
+
 ![Alt text](screenshot18.png)
+
 ![Alt text](screenshot19.png)
+
 ![Alt text](screenshot20.png)
 
