@@ -138,15 +138,7 @@ Plik przed edycją
 url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-38&arch=x86_64
 repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f38&arch=x86_64
 ```
-- sekcje post install, która ma uruchomić usługę docker oraz uruchomić wybrany kontener:
-```bash
-#post
-%post
-systemctl start docker
-systemctl enable docker
-docker run -d -p 80:80 --name lighttpd-container jitesoft/lighttpd
-%end
-```
+
 Plik po edycji
 
 ![Alt text](screenshot15.png)
