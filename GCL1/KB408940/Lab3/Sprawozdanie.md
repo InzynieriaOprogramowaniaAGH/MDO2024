@@ -80,7 +80,7 @@ Tworzymy plik inventory i wykonujemy pinga
 ![Alt text](screenshot8.png)
 
 
-## Plik playbookFedoraCopyFile.yml:
+## Playbook:
 Celem playbooka jest skopiowanie wcześniej utworzonego pliku env.txt na vm2.
 Plik towrzymy komendą:
 
