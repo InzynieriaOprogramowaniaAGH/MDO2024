@@ -37,12 +37,14 @@ Generujemy na vm2 klucz RSA. Po wykonaniu tego polecenia, zostaną utworzone dwa
 Skonfigurowałam poniżej ruch w obie strony przez klucze.
 
 Wymiana kluczy jest możliwa przy użyciu komendy:
+
 ```
 [kasia@vm2 .ssh]$ ssh-keygen -t rsa -b 4096
 [kasia@vm1 .ssh]$ ssh-keygen -t rsa -b 4096
 
 ```
 ![Alt text](screenshot5.png)
+
 Następnie utworzony klucz publiczny z vm1 kopiujemy na zdalny serwer o nazwie vm2 dla użytkownika kasia, to pozwoli nam na logowanie się na ten serwer bez konieczności wpisywania hasła
 ```
 [kasia@vm1 .ssh]$ ssh-copy-id kasia@vm2
