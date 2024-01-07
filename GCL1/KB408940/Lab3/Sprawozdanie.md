@@ -19,7 +19,9 @@ Na maszynach ustawiamy hostname: podajemy tu ip maszyny vm1 i jej nazwę.
 
 ```
 ![Alt text](screenshot1.png)
+
 Ustawiamy hostname maszyn vm1 i vm2
+
 ```
 hostnamectl set-hostname vm1
 sudo reboot
